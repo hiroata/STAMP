@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>かんたん商品登録 | 切手販売ショップ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN", 
+                         "メイリオ", Meiryo, "MS Pゴシック", sans-serif;
+        }
+        .preview-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <script>
+        // アクセス制御
+        function checkAuth() {
+            const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+            if (!authToken) {
+                window.location.href = 'admin-login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // ページ読み込み時に認証チェック
+        window.onload = function() {
+            if (!checkAuth()) return;
+            
+            // 既存のonload処理があれば実行
+            if (typeof originalOnload === 'function') {
+                originalOnload();
+            }
+        };
+
+        // ログアウト機能
+        function logout() {
+            localStorage.removeItem('authToken');
+            sessionStorage.removeItem('authToken');
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- ログアウトボタン -->
+        <div class="flex justify-end mb-4">
+            <button onclick="logout()" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                ログアウト
+            </button>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">かんたん商品登録</h1>
+
+        <!-- シンプル商品登録フォーム -->
+        <div class="bg-white rounded-lg shadow-lg p-4 md:p-8 mb-8">
+            <form id="product-form">
+                <!-- 画像アップロード（大きく目立つ） -->
+                <div class="text-center mb-8">
+                    <div id="image-preview" class="mb-4 flex justify-center">
+                        <div class="w-[200px] h-[200px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+                            <p class="text-gray-400">画像をアップロード</p>
+                        </div>
+                    </div>
+                    <label for="image" class="cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">
+                        画像を選択
+                    </label>
+                    <input type="file" id="image" accept="image/*" class="hidden" onchange="previewImage(event)">
+                </div>
+
+                <!-- 商品名（必須）と価格 -->
+                <div class="grid grid-cols-1 gap-4 md:gap-6 mb-6">
+                    <div>
+                        <label class="block text-lg font-medium text-gray-700 mb-2">商品名 <span class="text-red-500">*</span></label>
+                        <input type="text" id="title" required class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：日本の風景切手セット">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-700 mb-2">価格</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="price" class="flex-1 px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：1280">
+                            <label class="flex items-center px-4 py-3 bg-gray-50 rounded-lg">
+                                <input type="checkbox" id="negotiable" class="mr-2">
+                                <span class="text-base">応相談</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- その他の項目 -->
+                <div class="mb-6 space-y-4">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">在庫数</label>
+                            <input type="number" id="stock" class="w-full px-3 py-2 border border-gray-300 rounded-md" value="1" min="1" max="50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">大カテゴリー</label>
+                            <select id="mainCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md" onchange="updateSubCategories()">
+                                <option value="">大カテゴリーを選択</option>
+                                <option value="普通切手">普通切手</option>
+                                <option value="航空切手">航空切手</option>
+                                <option value="記念切手">記念切手</option>
+                                <option value="特殊切手">特殊切手</option>
+                                <option value="公園切手">公園切手</option>
+                                <option value="年賀切手">年賀切手</option>
+                                <option value="ふるさと切手">ふるさと切手</option>
+                                <option value="沖縄切手">沖縄切手</option>
+                                <option value="限定販売品">限定販売品</option>
+                                <option value="外国切手">外国切手</option>
+                                <option value="テーマ別切手">テーマ別切手</option>
+                                <option value="通信用切手">通信用切手</option>
+                                <option value="収集用品">収集用品</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">サブカテゴリー</label>
+                            <select id="subCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md" disabled>
+                                <option value="">まず大カテゴリーを選択してください</option>
+                            </select>
+                            <input type="hidden" id="category" value="">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">商品説明</label>
+                        <textarea id="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="商品の詳細な説明を入力してください"></textarea>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="isNew" class="mr-2" checked>
+                            <span class="text-sm">新着商品として表示</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 登録ボタン -->
+                <button type="submit" class="w-full bg-green-600 text-white text-lg font-medium px-6 py-4 rounded-lg hover:bg-green-700 transition-colors">
+                    商品を登録する
+                </button>
+            </form>
+        </div>
+
+        <!-- 登録済み商品一覧 -->
+        <div class="bg-white rounded-lg shadow-md p-4 md:p-6">
+            <h2 class="text-xl font-semibold mb-4">登録済み商品一覧</h2>
+            <div id="products-list" class="space-y-4">
+                <!-- 商品リストがここに表示されます -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ローカルストレージから商品データを取得
+        let products = JSON.parse(localStorage.getItem('stampProducts')) || [];
+
+        // 画像プレビュー機能
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image-preview').innerHTML = `
+                        <img src="${e.target.result}" class="preview-image" alt="プレビュー">
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 商品フォームの送信処理
+        document.getElementById('product-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const priceValue = document.getElementById('price').value;
+            const isNegotiable = document.getElementById('negotiable').checked;
+            
+            const formData = {
+                id: editingProductId || Date.now().toString(),
+                title: document.getElementById('title').value,
+                price: priceValue ? parseInt(priceValue) : null,
+                priceText: isNegotiable ? '応相談' : (priceValue ? `¥${parseInt(priceValue).toLocaleString()}` : '価格未設定'),
+                negotiable: isNegotiable,
+                category: document.getElementById('category').value || '未分類',
+                description: document.getElementById('description').value || '',
+                stock: parseInt(document.getElementById('stock').value) || 1,
+                isNew: document.getElementById('isNew').checked,
+                status: 'active',
+                created_at: editingProductId ? 
+                    (products.find(p => p.id === editingProductId)?.created_at || new Date().toISOString().split('T')[0]) : 
+                    new Date().toISOString().split('T')[0],
+                imageUrl: '/images/products/placeholder.jpg'
+            };
+
+            // 画像処理
+            const imageFile = document.getElementById('image').files[0];
+            const imagePreview = document.querySelector('.preview-image');
+            
+            if (imagePreview) {
+                formData.imageUrl = imagePreview.src;
+                formData.imageName = imageFile ? imageFile.name : 'preview.jpg';
+            }
+
+            if (editingProductId) {
+                // 更新モード
+                const index = products.findIndex(p => p.id === editingProductId);
+                if (index !== -1) {
+                    products[index] = formData;
+                }
+            } else {
+                // 新規登録モード
+                products.push(formData);
+            }
+            
+            localStorage.setItem('stampProducts', JSON.stringify(products));
+            
+            // 他のタブ/ウィンドウに変更を通知
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'stampProducts',
+                newValue: JSON.stringify(products),
+                url: window.location.href
+            }));
+            
+            displayProducts();
+            
+            // 編集モードの場合
+            if (editingProductId) {
+                alert('商品を更新しました！');
+                cancelEdit(); // 編集モードを解除
+            } else {
+                // 新規登録の場合
+                // フォームリセット
+                document.getElementById('product-form').reset();
+                
+                // デフォルト値を設定
+                document.getElementById('stock').value = 1;
+                document.getElementById('isNew').checked = true;
+                document.getElementById('mainCategory').value = '';
+                document.getElementById('subCategory').innerHTML = '<option value="">まず大カテゴリーを選択してください</option>';
+                document.getElementById('subCategory').disabled = true;
+                document.getElementById('category').value = '';
+                
+                document.getElementById('image-preview').innerHTML = `
+                    <div class="w-[200px] h-[200px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+                        <p class="text-gray-400">画像をアップロード</p>
+                    </div>
+                `;
+                
+                alert('商品を登録しました！');
+            }
+            
+            // 登録済み商品一覧にスクロール
+            document.getElementById('products-list').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 商品一覧を表示
+        function displayProducts() {
+            const listElement = document.getElementById('products-list');
+            
+            if (products.length === 0) {
+                listElement.innerHTML = '<p class="text-gray-500">登録済み商品はありません</p>';
+                return;
+            }
+
+            listElement.innerHTML = products.map(product => `
+                <div class="border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row items-start gap-4">
+                    <img src="${product.imageUrl}" alt="${product.title}" class="w-full md:w-20 h-32 md:h-20 object-cover rounded-lg">
+                    <div class="flex-1 w-full">
+                        <h3 class="font-semibold text-lg">${product.title}</h3>
+                        <p class="text-lg font-bold ${product.negotiable ? 'text-blue-600' : 'text-red-600'} mb-1">
+                            ${product.priceText || (product.price ? `¥${product.price.toLocaleString()}` : '価格未設定')}
+                        </p>
+                        <p class="text-sm text-gray-600">
+                            カテゴリー: ${product.category} | 
+                            在庫: ${product.stock}
+                            ${product.isNew ? '<span class="ml-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
+                        </p>
+                    </div>
+                    <div class="flex gap-2 self-end md:self-start">
+                        <button onclick="editProduct('${product.id}')" class="text-blue-600 hover:text-blue-800 font-medium">
+                            編集
+                        </button>
+                        <button onclick="deleteProduct('${product.id}')" class="text-red-600 hover:text-red-800 font-medium">
+                            削除
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 商品を削除
+        function deleteProduct(id) {
+            if (confirm('この商品を削除しますか？')) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('stampProducts', JSON.stringify(products));
+                
+                // 他のタブ/ウィンドウに変更を通知
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'stampProducts',
+                    newValue: JSON.stringify(products),
+                    url: window.location.href
+                }));
+                
+                displayProducts();
+            }
+        }
+
+        // 編集モード用の変数
+        let editingProductId = null;
+
+        // 商品を編集
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            editingProductId = id;
+
+            // フォームに値をセット
+            document.getElementById('title').value = product.title;
+            document.getElementById('price').value = product.price || '';
+            document.getElementById('negotiable').checked = product.negotiable;
+            
+            // カテゴリーの設定
+            if (product.category && product.category.includes(' > ')) {
+                const [mainCat, subCat] = product.category.split(' > ');
+                document.getElementById('mainCategory').value = mainCat;
+                updateSubCategories();
+                // サブカテゴリーの選択を次のフレームで実行
+                setTimeout(() => {
+                    document.getElementById('subCategory').value = subCat;
+                    document.getElementById('category').value = product.category;
+                }, 0);
+            } else {
+                document.getElementById('mainCategory').value = product.category || '';
+                updateSubCategories();
+                document.getElementById('category').value = product.category || '';
+            }
+            
+            document.getElementById('description').value = product.description || '';
+            document.getElementById('stock').value = product.stock || 1;
+            document.getElementById('isNew').checked = product.isNew;
+
+            // 画像プレビューを設定
+            if (product.imageUrl && product.imageUrl !== '/images/products/placeholder.jpg') {
+                document.getElementById('image-preview').innerHTML = `
+                    <img src="${product.imageUrl}" class="preview-image">
+                `;
+            }
+
+            // ボタンのテキストを変更
+            const submitButton = document.querySelector('#product-form button[type="submit"]');
+            submitButton.innerHTML = `
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                商品を更新する
+            `;
+
+            // キャンセルボタンを表示
+            if (!document.getElementById('cancel-edit')) {
+                const cancelButton = document.createElement('button');
+                cancelButton.id = 'cancel-edit';
+                cancelButton.type = 'button';
+                cancelButton.className = 'ml-4 bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors inline-flex items-center';
+                cancelButton.innerHTML = 'キャンセル';
+                cancelButton.onclick = cancelEdit;
+                submitButton.parentNode.appendChild(cancelButton);
+            }
+
+            // フォームまでスクロール
+            document.getElementById('product-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 編集をキャンセル
+        function cancelEdit() {
+            editingProductId = null;
+            document.getElementById('product-form').reset();
+            
+            // デフォルト値を設定
+            document.getElementById('stock').value = 1;
+            document.getElementById('isNew').checked = true;
+            document.getElementById('mainCategory').value = '';
+            document.getElementById('subCategory').innerHTML = '<option value="">まず大カテゴリーを選択してください</option>';
+            document.getElementById('subCategory').disabled = true;
+            document.getElementById('category').value = '';
+            
+            document.getElementById('image-preview').innerHTML = `
+                <div class="w-[200px] h-[200px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+                    <p class="text-gray-400">画像をアップロード</p>
+                </div>
+            `;
+
+            // ボタンのテキストを元に戻す
+            const submitButton = document.querySelector('#product-form button[type="submit"]');
+            submitButton.innerHTML = `
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                商品を登録する
+            `;
+
+            // キャンセルボタンを削除
+            const cancelButton = document.getElementById('cancel-edit');
+            if (cancelButton) {
+                cancelButton.remove();
+            }
+        }
+
+        // カテゴリーデータ
+        const categoryData = {
+            "普通切手": ["明治普通切手", "手彫切手", "竜文切手", "桜切手", "菊切手", "コイル切手"],
+            "航空切手": ["芺球航空", "大正航空", "昭和航空（戦前）", "五銭位航空", "円位航空", "銅版航空", "立山航空"],
+            "記念切手": ["明治記念", "大正記念", "昭和戦前記念", "昭和戦後記念", "平成記念", "令和記念", "小型シート", "文化人シリーズ", "国体シリーズ", "オリンピック関連"],
+            "特殊切手": ["グリーティング切手", "シール式切手", "フレーム切手", "慶弔切手", "弔筒切手", "夏のおたより", "美術切手", "アニメ・ヒーロー"],
+            "公園切手": ["第1次国立公園", "第2次国立公園", "国定公園", "富士箱根", "日光", "吉野熊野", "阿蘇", "大山瑠璃"],
+            "年賀切手": ["昭和10年以前", "昭和11-20年", "昭和21-30年", "昭和31-40年", "昭和41-50年", "昭和51-64年", "平成年賀", "令和年賀", "お年玉小型シート"],
+            "ふるさと切手": ["北海道・東北", "関東・信越", "東海・北陸", "近畿", "中国・四国", "九州・沖縄", "花シリーズ", "風景シリーズ"],
+            "沖縄切手": ["米国統治時代", "琉球政府", "暫定切手", "航空切手", "速達切手", "収入印紙"],
+            "限定販売品": ["プレミアム切手", "特別販売品", "郵便局限定", "オリジナルフレーム", "年賀パック", "フォルムカード"],
+            "外国切手": ["アメリカ", "イギリス", "フランス", "ドイツ", "中国", "韓国", "カナダ", "オーストラリア", "その他の国"],
+            "テーマ別切手": ["動物切手", "花・植物切手", "鉄道切手", "芸術・美術切手", "スポーツ切手", "宇宙切手", "船舶切手"],
+            "通信用切手": [],
+            "収集用品": ["切手アルバム", "ピンセット", "ルーペ", "マウント", "保存ケース", "カタログ"]
+        };
+
+        // サブカテゴリー更新関数
+        function updateSubCategories() {
+            const mainCategory = document.getElementById('mainCategory').value;
+            const subCategorySelect = document.getElementById('subCategory');
+            const categoryHidden = document.getElementById('category');
+
+            // サブカテゴリーをクリア
+            subCategorySelect.innerHTML = '';
+            categoryHidden.value = '';
+
+            if (!mainCategory) {
+                subCategorySelect.disabled = true;
+                subCategorySelect.innerHTML = '<option value="">まず大カテゴリーを選択してください</option>';
+                return;
+            }
+
+            subCategorySelect.disabled = false;
+            
+            if (mainCategory === "通信用切手") {
+                // 通信用切手はサブカテゴリーなし
+                subCategorySelect.innerHTML = '<option value="通信用切手">通信用切手</option>';
+                subCategorySelect.value = "通信用切手";
+                categoryHidden.value = "通信用切手";
+            } else {
+                // サブカテゴリーオプションを追加
+                subCategorySelect.innerHTML = '<option value="">サブカテゴリーを選択</option>';
+                
+                const subCategories = categoryData[mainCategory] || [];
+                subCategories.forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subCategorySelect.appendChild(option);
+                });
+            }
+        }
+
+        // サブカテゴリー選択時にhiddenフィールドを更新
+        document.getElementById('subCategory').addEventListener('change', function() {
+            const mainCategory = document.getElementById('mainCategory').value;
+            const subCategory = this.value;
+            const categoryHidden = document.getElementById('category');
+            
+            if (subCategory) {
+                categoryHidden.value = `${mainCategory} > ${subCategory}`;
+            } else {
+                categoryHidden.value = '';
+            }
+        });
+
+        // 初期表示
+        displayProducts();
+    </script>
+
+    <footer class="bg-gray-100 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <!-- 配送・送料について -->
+            <div class="bg-white rounded-lg p-6 mb-8 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">配送・送料について</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（書留便など）</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            郵便局の書留便、ゆうパックなどでお送りします。お客様の玄関先まで確実にお届けします。
+                        </p>
+                        <p class="text-sm font-bold text-gray-800">料金は全国一律650円です。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（特定記録便など）</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            郵便局の特定記録便などでお送りします。基本的にお客様の郵便受箱に配送となります。
+                        </p>
+                        <p class="text-sm font-bold text-gray-800 mb-2">料金は全国一律400円です。</p>
+                        <p class="text-xs text-gray-500">
+                            ※特定記録便は万が一、亡失、誤配、商品破損、盗難などがあった場合に補償を受ける事ができません。<br>
+                            ※平日のみの配達となります。土日、祝日は配達がありません。
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#C41E3A] mb-2">店頭お受け取り</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            ご注文品の用意が整いましたら、メールでお知らせいたしますので、メール受信後に店舗（広島市中区）にてお受け取りください。
+                        </p>
+                        <a href="about.html" class="text-sm text-[#C41E3A] hover:underline">店舗案内はこちら »</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">ワールドスタンプ広島</h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        高品質な切手を適正価格で
+                    </p>
+                    <p class="text-sm text-gray-600">
+                        初心者から愛好家まで幅広くサポート
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">ショッピングガイド</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="buy.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                ご注文方法
+                            </a>
+                        </li>
+                        <li>
+                            <a href="buy.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                お支払い方法
+                            </a>
+                        </li>
+                        <li>
+                            <a href="about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                店舗案内
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">お客様サポート</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                よくあるご質問
+                            </a>
+                        </li>
+                        <li>
+                            <a href="contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                お問い合わせ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">お問い合わせ</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5" style="color: #C41E3A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 font-medium">082-XXX-XXXX</span>
+                        </div>
+                        <p class="text-xs text-gray-600 ml-7">
+                            平日 9:00-18:00<br>
+                            休日 10:00-17:00
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-800 text-white py-4">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-sm">
+                    © 2024 ワールドスタンプ広島 All Rights Reserved.
+                </p>
+                <p class="text-xs mt-2">
+                    <a href="admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
