@@ -1,173 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理者ログイン | ワールドスタンプ広島</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN", 
-                         "メイリオ", Meiryo, "MS Pゴシック", sans-serif;
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
-    <div class="min-h-screen flex items-center justify-center">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <div class="text-center mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">管理者ログイン</h1>
-                <p class="text-gray-600 mt-2">ワールドスタンプ広島 管理システム</p>
-            </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>管理者ログイン | ワールドスタンプ広島</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+        <script src="/firebase-config.js"></script>
+        <script src="/js/auth-manager.js"></script>
+        <style>
+            body {
+                font-family:
+                    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-100">
+        <div class="min-h-screen flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+                <div class="text-center mb-8">
+                    <h1 class="text-2xl font-bold text-gray-800">管理者ログイン</h1>
+                    <p class="text-gray-600 mt-2">ワールドスタンプ広島 管理システム</p>
+                </div>
 
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <!-- CSRF Token -->
-                <input type="hidden" id="csrfToken" value="">
-                
-                <div class="mb-6">
-                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
-                        ユーザー名
-                    </label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username"
-                        required
-                        autocomplete="username"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C41E3A] focus:border-transparent"
-                        placeholder="ユーザー名を入力"
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <!-- CSRF Token -->
+                    <input type="hidden" id="csrfToken" value="" />
+
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2"> メールアドレス </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            autocomplete="email"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C41E3A] focus:border-transparent"
+                            placeholder="メールアドレスを入力"
+                        />
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2"> パスワード </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            autocomplete="current-password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C41E3A] focus:border-transparent"
+                            placeholder="パスワードを入力"
+                        />
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-2" id="remember" />
+                            <span class="text-sm text-gray-600">ログイン状態を保持する</span>
+                        </label>
+                        <p class="text-xs text-gray-500 mt-1 ml-6">※セキュリティのため、共有PCでは使用しないでください</p>
+                    </div>
+
+                    <div id="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg hidden">
+                        <span id="errorText"
+                            >ログインに失敗しました。メールアドレスとパスワードを確認してください。</span
+                        >
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-full bg-[#C41E3A] text-white py-3 rounded-lg hover:bg-[#A01729] transition-colors font-medium"
                     >
+                        ログイン
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <a href="index.html" class="text-sm text-gray-600 hover:text-[#C41E3A]"> ← トップページに戻る </a>
                 </div>
-
-                <div class="mb-6">
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                        パスワード
-                    </label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password"
-                        required
-                        autocomplete="current-password"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C41E3A] focus:border-transparent"
-                        placeholder="パスワードを入力"
-                    >
-                </div>
-
-                <div class="mb-6">
-                    <label class="flex items-center">
-                        <input type="checkbox" class="mr-2" id="remember">
-                        <span class="text-sm text-gray-600">ログイン状態を保持する</span>
-                    </label>
-                </div>
-
-                <div id="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg hidden">
-                    ログインに失敗しました。ユーザー名とパスワードを確認してください。
-                </div>
-
-                <button 
-                    type="submit"
-                    class="w-full bg-[#C41E3A] text-white py-3 rounded-lg hover:bg-[#A01729] transition-colors font-medium"
-                >
-                    ログイン
-                </button>
-            </form>
-
-            <div class="mt-6 text-center">
-                <a href="index.html" class="text-sm text-gray-600 hover:text-[#C41E3A]">
-                    ← トップページに戻る
-                </a>
             </div>
         </div>
-    </div>
 
-    <script>
-        // CSRFトークン生成
-        function generateCSRFToken() {
-            const token = Array.from(crypto.getRandomValues(new Uint8Array(32)))
-                .map(b => b.toString(16).padStart(2, '0'))
-                .join('');
-            document.getElementById('csrfToken').value = token;
-            sessionStorage.setItem('csrfToken', token);
-            return token;
-        }
+        <script>
+            // AuthManagerインスタンス
+            let authManager;
 
-        // ページ読み込み時にCSRFトークン生成
-        window.onload = function() {
-            generateCSRFToken();
-        };
+            // ページ読み込み時の初期化
+            window.addEventListener('DOMContentLoaded', () => {
+                authManager = new AuthManager();
 
-        // ログイン処理
-        async function handleLogin(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const csrfToken = document.getElementById('csrfToken').value;
-            const remember = document.getElementById('remember').checked;
-
-            // エラーメッセージを非表示
-            document.getElementById('errorMessage').classList.add('hidden');
-
-            try {
-                // 実際の本番環境では、これをサーバーサイドのAPIに送信します
-                const response = await authenticateUser(username, password, csrfToken);
-                
-                if (response.success) {
-                    // セッショントークンを保存
-                    if (remember) {
-                        localStorage.setItem('authToken', response.token);
-                    } else {
-                        sessionStorage.setItem('authToken', response.token);
+                // 自動ログイン機能を無効化（セキュリティ強化のため）
+                // ユーザーは毎回ログイン情報を入力する必要があります
+                authManager.auth.onAuthStateChanged(async (user) => {
+                    if (user) {
+                        // 既存のセッションがある場合は一旦ログアウト
+                        await authManager.logout();
                     }
-                    
-                    // 管理画面にリダイレクト
-                    window.location.href = 'admin.html';
-                } else {
-                    document.getElementById('errorMessage').classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                document.getElementById('errorMessage').classList.remove('hidden');
-            }
-        }
+                });
+            });
 
-        // 認証関数（本番環境ではサーバーサイドAPIを呼び出す）
-        async function authenticateUser(username, password, csrfToken) {
-            // デモ用の認証ロジック
-            // 本番環境では必ずサーバーサイドで認証を行ってください
-            
-            // デモ用の認証情報
-            // 実際の本番環境では、これらの情報は絶対にクライアントサイドに置かないでください
-            const demoCredentials = {
-                username: 'admin',
-                password: 'Admin@2024'
-            };
-            
-            // CSRFトークンの検証
-            const storedToken = sessionStorage.getItem('csrfToken');
-            if (csrfToken !== storedToken) {
-                return { success: false, message: 'Invalid CSRF token' };
+            // ログイン処理
+            async function handleLogin(event) {
+                event.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+
+                // エラーメッセージを非表示
+                document.getElementById('errorMessage').classList.add('hidden');
+
+                // ローディング表示
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.disabled = true;
+                submitButton.textContent = 'ログイン中...';
+
+                try {
+                    // Firebase認証でログイン
+                    const response = await authManager.login(email, password, remember);
+
+                    if (response.success) {
+                        // 管理画面にリダイレクト
+                        window.location.href = 'admin.html';
+                    } else {
+                        // エラーメッセージを表示
+                        document.getElementById('errorText').textContent = response.message;
+                        document.getElementById('errorMessage').classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    document.getElementById('errorText').textContent =
+                        'ログインに失敗しました。しばらくしてからお試しください。';
+                    document.getElementById('errorMessage').classList.remove('hidden');
+                } finally {
+                    // ボタンを元に戻す
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalText;
+                }
             }
-            
-            // 認証チェック（本番ではサーバーサイドで行う）
-            if (username === demoCredentials.username && password === demoCredentials.password) {
-                // セッショントークン生成
-                const sessionToken = Array.from(crypto.getRandomValues(new Uint8Array(32)))
-                    .map(b => b.toString(16).padStart(2, '0'))
-                    .join('');
-                
-                return {
-                    success: true,
-                    token: sessionToken
-                };
-            }
-            
-            // セキュリティのため、レスポンスに遅延を追加（ブルートフォース対策）
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            return { success: false, message: 'Invalid credentials' };
-        }
-    </script>
-</body>
+        </script>
+    </body>
 </html>

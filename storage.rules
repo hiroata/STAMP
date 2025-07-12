@@ -1,0 +1,30 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // 商品画像のルール
+    match /products/{imageId} {
+      // 誰でも読み取り可能
+      allow read: if true;
+      
+      // 認証されたユーザーのみ書き込み・削除可能（開発中は簡易的に認証のみチェック）
+      allow write, delete: if request.auth != null;
+    }
+    
+    // 一時アップロード用
+    match /temp/{imageId} {
+      // 認証されたユーザーのみアップロード可能
+      allow create: if request.auth != null;
+      
+      // 誰でも読み取り可能
+      allow read: if true;
+      
+      // 認証されたユーザーのみ削除可能
+      allow delete: if request.auth != null;
+    }
+    
+    // それ以外のパスは拒否
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

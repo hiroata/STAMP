@@ -1,0 +1,317 @@
+/* 共通スタイルシート - DRY原則に基づく実装 */
+
+/* カラーパレット定義 */
+:root {
+    --primary-red: #C41E3A;
+    --header-bg: #B71C1C;
+    --nav-gray: #F5F5F5;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-light: #E0E0E0;
+    --bg-white: #FFFFFF;
+    --link-blue: #1976D2;
+    --success-green: #4CAF50;
+    --error-red: #F44336;
+}
+
+/* 基本フォント */
+body {
+    font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN", 
+                 "メイリオ", Meiryo, "MS Pゴシック", sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    background-color: var(--bg-white);
+    margin: 0;
+    padding: 0;
+}
+
+/* スキップリンク（アクセシビリティ） */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary-red);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* ボタン基本スタイル */
+.btn {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: none;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: var(--primary-red);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--nav-gray);
+    color: var(--text-primary);
+}
+
+/* フォーカススタイル（アクセシビリティ） */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 3px solid var(--link-blue);
+    outline-offset: 2px;
+}
+
+/* ハンバーガーメニュー */
+.hamburger {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    transition: all 0.25s;
+    position: relative;
+}
+
+.hamburger-line {
+    display: block;
+    height: 3px;
+    width: 100%;
+    border-radius: 10px;
+    background: #333;
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+}
+
+.hamburger-line:nth-child(1) {
+    top: 0;
+}
+
+.hamburger-line:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hamburger-line:nth-child(3) {
+    bottom: 0;
+}
+
+.hamburger.open .hamburger-line:nth-child(1) {
+    transform: rotate(45deg);
+    top: 50%;
+    margin-top: -1.5px;
+}
+
+.hamburger.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg);
+    bottom: 50%;
+    margin-bottom: -1.5px;
+}
+
+/* モバイルメニュー */
+#mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+#mobile-menu.show {
+    display: block;
+}
+
+.mobile-menu-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+}
+
+#mobile-menu.show .mobile-menu-content {
+    transform: translateX(0);
+}
+
+.mobile-menu-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile-menu-close {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: relative;
+}
+
+.mobile-menu-close span {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #333;
+    top: 50%;
+    left: 0;
+    transform-origin: center;
+}
+
+.mobile-menu-close span:first-child {
+    transform: rotate(45deg);
+}
+
+.mobile-menu-close span:last-child {
+    transform: rotate(-45deg);
+}
+
+/* モバイル対応 */
+@media (max-width: 639px) {
+    body {
+        font-size: 18px;
+    }
+    
+    .text-xs {
+        font-size: 14px;
+    }
+    
+    .text-sm {
+        font-size: 16px;
+    }
+    
+    .text-base {
+        font-size: 18px;
+    }
+    
+    .text-lg {
+        font-size: 20px;
+    }
+    
+    .text-xl {
+        font-size: 22px;
+    }
+    
+    .text-2xl {
+        font-size: 26px;
+    }
+
+    /* タッチフレンドリーボタン */
+    a, button {
+        min-height: 48px;
+        padding: 12px 16px;
+    }
+
+    /* 電話番号をクリック可能に */
+    .phone-number {
+        text-decoration: underline;
+        color: var(--link-blue);
+    }
+}
+
+/* ローディングアニメーション */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary-red);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* エラーメッセージ */
+.error-message {
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    color: #c62828;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+/* 成功メッセージ */
+.success-message {
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    color: #2e7d32;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+/* フォーム要素 */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-red);
+}
+
+/* ユーティリティクラス */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

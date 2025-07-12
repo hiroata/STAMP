@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>菊切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .kiku-badge {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            color: #5D4037;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .kiku-symbol {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #FFD700 0%, #FFA000 100%);
+            border-radius: 50%;
+            position: relative;
+        }
+        .kiku-symbol::after {
+            content: "菊";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: #5D4037;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <a href="category-historical.html" class="text-gray-600 hover:text-gray-800">歴史的切手</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">菊切手</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">菊切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                菊切手は、明治32年（1899年）から大正2年（1913年）まで発行された切手です。
+                中央に大きく菊花紋章を配し、周囲を唐草模様で飾った格調高いデザインが特徴です。
+                日清戦争後の国威発揚の時代を反映し、皇室の紋章である菊花を全面的に押し出した
+                威厳ある切手として、日本切手史上最も美しいデザインの一つとされています。
+            </p>
+            <div class="bg-yellow-50 border-l-4 border-yellow-600 p-4">
+                <h3 class="font-bold text-yellow-800 mb-2">菊切手の特徴</h3>
+                <ul class="text-sm text-yellow-700 space-y-1">
+                    <li>• 中央に16弁の菊花紋章を配置</li>
+                    <li>• 精緻な唐草模様の装飾</li>
+                    <li>• 高品質な凹版印刷の採用</li>
+                    <li>• 透かし入り用紙の使用（一部）</li>
+                    <li>• 14年間の長期使用による豊富な変種</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">菊切手の分類</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-amber-700 mb-3 flex items-center gap-2">
+                        <span class="kiku-symbol"></span> 第1次菊切手
+                    </h4>
+                    <p class="text-sm text-gray-700 mb-3">明治32年10月1日発行</p>
+                    <ul class="text-sm space-y-1">
+                        <li>• 5厘、1銭、1銭5厘、2銭、3銭、4銭、5銭</li>
+                        <li>• 10銭、15銭、20銭、25銭、50銭、1円</li>
+                        <li>• 凹版印刷による鮮明な図案</li>
+                        <li>• 目打ち12度が標準</li>
+                    </ul>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-amber-700 mb-3 flex items-center gap-2">
+                        <span class="kiku-symbol"></span> 第2次菊切手（加刷）
+                    </h4>
+                    <p class="text-sm text-gray-700 mb-3">明治41年以降</p>
+                    <ul class="text-sm space-y-1">
+                        <li>• 「支那」「朝鮮」加刷切手</li>
+                        <li>• 在外局用の特殊切手</li>
+                        <li>• 通常の菊切手に赤色で加刷</li>
+                        <li>• コレクターに人気の希少品</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">主な変種と特徴</h3>
+            <div class="space-y-4">
+                <div class="bg-white rounded p-4">
+                    <h4 class="font-bold text-amber-700 mb-2">用紙の違い</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div>
+                            <strong>白紙：</strong>
+                            <p class="text-gray-600">最も一般的。やや厚手の洋紙</p>
+                        </div>
+                        <div>
+                            <strong>毛紙：</strong>
+                            <p class="text-gray-600">繊維が見える粗い紙質。初期に使用</p>
+                        </div>
+                        <div>
+                            <strong>透かし入り：</strong>
+                            <p class="text-gray-600">高額面に使用。偽造防止目的</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded p-4">
+                    <h4 class="font-bold text-amber-700 mb-2">印刷の変種</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <strong>色調の違い：</strong>
+                            <p class="text-gray-600">同額面でも濃淡や色味に変化。特に3銭は黄橙～朱橙まで幅広い</p>
+                        </div>
+                        <div>
+                            <strong>版の違い：</strong>
+                            <p class="text-gray-600">製版時期により微細な違い。専門家による分類研究が進む</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-amber-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">価値の高い菊切手</h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex justify-between">
+                        <span>1円切手（未使用）</span>
+                        <span class="text-red-600 font-bold">★★★★★</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>50銭切手（未使用）</span>
+                        <span class="text-red-600 font-bold">★★★★☆</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>支那加刷切手</span>
+                        <span class="text-red-600 font-bold">★★★★☆</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>朝鮮加刷切手</span>
+                        <span class="text-red-600 font-bold">★★★★☆</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>毛紙使用切手</span>
+                        <span class="text-red-600 font-bold">★★★☆☆</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">収集のポイント</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>・菊花紋章の印刷状態を確認</li>
+                    <li>・用紙の種類（白紙・毛紙）を識別</li>
+                    <li>・目打ちの状態（センタリング）</li>
+                    <li>・裏糊の有無と状態</li>
+                    <li>・加刷切手は偽物に注意</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                菊切手は日本切手の黄金期を代表する切手です。
+                状態の良い美品や希少な変種をお探しの方はご相談ください。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'historical',
+            sub: 'kiku',
+            name: '菊切手',
+            description: '明治32年-大正2年発行の菊花紋章を中心とした格調高い切手'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。入荷次第掲載いたします。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="kiku-badge absolute top-2 left-2 z-10">菊切手</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        ${product.paperType ? `<p class="text-xs text-amber-600">用紙: ${product.paperType}</p>` : ''}
+                        ${product.overprint ? `<p class="text-xs text-red-600 font-bold">加刷: ${product.overprint}</p>` : ''}
+                        ${product.perforation ? `<p class="text-xs text-gray-600">目打ち: ${product.perforation}度</p>` : ''}
+                        <p class="text-lg font-bold text-red-600 mt-2">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.condition ? `<p class="text-xs text-gray-500 mt-1">状態: ${product.condition}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

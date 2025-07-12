@@ -1,0 +1,31 @@
+{
+  "name": "stamp-e20f2",
+  "version": "1.0.0",
+  "description": "ワールドスタンプ広島 ECサイト",
+  "type": "module",
+  "scripts": {
+    "serve": "firebase serve",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "lint": "eslint js/**/*.js --fix",
+    "format": "prettier --write \"**/*.{js,json,html,md}\"",
+    "lint:check": "eslint js/**/*.js",
+    "format:check": "prettier --check \"**/*.{js,json,html,md}\"",
+    "test": "jest",
+    "build:categories": "node scripts/generate-category-pages.js",
+    "build": "npm run build:categories"
+  },
+  "keywords": ["stamp", "e-commerce", "firebase"],
+  "author": "ワールドスタンプ広島",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "firebase-tools": "^13.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}

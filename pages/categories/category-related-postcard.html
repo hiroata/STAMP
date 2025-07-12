@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>官製はがき | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .postcard-badge {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .postcard-type {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: #E8F5E9;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #2E7D32;
+        }
+        .postcard-preview {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            background: #f9f9f9;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <a href="category-related.html" class="text-gray-600 hover:text-gray-800">切手関連品</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">官製はがき</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">官製はがき</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                官製はがきは、郵政省（現日本郵便）が発行する料額印面付きのはがきです。
+                年賀はがき、暑中見舞いはがき、通常はがきなど、日本の生活文化に深く根ざした存在で、
+                その図案の変遷は時代の移り変わりを映し出しています。
+                特に年賀はがきは、毎年異なるデザインが採用され、コレクターの注目を集めています。
+            </p>
+            <div class="bg-green-50 border-l-4 border-green-600 p-4">
+                <h3 class="font-bold text-green-800 mb-2">官製はがきの収集価値</h3>
+                <ul class="text-sm text-green-700 space-y-1">
+                    <li>• 身近な存在ながら奥深い収集分野</li>
+                    <li>• 年代による料額・デザインの変遷</li>
+                    <li>• 未使用・使用済み両方に価値</li>
+                    <li>• エラー品や試作品は特に希少</li>
+                    <li>• 実逓品は郵便史料として貴重</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">官製はがきの種類</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="border rounded-lg p-4 bg-red-50">
+                    <h4 class="font-bold text-red-700 mb-2">年賀はがき</h4>
+                    <div class="postcard-preview mb-3">
+                        <div style="width: 100px; height: 60px; margin: 0 auto;" class="bg-white border">
+                            年賀状
+                        </div>
+                    </div>
+                    <ul class="text-sm space-y-1">
+                        <li>• 昭和25年から発行開始</li>
+                        <li>• お年玉くじ付き</li>
+                        <li>• 干支デザインが人気</li>
+                        <li>• 地方版・寄付金付きなど種類豊富</li>
+                    </ul>
+                </div>
+                <div class="border rounded-lg p-4 bg-blue-50">
+                    <h4 class="font-bold text-blue-700 mb-2">暑中見舞いはがき</h4>
+                    <div class="postcard-preview mb-3">
+                        <div style="width: 100px; height: 60px; margin: 0 auto;" class="bg-white border">
+                            かもめーる
+                        </div>
+                    </div>
+                    <ul class="text-sm space-y-1">
+                        <li>• 夏の風物詩デザイン</li>
+                        <li>• くじ付き（かもめーる）</li>
+                        <li>• 発行期間が限定</li>
+                        <li>• 涼しげな図案が特徴</li>
+                    </ul>
+                </div>
+                <div class="border rounded-lg p-4 bg-gray-50">
+                    <h4 class="font-bold text-gray-700 mb-2">通常はがき</h4>
+                    <div class="postcard-preview mb-3">
+                        <div style="width: 100px; height: 60px; margin: 0 auto;" class="bg-white border">
+                            通常葉書
+                        </div>
+                    </div>
+                    <ul class="text-sm space-y-1">
+                        <li>• 年間通じて使用可能</li>
+                        <li>• シンプルなデザイン</li>
+                        <li>• 料額改定で変更</li>
+                        <li>• 往復はがきも存在</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">歴史的に価値の高い官製はがき</h3>
+            <div class="space-y-3">
+                <div class="bg-white rounded p-3">
+                    <h4 class="font-bold mb-1">戦前の年賀はがき</h4>
+                    <p class="text-sm text-gray-600">昭和10年代の年賀はがきは希少。特に軍事郵便用は貴重。</p>
+                    <span class="text-xs text-red-600">希少度：★★★★★</span>
+                </div>
+                <div class="bg-white rounded p-3">
+                    <h4 class="font-bold mb-1">初期お年玉付き年賀はがき</h4>
+                    <p class="text-sm text-gray-600">昭和25年～30年代前半。当選番号入りは特に人気。</p>
+                    <span class="text-xs text-red-600">希少度：★★★★☆</span>
+                </div>
+                <div class="bg-white rounded p-3">
+                    <h4 class="font-bold mb-1">地方版・限定版はがき</h4>
+                    <p class="text-sm text-gray-600">地域限定発行や記念版。発行数が少なく入手困難。</p>
+                    <span class="text-xs text-red-600">希少度：★★★☆☆</span>
+                </div>
+                <div class="bg-white rounded p-3">
+                    <h4 class="font-bold mb-1">エラーはがき</h4>
+                    <p class="text-sm text-gray-600">印刷ミス、料額違いなど。発見されると回収されるため極めて希少。</p>
+                    <span class="text-xs text-red-600">希少度：★★★★★</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-green-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">収集のポイント</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>• 発行年度を体系的に収集</li>
+                    <li>• 未使用・使用済み両方の価値を理解</li>
+                    <li>• 実逓品は消印や宛名も重要</li>
+                    <li>• 料額印面の種類に注目</li>
+                    <li>• エラー品の見分け方を学ぶ</li>
+                    <li>• 保存状態が価値を左右</li>
+                </ul>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">保管の注意点</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>• 湿気を避けて平らに保管</li>
+                    <li>• 直射日光による退色を防ぐ</li>
+                    <li>• はがき用アルバムを使用</li>
+                    <li>• 未使用品は汚れ・折れに注意</li>
+                    <li>• 実逓品は内容も含めて保存</li>
+                    <li>• 定期的な状態確認</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                官製はがきは年代や種類により価値が異なります。
+                お探しの年代やデザインがございましたら、お気軽にお問い合わせください。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'related',
+            sub: 'postcard',
+            name: '官製はがき',
+            description: '年賀はがき、暑中見舞い、通常はがきなど'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。入荷次第掲載いたします。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="postcard-badge absolute top-2 left-2 z-10">官製はがき</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        ${product.postcardType ? `<span class="postcard-type mb-2">${product.postcardType}</span>` : ''}
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        ${product.year ? `<p class="text-xs text-gray-600">発行年: ${product.year}</p>` : ''}
+                        ${product.rateAmount ? `<p class="text-xs text-green-600">料額: ${product.rateAmount}円</p>` : ''}
+                        ${product.isLottery ? `<p class="text-xs text-red-600">くじ付き</p>` : ''}
+                        <p class="text-lg font-bold text-red-600 mt-2">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.condition ? `<p class="text-xs text-gray-500 mt-1">状態: ${product.condition}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

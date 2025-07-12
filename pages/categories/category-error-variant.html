@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>定常変種切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .variant-badge {
+            background: linear-gradient(135deg, #FF6B6B 0%, #C44569 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .variant-detail {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: #FFF3E0;
+            border: 1px solid #FFB74D;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #E65100;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <a href="category-error.html" class="text-gray-600 hover:text-gray-800">エラー・変種切手</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">定常変種</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">定常変種切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                定常変種とは、製造過程で一定の確率で発生する変種切手です。
+                偶発的なエラーとは異なり、版の摩耗、印刷機の特性、用紙の違いなどにより、
+                同じ位置に同じ特徴を持つ変種が複数枚存在します。
+                カタログに記載されている定常変種は、コレクターの間で高い人気があります。
+            </p>
+            <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                <h3 class="font-bold text-red-800 mb-2">定常変種の特徴</h3>
+                <ul class="text-sm text-red-700 space-y-1">
+                    <li>• 同じ版・同じシートの特定位置に繰り返し発生</li>
+                    <li>• 発生原因が特定できる（版の傷、摩耗など）</li>
+                    <li>• カタログに記載されることが多い</li>
+                    <li>• 収集家の間で認知度が高い</li>
+                    <li>• 偶発的エラーより発見数は多いが、依然として希少</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">定常変種の主な種類</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-red-600 mb-2">版の変種</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>・版の傷による白抜け・線</li>
+                        <li>・版の摩耗による図案の欠け</li>
+                        <li>・版の修正跡</li>
+                        <li>・レタッチ（版の手直し）</li>
+                    </ul>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-blue-600 mb-2">印刷の変種</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>・インクの付着不良による白点</li>
+                        <li>・異物混入による色点</li>
+                        <li>・印圧の違いによる濃淡</li>
+                        <li>・用紙の違いによる変化</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">有名な定常変種の例</h3>
+            <div class="space-y-3">
+                <div class="bg-white rounded p-3">
+                    <h4 class="font-bold mb-1">昭和毎日新聞切手「毎」の字切れ</h4>
+                    <p class="text-sm text-gray-600">第5版第17番切手に発生。「毎」の字の一部が欠けている。</p>
+                    <span class="variant-detail">カタログ番号: C23v</span>
+                </div>
+                <div class="bg-white rounded p-3">
+                    <h4 class="font-bold mb-1">菊切手3銭「3」の字体変種</h4>
+                    <p class="text-sm text-gray-600">版の修正により「3」の字体が異なる複数の変種が存在。</p>
+                    <span class="variant-detail">カタログ番号: 89v1-v3</span>
+                </div>
+                <div class="bg-white rounded p-3">
+                    <h4 class="font-bold mb-1">富士鹿切手「富士山の白点」</h4>
+                    <p class="text-sm text-gray-600">富士山頂付近に白い点が入る定常変種。</p>
+                    <span class="variant-detail">カタログ番号: 176v</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-blue-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">収集のポイント</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>・専門カタログで変種番号を確認</li>
+                    <li>・シート位置（何番切手か）を記録</li>
+                    <li>・同じ変種の複数枚収集も価値あり</li>
+                    <li>・変種の特徴を拡大鏡で詳細確認</li>
+                    <li>・ペアやブロックでの収集も人気</li>
+                </ul>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">価値判断の基準</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>・カタログ記載の有無と評価</li>
+                    <li>・変種の明瞭さ（はっきり見えるほど高価値）</li>
+                    <li>・元切手の人気度と発行枚数</li>
+                    <li>・保存状態（特に変種部分の鮮明さ）</li>
+                    <li>・市場での取引実績</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                定常変種はカタログ番号での管理が重要です。
+                お探しの変種がございましたら、カタログ番号をお知らせください。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'error',
+            sub: 'variant',
+            name: '定常変種',
+            description: '製造過程で一定の確率で発生する変種切手'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。入荷次第掲載いたします。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="variant-badge absolute top-2 left-2 z-10">定常変種</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        ${product.catalogNumber ? `<p class="text-xs text-blue-600 mb-1">カタログ番号: ${product.catalogNumber}</p>` : ''}
+                        ${product.sheetPosition ? `<p class="text-xs text-gray-600 mb-1">シート位置: ${product.sheetPosition}番</p>` : ''}
+                        ${product.variantType ? `<span class="variant-detail">${product.variantType}</span>` : ''}
+                        <p class="text-lg font-bold text-red-600 mt-2">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

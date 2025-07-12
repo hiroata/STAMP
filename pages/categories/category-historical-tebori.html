@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手彫切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .tebori-badge {
+            background: linear-gradient(135deg, #4A0E4E 0%, #81689D 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .stamp-type {
+            font-family: serif;
+            font-weight: bold;
+            color: #4A0E4E;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <a href="category-historical.html" class="text-gray-600 hover:text-gray-800">歴史的切手</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">手彫切手</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">手彫切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                手彫切手は、明治4年（1871年）から明治8年（1875年）にかけて発行された日本最初の切手です。
+                熟練した彫刻師が一枚一枚手作業で銅版に彫刻したため、同じ額面でも微妙な違いがあり、
+                この個体差が収集の大きな魅力となっています。
+            </p>
+            <div class="bg-purple-50 border-l-4 border-purple-600 p-4">
+                <h3 class="font-bold text-purple-800 mb-2">手彫切手の特徴</h3>
+                <ul class="text-sm text-purple-700 space-y-1">
+                    <li>• 職人による手彫り銅版印刷</li>
+                    <li>• 和紙を使用（竜切手の一部）</li>
+                    <li>• 目打ちなし（ハサミで切り離し）</li>
+                    <li>• 各切手に微妙な個体差</li>
+                    <li>• 偽造防止のための複雑な図案</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">手彫切手の種類</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border rounded-lg p-4">
+                    <h4 class="stamp-type text-lg mb-3">竜切手（竜文切手）</h4>
+                    <p class="text-sm text-gray-700 mb-3">明治4年4月20日発行 - 日本最初の切手</p>
+                    <table class="w-full text-sm">
+                        <tr class="border-b">
+                            <td class="py-1">48文（茶）</td>
+                            <td class="text-right text-red-600">極めて希少</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-1">100文（青）</td>
+                            <td class="text-right text-red-600">極めて希少</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-1">200文（朱）</td>
+                            <td class="text-right text-red-600">希少</td>
+                        </tr>
+                        <tr>
+                            <td class="py-1">500文（緑青）</td>
+                            <td class="text-right text-red-600">最高額面・極希少</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="stamp-type text-lg mb-3">竜銭切手</h4>
+                    <p class="text-sm text-gray-700 mb-3">明治5年2月発行 - 新貨条例に対応</p>
+                    <table class="w-full text-sm">
+                        <tr class="border-b">
+                            <td class="py-1">半銭（茶）</td>
+                            <td class="text-right text-orange-600">希少</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-1">1銭（青）</td>
+                            <td class="text-right text-orange-600">比較的入手可能</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-1">2銭（朱）</td>
+                            <td class="text-right text-orange-600">比較的入手可能</td>
+                        </tr>
+                        <tr>
+                            <td class="py-1">5銭（緑）</td>
+                            <td class="text-right text-orange-600">希少</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="stamp-type text-lg mb-3">桜切手</h4>
+                    <p class="text-sm text-gray-700 mb-3">明治5年9月発行 - 図案変更</p>
+                    <ul class="text-sm space-y-1">
+                        <li>• 中央に桜花を配置</li>
+                        <li>• より精緻な彫刻技術</li>
+                        <li>• 和紙・洋紙の2種類存在</li>
+                        <li>• カナ入り・カナなしの変種</li>
+                    </ul>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="stamp-type text-lg mb-3">鳥切手</h4>
+                    <p class="text-sm text-gray-700 mb-3">明治8年発行 - 手彫最後の切手</p>
+                    <ul class="text-sm space-y-1">
+                        <li>• セキレイの図案</li>
+                        <li>• 12銭・15銭・45銭の3種</li>
+                        <li>• 外国郵便用高額面</li>
+                        <li>• 手彫切手の技術的頂点</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-yellow-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">収集のポイント</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>・版の違い（松田版・桑田版など）を研究</li>
+                    <li>・用紙の種類（和紙・洋紙）を確認</li>
+                    <li>・消印の種類と鮮明度</li>
+                    <li>・四辺の余白（マージン）の広さ</li>
+                    <li>・色調の違いによる分類</li>
+                </ul>
+            </div>
+            <div class="bg-red-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">真贋鑑定の重要性</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>・手彫切手は偽造が多い</li>
+                    <li>・専門家による鑑定が必須</li>
+                    <li>・日本郵趣協会の鑑定書を推奨</li>
+                    <li>・購入時は信頼できる店舗から</li>
+                    <li>・状態と真贋で価格が大きく変動</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                手彫切手は高額商品のため、詳細な画像確認や来店でのご確認も承っております。
+                鑑定書付きの商品を中心に取り扱っております。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'historical',
+            sub: 'tebori',
+            name: '手彫切手',
+            description: '明治4-8年に発行された日本最初の切手'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。入荷次第掲載いたします。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="tebori-badge absolute top-2 left-2 z-10">手彫切手</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        ${product.stampType ? `<p class="stamp-type text-sm mb-1">${product.stampType}</p>` : ''}
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        ${product.paperType ? `<p class="text-xs text-gray-600">用紙: ${product.paperType}</p>` : ''}
+                        ${product.plateType ? `<p class="text-xs text-gray-600">版: ${product.plateType}</p>` : ''}
+                        <p class="text-lg font-bold text-red-600 mt-2">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.certificateNumber ? `<p class="text-xs text-green-600 mt-1">鑑定書番号: ${product.certificateNumber}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

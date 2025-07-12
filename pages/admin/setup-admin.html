@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理者アカウント設定 | ワールドスタンプ広島</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full">
+            <h1 class="text-2xl font-bold mb-6">仮の管理者アカウント設定</h1>
+            
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+                <p class="font-bold">⚠️ 開発環境専用</p>
+                <p>このページは開発環境でのみ使用してください。本番環境では削除してください。</p>
+            </div>
+
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-2">仮の管理者アカウント情報：</h2>
+                <div class="bg-gray-100 p-4 rounded">
+                    <p><strong>メールアドレス:</strong> admin@test.com</p>
+                    <p><strong>パスワード:</strong> admin123</p>
+                </div>
+            </div>
+
+            <button onclick="setupAdmin()" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">
+                管理者アカウントを作成
+            </button>
+
+            <div id="status" class="mt-4"></div>
+
+            <div class="mt-6 pt-6 border-t">
+                <a href="admin-login.html" class="text-blue-500 hover:underline">管理者ログインページへ</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function setupAdmin() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<p class="text-blue-500">処理中...</p>';
+
+            try {
+                // 1. アカウントを作成
+                const email = 'admin@test.com';
+                const password = 'admin123';
+                
+                let uid;
+                
+                try {
+                    // 既存のユーザーでログインを試みる
+                    const result = await firebase.auth().signInWithEmailAndPassword(email, password);
+                    uid = result.user.uid;
+                    statusDiv.innerHTML += '<p class="text-green-500">✓ 既存のアカウントでログインしました</p>';
+                } catch (error) {
+                    if (error.code === 'auth/user-not-found') {
+                        // ユーザーが存在しない場合は作成
+                        const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                        uid = result.user.uid;
+                        statusDiv.innerHTML += '<p class="text-green-500">✓ アカウントを作成しました</p>';
+                    } else if (error.code === 'auth/wrong-password') {
+                        // パスワードが違う場合
+                        statusDiv.innerHTML = '<p class="text-red-500">エラー: このメールアドレスは既に別のパスワードで登録されています</p>';
+                        return;
+                    } else {
+                        throw error;
+                    }
+                }
+
+                // 2. 管理者権限を付与
+                await firebase.database().ref('admins/' + uid).set(true);
+                statusDiv.innerHTML += '<p class="text-green-500">✓ 管理者権限を付与しました</p>';
+
+                // 3. 完了メッセージ
+                statusDiv.innerHTML += `
+                    <div class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                        <p class="font-bold">✅ セットアップ完了！</p>
+                        <p>UID: ${uid}</p>
+                        <p class="mt-2">以下の情報でログインできます：</p>
+                        <ul class="list-disc ml-5">
+                            <li>メールアドレス: admin@test.com</li>
+                            <li>パスワード: admin123</li>
+                        </ul>
+                        <p class="mt-2"><a href="admin-login.html" class="underline">管理者ログインページ</a>からログインしてください。</p>
+                    </div>
+                `;
+
+                // ログアウト（セキュリティのため）
+                await firebase.auth().signOut();
+
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.innerHTML = `<p class="text-red-500">エラー: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

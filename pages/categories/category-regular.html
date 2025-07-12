@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="シニア世代にも使いやすい切手専門ショップ。初めての方も気軽にご相談ください" />
+        <title>ホーム | ワールドスタンプ広島</title>
+        <link rel="stylesheet" href="../../css/common.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+        <script src="../../js/firebase-config.js"></script>
+        <script src="../../js/unified-storage-manager.js"></script>
+        <link rel="stylesheet" href="../../css/style.css" />
+    </head>
+    <body>
+        <!-- ヘッダーコンテナ -->
+        <div id="header-container"></div>
+
+        <!-- スキップリンク -->
+        <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- サイドバー -->
+                <aside class="w-full md:w-[250px] flex-shrink-0">
+                    <!-- モバイル用カテゴリーボタン -->
+                    <button
+                        id="category-toggle"
+                        class="w-full md:hidden mb-4 flex items-center justify-between p-3 bg-gray-100 rounded-lg"
+                    >
+                        <span class="font-medium text-gray-700">商品カテゴリー</span>
+                        <svg
+                            class="w-5 h-5 text-gray-500 transition-transform"
+                            id="category-icon"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 9l-7 7-7-7"
+                            ></path>
+                        </svg>
+                    </button>
+
+                    <div id="category-content" class="hidden md:block bg-gray-100 rounded-lg p-4">
+                        <!-- カテゴリーリスト -->
+                        <div class="mb-6">
+                            <h2
+                                class="text-lg font-bold text-gray-700 mb-4 pb-2 border-b-2"
+                                style="border-color: #c41e3a"
+                            >
+                                すべての商品
+                            </h2>
+                            <nav>
+                                <ul class="space-y-0">
+                                    <!-- カテゴリーアイテムは動的に生成されます -->
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <!-- お知らせ -->
+                        <div class="bg-white rounded-lg p-4 border border-gray-200">
+                            <h3 class="font-medium text-gray-700 mb-3">お知らせ</h3>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start gap-2">
+                                    <span style="color: #c41e3a" class="mt-1">•</span>
+                                    <a href="../../about.html" class="text-gray-600 hover:text-[#C41E3A] underline">
+                                        年末年始の営業について
+                                    </a>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span style="color: #c41e3a" class="mt-1">•</span>
+                                    <a href="../../about.html" class="text-gray-600 hover:text-[#C41E3A] underline">
+                                        送料改定のお知らせ
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- メインコンテンツ -->
+                <main id="main-content" class="flex-1">
+                    <!-- コンテンツは動的に挿入されます -->
+                </main>
+            </div>
+        </div>
+
+        <!-- スクロールトップボタン -->
+        <button id="scroll-to-top" class="scroll-to-top" style="display: none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 10l7-7m0 0l7 7m-7-7v18"
+                ></path>
+            </svg>
+        </button>
+
+        <!-- 画像拡大モーダル -->
+        <div id="image-modal" class="image-modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeImageModal()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                        ></path>
+                    </svg>
+                </button>
+                <img id="modal-image" class="modal-image" src="" alt="" />
+                <div class="modal-info">
+                    <h3 id="modal-title" class="text-lg font-bold mb-2"></h3>
+                    <p id="modal-price" class="text-xl font-bold mb-2"></p>
+                    <p id="modal-category" class="text-sm text-gray-600"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- フッターコンテナ -->
+        <div id="footer-container"></div>
+
+        <!-- 必要なスクリプト -->
+        <script src="../../js/components.js"></script>
+    </body>
+</html>

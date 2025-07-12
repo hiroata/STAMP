@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>エラー・変種切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .error-badge {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">エラー・変種切手</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">エラー・変種切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                印刷ミスや製造過程での偶発的な変異により生じた、極めて希少価値の高い切手コレクションです。
+                エラー切手は本来市場に出回るはずのないものであり、その希少性から高額で取引されています。
+            </p>
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                <p class="text-sm text-yellow-800">
+                    <strong>ご注意：</strong>エラー切手は真贋の見極めが重要です。当店では専門鑑定士による鑑定書付きの商品を取り扱っております。
+                </p>
+            </div>
+        </div>
+
+        <!-- サブカテゴリー -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <a href="category-error-inverted.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <h3 class="font-bold text-lg mb-2 text-red-600">逆刷りエラー</h3>
+                <p class="text-sm text-gray-600">図案が上下逆さまに印刷された希少切手</p>
+            </a>
+            <a href="category-error-color.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <h3 class="font-bold text-lg mb-2 text-red-600">色違いエラー</h3>
+                <p class="text-sm text-gray-600">本来と異なる色で印刷された変種切手</p>
+            </a>
+            <a href="category-error-perforation.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <h3 class="font-bold text-lg mb-2 text-red-600">目打ちエラー</h3>
+                <p class="text-sm text-gray-600">目打ちのずれや欠落による変種</p>
+            </a>
+            <a href="category-error-variant.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <h3 class="font-bold text-lg mb-2 text-red-600">定常変種</h3>
+                <p class="text-sm text-gray-600">製造過程で一定確率で発生する変種</p>
+            </a>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文方法</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                エラー切手は特殊な商品のため、詳細な状態確認のご相談も承っております。
+                お気軽にお問い合わせください。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'error',
+            sub: null,
+            name: 'エラー・変種切手',
+            description: '印刷ミスや製造過程での偶発的な変異により生じた、極めて希少価値の高い切手コレクションです。'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="error-badge absolute top-2 left-2 z-10">エラー切手</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        <p class="text-lg font-bold text-red-600">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.rarity ? `<p class="text-xs text-gray-500 mt-1">希少度: ${product.rarity}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

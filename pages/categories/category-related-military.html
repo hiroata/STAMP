@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>軍事切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .military-badge {
+            background: linear-gradient(135deg, #616161 0%, #424242 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .military-type {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: #F5F5F5;
+            border: 1px solid #757575;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #424242;
+        }
+        .historical-note {
+            background-color: #FFF8E1;
+            border-left: 3px solid #FFA000;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #6D4C41;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <a href="category-related.html" class="text-gray-600 hover:text-gray-800">切手関連品</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">軍事切手</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">軍事切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                軍事切手は、明治33年（1900年）から昭和20年（1945年）まで、
+                軍人・軍属の私信用として発行された特殊な切手です。
+                通常の切手とは異なり、額面表示がなく「軍事」の文字が記されているのが特徴です。
+                戦争の歴史を物語る貴重な資料として、また郵便史の重要な一部として収集されています。
+            </p>
+            <div class="historical-note">
+                <strong>歴史的背景：</strong>
+                軍事郵便制度は、出征軍人の士気維持と家族との連絡手段として重要な役割を果たしました。
+                これらの切手は、当時の社会情勢や戦争の実態を今に伝える歴史的証人です。
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">軍事切手の種類と特徴</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-gray-700 mb-3">正規軍事切手</h4>
+                    <ul class="text-sm space-y-2">
+                        <li><strong>菊型軍事切手（明治33年）</strong>
+                            <p class="text-xs text-gray-600 ml-4">最初の軍事切手、菊花紋章入り</p>
+                        </li>
+                        <li><strong>桜型軍事切手（明治43年）</strong>
+                            <p class="text-xs text-gray-600 ml-4">桜花図案、最も一般的</p>
+                        </li>
+                        <li><strong>大正白紙軍事切手（大正3年）</strong>
+                            <p class="text-xs text-gray-600 ml-4">シンプルなデザイン</p>
+                        </li>
+                        <li><strong>昭和軍事切手（昭和12年）</strong>
+                            <p class="text-xs text-gray-600 ml-4">戦時色の強いデザイン</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-gray-700 mb-3">特殊軍事切手</h4>
+                    <ul class="text-sm space-y-2">
+                        <li><strong>青島軍事切手</strong>
+                            <p class="text-xs text-gray-600 ml-4">第一次大戦時、青島占領記念</p>
+                        </li>
+                        <li><strong>支那事変軍事切手</strong>
+                            <p class="text-xs text-gray-600 ml-4">日中戦争時の特別発行</p>
+                        </li>
+                        <li><strong>大東亜戦争軍事切手</strong>
+                            <p class="text-xs text-gray-600 ml-4">太平洋戦争期、各種変種あり</p>
+                        </li>
+                        <li><strong>占領地軍事切手</strong>
+                            <p class="text-xs text-gray-600 ml-4">各占領地で発行、極めて希少</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">軍事郵便の仕組みと使用法</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white rounded p-4">
+                    <h4 class="font-bold text-gray-700 mb-2">使用資格</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 現役軍人・軍属</li>
+                        <li>• 出征兵士</li>
+                        <li>• 軍事施設勤務者</li>
+                        <li>• 一部の軍関係者家族</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded p-4">
+                    <h4 class="font-bold text-gray-700 mb-2">使用制限</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 私信のみ使用可</li>
+                        <li>• 検閲制度あり</li>
+                        <li>• 重量制限あり</li>
+                        <li>• 内地⇔戦地間限定</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded p-4">
+                    <h4 class="font-bold text-gray-700 mb-2">消印の特徴</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 野戦局印</li>
+                        <li>• 兵站局印</li>
+                        <li>• 軍事郵便所印</li>
+                        <li>• 検閲済印</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">収集価値の高い軍事切手</h3>
+            <div class="space-y-3">
+                <div class="border-b pb-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold">菊型軍事切手（明治33年）</h4>
+                            <p class="text-sm text-gray-600">日本初の軍事切手、発行枚数少</p>
+                        </div>
+                        <span class="text-red-600 font-bold">極希少</span>
+                    </div>
+                </div>
+                <div class="border-b pb-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold">青島占領記念軍事切手</h4>
+                            <p class="text-sm text-gray-600">第一次大戦の歴史的資料</p>
+                        </div>
+                        <span class="text-red-600 font-bold">希少</span>
+                    </div>
+                </div>
+                <div class="border-b pb-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold">軍事切手付き実逓封筒</h4>
+                            <p class="text-sm text-gray-600">検閲印・部隊印付きは特に貴重</p>
+                        </div>
+                        <span class="text-orange-600 font-bold">人気</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold">終戦直前の軍事切手</h4>
+                            <p class="text-sm text-gray-600">昭和20年発行、使用期間極短</p>
+                        </div>
+                        <span class="text-red-600 font-bold">極希少</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">収集の意義と注意点</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>• 歴史的資料としての保存価値</li>
+                    <li>• 戦争体験を伝える貴重な証言</li>
+                    <li>• 郵便史研究の重要資料</li>
+                    <li>• 平和の尊さを考える教材</li>
+                    <li>• 取扱いは歴史的敬意を持って</li>
+                </ul>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">真贋鑑定のポイント</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>• 用紙の質感と時代的特徴</li>
+                    <li>• 印刷方式の確認</li>
+                    <li>• 消印の真正性検証</li>
+                    <li>• 偽造品・複製品に注意</li>
+                    <li>• 専門家の鑑定を推奨</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                軍事切手は歴史的資料として貴重です。状態や希少性により価値が大きく異なりますので、
+                詳細はお問い合わせください。関連する軍事郵便資料も取り扱っております。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'related',
+            sub: 'military',
+            name: '軍事切手',
+            description: '戦時中の軍事郵便用切手'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。入荷次第掲載いたします。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="military-badge absolute top-2 left-2 z-10">軍事切手</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        ${product.militaryType ? `<span class="military-type mb-2">${product.militaryType}</span>` : ''}
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        ${product.era ? `<p class="text-xs text-gray-600">時代: ${product.era}</p>` : ''}
+                        ${product.postmark ? `<p class="text-xs text-gray-600">消印: ${product.postmark}</p>` : ''}
+                        ${product.isUsed ? `<p class="text-xs text-orange-600">使用済（実逓）</p>` : ''}
+                        <p class="text-lg font-bold text-red-600 mt-2">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.historicalNote ? `<p class="text-xs text-gray-500 mt-1">${product.historicalNote}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

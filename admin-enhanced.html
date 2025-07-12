@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>高度な商品管理 | 切手販売ショップ</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            // Tailwind CDN警告を抑制（開発環境用）
+            if (typeof tailwind !== 'undefined') {
+                tailwind.config = {
+                    corePlugins: {
+                        preflight: true,
+                    }
+                }
+            }
+        </script>
+        <style>
+            body {
+                font-family:
+                    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            }
+            .preview-image {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+            /* ドラッグオーバー時のスタイル */
+            #drop-zone.drag-over {
+                border-color: #3b82f6;
+                background-color: #dbeafe;
+                transform: scale(1.02);
+            }
+            /* ドロップゾーンのホバー効果 */
+            #drop-zone:hover {
+                border-color: #6b7280;
+                background-color: #f9fafb;
+            }
+            /* 仮想スクロール用のスタイル */
+            .virtual-scroll-container {
+                height: 600px;
+                overflow-y: auto;
+                position: relative;
+            }
+            .virtual-scroll-content {
+                position: relative;
+            }
+            .product-item {
+                position: absolute;
+                width: 100%;
+            }
+        </style>
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+        <script src="/firebase-config.js"></script>
+        <script src="/js/auth-manager.js"></script>
+        <script src="/js/unified-storage.js"></script>
+        <script src="/js/paginated-storage.js"></script>
+        <script src="/js/image-uploader.js"></script>
+    </head>
+    <body class="bg-gray-100">
+        <script>
+            // AuthManagerインスタンス
+            let authManager;
+
+            // アクセス制御と初期化
+            window.addEventListener('DOMContentLoaded', async () => {
+                authManager = new AuthManager();
+
+                // 認証チェック
+                const isAuthenticated = await authManager.requireAuth();
+                if (!isAuthenticated) {
+                    return; // 認証されていない場合は自動的にリダイレクトされる
+                }
+
+                // 既存の初期化処理を実行
+                if (typeof initializeApp === 'function') {
+                    initializeApp();
+                }
+            });
+
+            // ログアウト機能
+            async function logout() {
+                if (authManager) {
+                    await authManager.logout();
+                }
+                window.location.href = 'admin-login.html';
+            }
+        </script>
+        <div class="container mx-auto px-4 py-8 max-w-7xl">
+            <!-- ナビゲーション -->
+            <div class="flex justify-between items-center mb-4">
+                <a href="index.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                    ← トップページに戻る
+                </a>
+                <div class="flex gap-4">
+                    <a href="admin.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        シンプル管理画面
+                    </a>
+                    <button onclick="logout()" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        ログアウト
+                    </button>
+                </div>
+            </div>
+            <!-- タブナビゲーション -->
+            <div class="bg-white rounded-t-lg shadow-md mb-0">
+                <nav class="flex border-b">
+                    <a href="admin.html" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">
+                        商品登録
+                    </a>
+                    <a href="admin-categories.html" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">
+                        カテゴリー管理
+                    </a>
+                    <span class="px-6 py-3 text-[#C41E3A] font-semibold border-b-2 border-[#C41E3A]">
+                        高度な管理
+                    </span>
+                </nav>
+            </div>
+            
+            <div class="bg-white rounded-b-lg shadow-lg p-6 mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">高度な商品管理システム</h1>
+            </div>
+
+            <!-- 統計情報ダッシュボード -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4">統計情報</h2>
+                <div id="statistics" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- 統計情報がここに表示されます -->
+                </div>
+            </div>
+
+            <!-- 検索・フィルター機能（拡張版） -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <input
+                            type="text"
+                            id="searchBox"
+                            placeholder="商品名・SKU・説明で検索"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
+                    <div>
+                        <select id="filterCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">すべてのカテゴリー</option>
+                            <option value="普通切手">普通切手</option>
+                            <option value="記念切手">記念切手</option>
+                            <option value="特殊切手">特殊切手</option>
+                            <option value="エラー・変種切手">エラー・変種切手</option>
+                            <option value="歴史的切手">歴史的切手</option>
+                            <option value="切手関連品">切手関連品</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="filterStatus" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">すべての状態</option>
+                            <option value="active">販売中</option>
+                            <option value="soldout">SOLD OUT</option>
+                            <option value="outofstock">在庫切れ</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <button
+                            onclick="applyFilters()"
+                            class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                        >
+                            検索
+                        </button>
+                        <button
+                            onclick="resetFilters()"
+                            class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                        >
+                            リセット
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <div class="flex gap-4 items-center">
+                        <label class="text-sm text-gray-600">表示件数:</label>
+                        <select id="pageSizeSelect" class="px-3 py-1 border border-gray-300 rounded-md" onchange="changePageSize()">
+                            <option value="20">20件</option>
+                            <option value="50" selected>50件</option>
+                            <option value="100">100件</option>
+                            <option value="200">200件</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        <label class="text-sm text-gray-600">並び順:</label>
+                        <select id="sortSelect" class="px-3 py-1 border border-gray-300 rounded-md" onchange="changeSorting()">
+                            <option value="created_at:desc">登録日（新しい順）</option>
+                            <option value="created_at:asc">登録日（古い順）</option>
+                            <option value="title:asc">商品名（昇順）</option>
+                            <option value="title:desc">商品名（降順）</option>
+                            <option value="price:desc">価格（高い順）</option>
+                            <option value="price:asc">価格（安い順）</option>
+                            <option value="sku:asc">SKU（昇順）</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- バルク操作ツール -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                <h3 class="text-lg font-semibold mb-3">バルク操作</h3>
+                <div class="flex gap-4">
+                    <button
+                        onclick="showImportDialog()"
+                        class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                    >
+                        CSVインポート
+                    </button>
+                    <button
+                        onclick="exportProducts()"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                    >
+                        CSVエクスポート
+                    </button>
+                    <button
+                        onclick="showBulkEditDialog()"
+                        class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+                    >
+                        一括編集
+                    </button>
+                </div>
+            </div>
+
+            <!-- 商品登録フォーム（折りたたみ可能） -->
+            <div class="bg-white rounded-lg shadow-lg mb-8">
+                <div class="p-4 md:p-6 border-b cursor-pointer" onclick="toggleProductForm()">
+                    <h2 class="text-xl font-semibold flex items-center justify-between">
+                        <span>新規商品登録</span>
+                        <svg id="form-toggle-icon" class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </h2>
+                </div>
+                <div id="product-form-container" class="p-4 md:p-8 hidden">
+                    <!-- 既存のフォーム内容をここに含める -->
+                    <form id="product-form">
+                        <!-- フォーム内容は元のadmin.htmlと同じ -->
+                    </form>
+                </div>
+            </div>
+
+            <!-- 登録済み商品一覧（ページネーション対応） -->
+            <div class="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">登録済み商品一覧</h2>
+                    <div id="product-count" class="text-sm text-gray-600"></div>
+                </div>
+                
+                <!-- ページネーション（上部） -->
+                <div id="pagination-top" class="mb-4"></div>
+                
+                <!-- 商品リスト -->
+                <div id="products-list" class="space-y-4 min-h-[400px]">
+                    <!-- 商品リストがここに表示されます -->
+                </div>
+                
+                <!-- ページネーション（下部） -->
+                <div id="pagination-bottom" class="mt-4"></div>
+            </div>
+        </div>
+
+        <!-- インポートダイアログ -->
+        <div id="import-dialog" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-lg max-w-2xl w-full p-6">
+                    <h3 class="text-xl font-semibold mb-4">CSVインポート</h3>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-600 mb-2">CSVファイルをアップロードして商品を一括登録できます。</p>
+                        <p class="text-xs text-gray-500">必須列: title, price | オプション列: sku, category, description, stock, negotiable</p>
+                    </div>
+                    <input type="file" id="csv-file" accept=".csv" class="mb-4">
+                    <div class="flex justify-end gap-2">
+                        <button onclick="closeImportDialog()" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                            キャンセル
+                        </button>
+                        <button onclick="importCSV()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                            インポート
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // ページネーション対応ストレージマネージャー
+            let storageManager;
+            let imageUploader;
+            let editingProductId = null;
+            let formVisible = false;
+
+            // 初期化
+            window.addEventListener('DOMContentLoaded', () => {
+                try {
+                    storageManager = new PaginatedStorageManager();
+                    imageUploader = new ImageUploader();
+                    
+                    // データ変更を監視
+                    storageManager.onDataChange((products) => {
+                        updateStatistics();
+                        displayProducts();
+                    });
+
+                    // 検索ボックスのリアルタイム検索
+                    document.getElementById('searchBox').addEventListener('input', debounce(() => {
+                        applyFilters();
+                    }, 300));
+
+                } catch (error) {
+                    console.error('Initialization error:', error);
+                    alert('初期化エラー: ' + error.message);
+                }
+            });
+
+            // デバウンス関数
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // 統計情報を更新
+            function updateStatistics() {
+                const stats = storageManager.getStatistics();
+                const statsElement = document.getElementById('statistics');
+                
+                statsElement.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600">${stats.total.toLocaleString()}</div>
+                        <div class="text-sm text-gray-600">総商品数</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600">${stats.active.toLocaleString()}</div>
+                        <div class="text-sm text-gray-600">販売中</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-red-600">${stats.soldOut.toLocaleString()}</div>
+                        <div class="text-sm text-gray-600">売り切れ</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gray-600">¥${stats.averagePrice.toLocaleString()}</div>
+                        <div class="text-sm text-gray-600">平均価格</div>
+                    </div>
+                `;
+            }
+
+            // フィルターを適用
+            function applyFilters() {
+                const filters = {
+                    search: document.getElementById('searchBox').value,
+                    category: document.getElementById('filterCategory').value,
+                    status: document.getElementById('filterStatus').value
+                };
+                
+                storageManager.setFilters(filters);
+                storageManager.goToPage(1); // 最初のページに戻る
+                displayProducts();
+            }
+
+            // フィルターをリセット
+            function resetFilters() {
+                document.getElementById('searchBox').value = '';
+                document.getElementById('filterCategory').value = '';
+                document.getElementById('filterStatus').value = '';
+                applyFilters();
+            }
+
+            // ページサイズを変更
+            function changePageSize() {
+                const pageSize = parseInt(document.getElementById('pageSizeSelect').value);
+                storageManager.setPageSize(pageSize);
+                displayProducts();
+            }
+
+            // ソート順を変更
+            function changeSorting() {
+                const sortValue = document.getElementById('sortSelect').value;
+                const [sortBy, sortOrder] = sortValue.split(':');
+                storageManager.setSorting(sortBy, sortOrder);
+                displayProducts();
+            }
+
+            // 商品を表示
+            function displayProducts() {
+                const result = storageManager.getPaginatedProducts();
+                const listElement = document.getElementById('products-list');
+                const countElement = document.getElementById('product-count');
+                
+                // 商品数を表示
+                countElement.textContent = `${result.totalProducts.toLocaleString()}件中 ${((result.currentPage - 1) * result.pageSize + 1).toLocaleString()}-${Math.min(result.currentPage * result.pageSize, result.totalProducts).toLocaleString()}件を表示`;
+
+                if (result.products.length === 0) {
+                    listElement.innerHTML = '<p class="text-gray-500 text-center py-8">該当する商品はありません</p>';
+                    updatePagination(result);
+                    return;
+                }
+
+                // 商品リストを表示
+                listElement.innerHTML = result.products.map(product => `
+                    <div class="border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row items-start gap-4 hover:shadow-md transition-shadow ${product.soldOut ? 'bg-gray-50' : ''}">
+                        <div class="relative">
+                            <img src="${product.imageUrl}" alt="${product.title}" class="w-full md:w-20 h-32 md:h-20 object-cover rounded-lg ${product.soldOut ? 'opacity-60' : ''}">
+                            ${product.soldOut ? '<div class="absolute inset-0 flex items-center justify-center"><span class="bg-red-600 text-white text-xs px-2 py-1 rounded font-bold">SOLD OUT</span></div>' : ''}
+                        </div>
+                        <div class="flex-1 w-full">
+                            <div class="flex items-start gap-2">
+                                <h3 class="font-semibold text-lg ${product.soldOut ? 'text-gray-500' : ''}">${product.title}</h3>
+                                ${product.soldOut ? '<span class="text-xs bg-red-600 text-white px-2 py-1 rounded">SOLD OUT</span>' : ''}
+                            </div>
+                            <p class="text-xs text-gray-500 mb-1">SKU: ${product.sku || '未設定'} | 登録日: ${product.created_at ? new Date(product.created_at).toLocaleDateString() : '不明'}</p>
+                            <p class="text-lg font-bold ${product.negotiable ? 'text-blue-600' : 'text-red-600'} mb-1">
+                                ${product.priceText || (product.price ? `¥${product.price.toLocaleString()}` : '価格未設定')}
+                            </p>
+                            <p class="text-sm text-gray-600">
+                                カテゴリー: ${product.category || '未分類'} |
+                                在庫: ${product.stock || 0}
+                                ${product.isNew && !product.soldOut ? '<span class="ml-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
+                            </p>
+                            ${product.description ? `<p class="text-sm text-gray-500 mt-2 line-clamp-2">${product.description}</p>` : ''}
+                        </div>
+                        <div class="flex gap-2 self-end md:self-start">
+                            <button onclick="editProduct('${product.id}')" class="text-blue-600 hover:text-blue-800 font-medium">
+                                編集
+                            </button>
+                            <button onclick="duplicateProduct('${product.id}')" class="text-green-600 hover:text-green-800 font-medium">
+                                複製
+                            </button>
+                            <button onclick="deleteProduct('${product.id}')" class="text-red-600 hover:text-red-800 font-medium">
+                                削除
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                // ページネーションを更新
+                updatePagination(result);
+            }
+
+            // ページネーションを更新
+            function updatePagination(result) {
+                const paginationHtml = createPaginationHtml(result);
+                document.getElementById('pagination-top').innerHTML = paginationHtml;
+                document.getElementById('pagination-bottom').innerHTML = paginationHtml;
+            }
+
+            // ページネーションHTMLを生成
+            function createPaginationHtml(result) {
+                if (result.totalPages <= 1) return '';
+
+                let html = '<div class="flex items-center justify-center gap-2">';
+                
+                // 前へボタン
+                html += `<button onclick="goToPage(${result.currentPage - 1})" ${!result.hasPrevPage ? 'disabled' : ''} class="px-3 py-1 border rounded-md ${result.hasPrevPage ? 'hover:bg-gray-100' : 'opacity-50 cursor-not-allowed'}">前へ</button>`;
+                
+                // ページ番号
+                const maxButtons = 7;
+                let startPage = Math.max(1, result.currentPage - Math.floor(maxButtons / 2));
+                let endPage = Math.min(result.totalPages, startPage + maxButtons - 1);
+                
+                if (endPage - startPage < maxButtons - 1) {
+                    startPage = Math.max(1, endPage - maxButtons + 1);
+                }
+
+                if (startPage > 1) {
+                    html += `<button onclick="goToPage(1)" class="px-3 py-1 border rounded-md hover:bg-gray-100">1</button>`;
+                    if (startPage > 2) html += '<span class="px-2">...</span>';
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    html += `<button onclick="goToPage(${i})" class="px-3 py-1 border rounded-md ${i === result.currentPage ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}">${i}</button>`;
+                }
+
+                if (endPage < result.totalPages) {
+                    if (endPage < result.totalPages - 1) html += '<span class="px-2">...</span>';
+                    html += `<button onclick="goToPage(${result.totalPages})" class="px-3 py-1 border rounded-md hover:bg-gray-100">${result.totalPages}</button>`;
+                }
+                
+                // 次へボタン
+                html += `<button onclick="goToPage(${result.currentPage + 1})" ${!result.hasNextPage ? 'disabled' : ''} class="px-3 py-1 border rounded-md ${result.hasNextPage ? 'hover:bg-gray-100' : 'opacity-50 cursor-not-allowed'}">次へ</button>`;
+                
+                html += '</div>';
+                return html;
+            }
+
+            // ページ移動
+            function goToPage(page) {
+                if (storageManager.goToPage(page)) {
+                    displayProducts();
+                    // ページ上部にスクロール
+                    document.getElementById('products-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            // 商品フォームの表示/非表示
+            function toggleProductForm() {
+                formVisible = !formVisible;
+                const container = document.getElementById('product-form-container');
+                const icon = document.getElementById('form-toggle-icon');
+                
+                if (formVisible) {
+                    container.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                } else {
+                    container.classList.add('hidden');
+                    icon.classList.remove('rotate-180');
+                }
+            }
+
+            // CSVエクスポート
+            function exportProducts() {
+                const products = storageManager.getFilteredProducts();
+                
+                // CSVヘッダー
+                const headers = ['SKU', '商品名', '価格', 'カテゴリー', '説明', '在庫数', '状態', '登録日'];
+                const csvContent = [
+                    headers.join(','),
+                    ...products.map(p => [
+                        p.sku || '',
+                        `"${(p.title || '').replace(/"/g, '""')}"`,
+                        p.price || '',
+                        `"${(p.category || '').replace(/"/g, '""')}"`,
+                        `"${(p.description || '').replace(/"/g, '""')}"`,
+                        p.stock || 0,
+                        p.status || '',
+                        p.created_at || ''
+                    ].join(','))
+                ].join('\n');
+
+                // BOMを追加（Excel対応）
+                const bom = '\uFEFF';
+                const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', `stamp_products_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // インポートダイアログを表示
+            function showImportDialog() {
+                document.getElementById('import-dialog').classList.remove('hidden');
+            }
+
+            // インポートダイアログを閉じる
+            function closeImportDialog() {
+                document.getElementById('import-dialog').classList.add('hidden');
+                document.getElementById('csv-file').value = '';
+            }
+
+            // CSVインポート
+            async function importCSV() {
+                const fileInput = document.getElementById('csv-file');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    alert('CSVファイルを選択してください');
+                    return;
+                }
+
+                try {
+                    const text = await file.text();
+                    const lines = text.split('\n').filter(line => line.trim());
+                    const headers = lines[0].split(',').map(h => h.trim());
+                    
+                    const products = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        const values = parseCSVLine(lines[i]);
+                        const product = {
+                            sku: values[headers.indexOf('SKU')] || generateSKU(),
+                            title: values[headers.indexOf('商品名')] || values[headers.indexOf('title')] || '',
+                            price: parseInt(values[headers.indexOf('価格')] || values[headers.indexOf('price')]) || null,
+                            category: values[headers.indexOf('カテゴリー')] || values[headers.indexOf('category')] || '',
+                            description: values[headers.indexOf('説明')] || values[headers.indexOf('description')] || '',
+                            stock: parseInt(values[headers.indexOf('在庫数')] || values[headers.indexOf('stock')]) || 1,
+                            negotiable: values[headers.indexOf('negotiable')] === 'true',
+                            status: 'active',
+                            isNew: true,
+                            imageUrl: '/images/products/placeholder.jpg'
+                        };
+                        
+                        if (product.title) {
+                            products.push(product);
+                        }
+                    }
+
+                    if (products.length === 0) {
+                        alert('インポートする商品が見つかりませんでした');
+                        return;
+                    }
+
+                    // バルクインポート
+                    await storageManager.addProductsBulk(products);
+                    alert(`${products.length}件の商品をインポートしました`);
+                    closeImportDialog();
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    alert('インポートエラー: ' + error.message);
+                }
+            }
+
+            // CSV行をパース
+            function parseCSVLine(line) {
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    
+                    if (char === '"') {
+                        if (inQuotes && line[i + 1] === '"') {
+                            current += '"';
+                            i++;
+                        } else {
+                            inQuotes = !inQuotes;
+                        }
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                
+                values.push(current.trim());
+                return values;
+            }
+
+            // SKU生成関数
+            function generateSKU() {
+                const date = new Date();
+                const year = date.getFullYear().toString().slice(-2);
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+                return `ST-${year}${month}${day}-${random}`;
+            }
+
+            // 商品を複製
+            async function duplicateProduct(id) {
+                const products = storageManager.getProducts();
+                const product = products.find(p => p.id === id);
+                if (!product) return;
+
+                const newProduct = {
+                    ...product,
+                    id: undefined,
+                    sku: generateSKU(),
+                    title: product.title + ' (コピー)',
+                    created_at: new Date().toISOString()
+                };
+
+                delete newProduct.id;
+
+                try {
+                    await storageManager.addProduct(newProduct);
+                    alert('商品を複製しました');
+                } catch (error) {
+                    console.error('Duplicate error:', error);
+                    alert('複製に失敗しました');
+                }
+            }
+
+            // 商品を削除
+            async function deleteProduct(id) {
+                if (confirm('この商品を削除しますか？')) {
+                    try {
+                        const products = storageManager.getProducts();
+                        const product = products.find(p => p.id === id);
+
+                        // Firebase Storageから画像を削除
+                        if (product && product.imageUrl && product.imageUrl !== '/images/products/placeholder.jpg' && imageUploader) {
+                            await imageUploader.deleteImage(product.imageUrl);
+                        }
+
+                        // データベースから商品を削除
+                        await storageManager.deleteProduct(id);
+                        alert('商品を削除しました');
+                    } catch (error) {
+                        console.error('Delete error:', error);
+                        alert('削除に失敗しました');
+                    }
+                }
+            }
+
+            // 商品を編集（フォーム表示が必要な場合は元のadmin.htmlにリダイレクト）
+            function editProduct(id) {
+                // 編集は元のadmin.htmlで行う
+                window.location.href = `admin.html#edit-${id}`;
+            }
+        </script>
+
+        <footer class="bg-gray-100 mt-12">
+            <div class="container mx-auto px-4 py-8">
+                <div class="bg-gray-800 text-white py-4 rounded-lg">
+                    <div class="text-center">
+                        <p class="text-sm">© 2024 ワールドスタンプ広島 All Rights Reserved.</p>
+                        <p class="text-xs mt-2">
+                            <a href="admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

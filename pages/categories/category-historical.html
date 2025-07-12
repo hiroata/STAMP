@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>歴史的切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .historical-badge {
+            background: linear-gradient(135deg, #8B4513 0%, #654321 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .era-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: #F5F5DC;
+            border: 1px solid #D2691E;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #8B4513;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">歴史的切手</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">歴史的切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                明治4年（1871年）の竜切手から始まる日本切手の歴史。
+                手彫りから機械印刷への変遷、戦前・戦後の激動期を経て現代に至るまで、
+                各時代を代表する切手は日本の近代化の歩みを物語る貴重な文化遺産です。
+            </p>
+            <div class="bg-amber-50 border-l-4 border-amber-600 p-4">
+                <p class="text-sm text-amber-800">
+                    <strong>収集の魅力：</strong>歴史的切手は単なる郵便料金の証票を超え、
+                    当時の技術水準、社会情勢、美意識を反映した芸術作品として高く評価されています。
+                </p>
+            </div>
+        </div>
+
+        <!-- 時代別サブカテゴリー -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <a href="category-historical-tebori.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-2">
+                    <span class="era-tag">明治4-8年</span>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-amber-800">手彫切手</h3>
+                <p class="text-sm text-gray-600">日本最初の切手。職人による手彫り銅版で製造された希少品</p>
+            </a>
+            <a href="category-historical-koban.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-2">
+                    <span class="era-tag">明治9-32年</span>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-amber-800">小判切手</h3>
+                <p class="text-sm text-gray-600">機械製版による最初の切手。旧小判・新小判の2種類</p>
+            </a>
+            <a href="category-historical-kiku.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-2">
+                    <span class="era-tag">明治32-大正2年</span>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-amber-800">菊切手</h3>
+                <p class="text-sm text-gray-600">菊花紋章を中心に配した格調高いデザイン</p>
+            </a>
+            <a href="category-historical-tazawa.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-2">
+                    <span class="era-tag">大正2-昭和12年</span>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-amber-800">田沢切手</h3>
+                <p class="text-sm text-gray-600">田沢昌言によるデザイン。大正・昭和初期の代表的切手</p>
+            </a>
+            <a href="category-historical.html" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-2">
+                    <span class="era-tag">その他</span>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-amber-800">震災・風景・産業図案</h3>
+                <p class="text-sm text-gray-600">関東大震災時の暫定切手や昭和初期の各種シリーズ</p>
+            </a>
+        </div>
+
+        <!-- 歴史年表 -->
+        <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">日本切手の歴史年表</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <tr class="border-b">
+                        <td class="py-2 font-bold">明治4年（1871）</td>
+                        <td>竜切手発行 - 日本最初の切手</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 font-bold">明治5年（1872）</td>
+                        <td>竜銭切手・桜切手発行</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 font-bold">明治9年（1876）</td>
+                        <td>小判切手発行 - 機械製版開始</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 font-bold">明治32年（1899）</td>
+                        <td>菊切手発行</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 font-bold">大正2年（1913）</td>
+                        <td>田沢切手発行</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 font-bold">大正12年（1923）</td>
+                        <td>震災切手発行</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 font-bold">昭和12年（1937）</td>
+                        <td>新昭和切手発行</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                歴史的切手は状態により価値が大きく異なります。
+                詳細な状態確認やご相談も承っております。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'historical',
+            sub: null,
+            name: '歴史的切手',
+            description: '明治から昭和初期にかけての日本切手の歴史的コレクション'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="historical-badge absolute top-2 left-2 z-10">歴史的切手</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        ${product.era ? `<span class="era-tag mb-2">${product.era}</span>` : ''}
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        <p class="text-lg font-bold text-red-600">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.condition ? `<p class="text-xs text-gray-500 mt-1">状態: ${product.condition}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

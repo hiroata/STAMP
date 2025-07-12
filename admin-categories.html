@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>カテゴリー管理 | 切手販売ショップ</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            // Tailwind CDN警告を抑制（開発環境用）
+            if (typeof tailwind !== 'undefined') {
+                tailwind.config = {
+                    corePlugins: {
+                        preflight: true,
+                    }
+                }
+            }
+        </script>
+        <style>
+            body {
+                font-family:
+                    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            }
+            .sortable-item {
+                cursor: move;
+            }
+            .sortable-item.dragging {
+                opacity: 0.5;
+            }
+            .drop-indicator {
+                height: 2px;
+                background-color: #3b82f6;
+                margin: 4px 0;
+            }
+        </style>
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <script src="/firebase-config.js"></script>
+        <script src="/js/auth-manager.js"></script>
+    </head>
+    <body class="bg-gray-100">
+        <script>
+            // AuthManagerインスタンス
+            let authManager;
+
+            // アクセス制御と初期化
+            window.addEventListener('DOMContentLoaded', async () => {
+                authManager = new AuthManager();
+
+                // 認証チェック
+                const isAuthenticated = await authManager.requireAuth();
+                if (!isAuthenticated) {
+                    return; // 認証されていない場合は自動的にリダイレクトされる
+                }
+
+                // カテゴリー管理の初期化
+                initializeCategoryManager();
+            });
+
+            // ログアウト機能
+            async function logout() {
+                if (authManager) {
+                    await authManager.logout();
+                }
+                window.location.href = 'admin-login.html';
+            }
+        </script>
+        <div class="container mx-auto px-4 py-8 max-w-6xl">
+            <!-- ナビゲーション -->
+            <div class="flex justify-between items-center mb-4">
+                <a href="index.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                    ← トップページに戻る
+                </a>
+                <div class="flex gap-4">
+                    <a href="admin.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        商品管理
+                    </a>
+                    <a href="admin-enhanced.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        高度な管理
+                    </a>
+                    <button onclick="logout()" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        ログアウト
+                    </button>
+                </div>
+            </div>
+
+            <!-- タブナビゲーション -->
+            <div class="bg-white rounded-t-lg shadow-md">
+                <nav class="flex border-b">
+                    <a href="admin.html" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">
+                        商品登録
+                    </a>
+                    <a href="admin-categories.html" class="px-6 py-3 text-[#C41E3A] font-semibold border-b-2 border-[#C41E3A]">
+                        カテゴリー管理
+                    </a>
+                </nav>
+            </div>
+
+            <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">カテゴリー管理</h1>
+
+                <!-- 説明 -->
+                <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                    <p class="text-sm text-blue-800">
+                        カテゴリーの追加、編集、削除、並び替えができます。
+                        サブカテゴリーはドラッグ&ドロップで順序を変更できます。
+                    </p>
+                </div>
+
+                <!-- カテゴリー追加フォーム -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                    <h2 class="text-lg font-semibold mb-4">新しいカテゴリーを追加</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">大カテゴリー名</label>
+                            <input
+                                type="text"
+                                id="newMainCategory"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                placeholder="例：限定切手"
+                            />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">サブカテゴリー名（任意）</label>
+                            <input
+                                type="text"
+                                id="newSubCategory"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                placeholder="例：地方限定"
+                            />
+                        </div>
+                        <div class="flex items-end">
+                            <button
+                                onclick="addCategory()"
+                                class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                            >
+                                追加
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- カテゴリー一覧 -->
+                <div id="categories-container" class="space-y-4">
+                    <!-- カテゴリーがここに表示されます -->
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // カテゴリーデータ
+            let categoryData = {
+                "普通切手": ["明治普通切手", "手彫切手", "竜文切手", "桜切手", "菊切手", "コイル切手"],
+                "航空切手": ["球部航空", "大正航空", "昭和航空（戦前）", "五銭位航空", "円位航空", "銅版航空", "立山航空"],
+                "記念切手": ["明治記念", "大正記念", "昭和戦前記念", "昭和戦後記念", "平成記念", "令和記念", "小型シート", "文化人シリーズ", "国体シリーズ", "オリンピック関連"],
+                "特殊切手": ["グリーティング切手", "シール式切手", "フレーム切手", "慶弔切手", "弔筒切手", "夏のおたより", "美術切手", "アニメ・ヒーロー"],
+                "公園切手": ["第1次国立公園", "第2次国立公園", "国定公園", "富士箱根", "日光", "吉野熊野", "阿蘇", "大山瑠璃"],
+                "年賀切手": ["昭和10年以前", "昭和11-20年", "昭和21-30年", "昭和31-40年", "昭和41-50年", "昭和51-64年", "平成年賀", "令和年賀", "お年玉小型シート"],
+                "ふるさと切手": ["北海道・東北", "関東・信越", "東海・北陸", "近畿", "中国・四国", "九州・沖縄", "花シリーズ", "風景シリーズ"],
+                "沖縄切手": ["米国統治時代", "琉球政府", "暫定切手", "航空切手", "速達切手", "収入印紙"],
+                "限定販売品": ["プレミアム切手", "特別販売品", "郵便局限定", "オリジナルフレーム", "年賀パック", "フォルムカード"],
+                "外国切手": ["アメリカ", "イギリス", "フランス", "ドイツ", "中国", "韓国", "カナダ", "オーストラリア", "その他の国"],
+                "テーマ別切手": ["動物切手", "花・植物切手", "鉄道切手", "芸術・美術切手", "スポーツ切手", "宇宙切手", "船舶切手"],
+                "エラー・変種切手": ["逆刷りエラー", "色違いエラー", "目打ちエラー", "印刷ズレ", "定常変種"],
+                "歴史的切手": ["手彫切手", "小判切手", "菊切手", "田沢切手", "震災切手"],
+                "切手関連品": ["初日カバー", "官製はがき", "収入印紙", "軍事切手"],
+                "通信用切手": [],
+                "収集用品": ["切手アルバム", "ピンセット", "ルーペ", "マウント", "保存ケース", "カタログ"]
+            };
+
+            let dbRef;
+
+            // カテゴリー管理の初期化
+            function initializeCategoryManager() {
+                if (typeof firebase !== 'undefined' && firebase.database) {
+                    dbRef = firebase.database().ref('categories');
+                    loadCategoriesFromFirebase();
+                } else {
+                    loadCategoriesFromLocal();
+                }
+                displayCategories();
+            }
+
+            // Firebaseからカテゴリーを読み込み
+            function loadCategoriesFromFirebase() {
+                dbRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        categoryData = data;
+                    }
+                    displayCategories();
+                });
+            }
+
+            // ローカルストレージから読み込み
+            function loadCategoriesFromLocal() {
+                const saved = localStorage.getItem('stampCategories');
+                if (saved) {
+                    try {
+                        categoryData = JSON.parse(saved);
+                    } catch (e) {
+                        console.error('Failed to parse categories:', e);
+                    }
+                }
+            }
+
+            // カテゴリーを保存
+            async function saveCategories() {
+                if (dbRef) {
+                    try {
+                        await dbRef.set(categoryData);
+                    } catch (error) {
+                        console.error('Firebase save error:', error);
+                        localStorage.setItem('stampCategories', JSON.stringify(categoryData));
+                    }
+                } else {
+                    localStorage.setItem('stampCategories', JSON.stringify(categoryData));
+                }
+            }
+
+            // カテゴリーを表示
+            function displayCategories() {
+                const container = document.getElementById('categories-container');
+                container.innerHTML = '';
+
+                Object.entries(categoryData).forEach(([mainCategory, subCategories]) => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'border border-gray-200 rounded-lg p-4';
+                    categoryDiv.innerHTML = `
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-semibold">${mainCategory}</h3>
+                            <div class="flex gap-2">
+                                <button onclick="editMainCategory('${mainCategory}')" class="text-blue-600 hover:text-blue-800 text-sm">
+                                    編集
+                                </button>
+                                <button onclick="deleteMainCategory('${mainCategory}')" class="text-red-600 hover:text-red-800 text-sm">
+                                    削除
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <input
+                                    type="text"
+                                    id="add-sub-${mainCategory}"
+                                    class="flex-1 px-2 py-1 text-sm border border-gray-300 rounded"
+                                    placeholder="サブカテゴリーを追加"
+                                    onkeypress="if(event.key==='Enter')addSubCategory('${mainCategory}')"
+                                />
+                                <button
+                                    onclick="addSubCategory('${mainCategory}')"
+                                    class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                                >
+                                    追加
+                                </button>
+                            </div>
+                            <div id="subcategories-${mainCategory}" class="space-y-1">
+                                ${subCategories.map((sub, index) => `
+                                    <div class="flex items-center justify-between py-1 px-2 bg-gray-50 rounded sortable-item" draggable="true" data-main="${mainCategory}" data-index="${index}">
+                                        <span class="text-sm">${sub}</span>
+                                        <div class="flex gap-2">
+                                            <button onclick="editSubCategory('${mainCategory}', ${index})" class="text-blue-600 hover:text-blue-800 text-xs">
+                                                編集
+                                            </button>
+                                            <button onclick="deleteSubCategory('${mainCategory}', ${index})" class="text-red-600 hover:text-red-800 text-xs">
+                                                削除
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(categoryDiv);
+                });
+
+                // ドラッグ&ドロップを設定
+                setupDragAndDrop();
+            }
+
+            // 新しいカテゴリーを追加
+            function addCategory() {
+                const mainCategoryInput = document.getElementById('newMainCategory');
+                const subCategoryInput = document.getElementById('newSubCategory');
+                
+                const mainCategory = mainCategoryInput.value.trim();
+                const subCategory = subCategoryInput.value.trim();
+
+                if (!mainCategory) {
+                    alert('大カテゴリー名を入力してください');
+                    return;
+                }
+
+                if (!categoryData[mainCategory]) {
+                    categoryData[mainCategory] = [];
+                }
+
+                if (subCategory) {
+                    categoryData[mainCategory].push(subCategory);
+                }
+
+                mainCategoryInput.value = '';
+                subCategoryInput.value = '';
+
+                saveCategories();
+                displayCategories();
+            }
+
+            // サブカテゴリーを追加
+            function addSubCategory(mainCategory) {
+                const input = document.getElementById(`add-sub-${mainCategory}`);
+                const subCategory = input.value.trim();
+
+                if (!subCategory) {
+                    alert('サブカテゴリー名を入力してください');
+                    return;
+                }
+
+                if (!categoryData[mainCategory]) {
+                    categoryData[mainCategory] = [];
+                }
+
+                categoryData[mainCategory].push(subCategory);
+                input.value = '';
+
+                saveCategories();
+                displayCategories();
+            }
+
+            // メインカテゴリーを編集
+            function editMainCategory(oldName) {
+                const newName = prompt('新しいカテゴリー名を入力してください', oldName);
+                if (newName && newName !== oldName) {
+                    categoryData[newName] = categoryData[oldName];
+                    delete categoryData[oldName];
+                    saveCategories();
+                    displayCategories();
+                }
+            }
+
+            // サブカテゴリーを編集
+            function editSubCategory(mainCategory, index) {
+                const oldName = categoryData[mainCategory][index];
+                const newName = prompt('新しいサブカテゴリー名を入力してください', oldName);
+                if (newName && newName !== oldName) {
+                    categoryData[mainCategory][index] = newName;
+                    saveCategories();
+                    displayCategories();
+                }
+            }
+
+            // メインカテゴリーを削除
+            function deleteMainCategory(mainCategory) {
+                if (confirm(`「${mainCategory}」とそのサブカテゴリーをすべて削除しますか？`)) {
+                    delete categoryData[mainCategory];
+                    saveCategories();
+                    displayCategories();
+                }
+            }
+
+            // サブカテゴリーを削除
+            function deleteSubCategory(mainCategory, index) {
+                if (confirm(`サブカテゴリー「${categoryData[mainCategory][index]}」を削除しますか？`)) {
+                    categoryData[mainCategory].splice(index, 1);
+                    saveCategories();
+                    displayCategories();
+                }
+            }
+
+            // ドラッグ&ドロップの設定
+            function setupDragAndDrop() {
+                const items = document.querySelectorAll('.sortable-item');
+                let draggedItem = null;
+
+                items.forEach(item => {
+                    item.addEventListener('dragstart', (e) => {
+                        draggedItem = item;
+                        item.classList.add('dragging');
+                    });
+
+                    item.addEventListener('dragend', () => {
+                        item.classList.remove('dragging');
+                    });
+
+                    item.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        const mainCategory = item.dataset.main;
+                        const container = document.getElementById(`subcategories-${mainCategory}`);
+                        const afterElement = getDragAfterElement(container, e.clientY);
+                        
+                        if (afterElement == null) {
+                            container.appendChild(draggedItem);
+                        } else {
+                            container.insertBefore(draggedItem, afterElement);
+                        }
+                    });
+
+                    item.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        const mainCategory = item.dataset.main;
+                        updateSubCategoryOrder(mainCategory);
+                    });
+                });
+            }
+
+            // ドラッグ位置を取得
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.sortable-item:not(.dragging)')];
+
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+
+            // サブカテゴリーの順序を更新
+            function updateSubCategoryOrder(mainCategory) {
+                const container = document.getElementById(`subcategories-${mainCategory}`);
+                const items = container.querySelectorAll('.sortable-item');
+                const newOrder = [];
+
+                items.forEach(item => {
+                    const text = item.querySelector('span').textContent;
+                    newOrder.push(text);
+                });
+
+                categoryData[mainCategory] = newOrder;
+                saveCategories();
+            }
+        </script>
+
+        <footer class="bg-gray-100 mt-12">
+            <div class="container mx-auto px-4 py-8">
+                <div class="bg-gray-800 text-white py-4 rounded-lg">
+                    <div class="text-center">
+                        <p class="text-sm">© 2024 ワールドスタンプ広島 All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>商品詳細 | ワールドスタンプ広島</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+        <script src="/firebase-config.js"></script>
+        <script src="/js/unified-storage.js"></script>
+        <style>
+            body {
+                font-family:
+                    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            }
+            .thumbnail-image {
+                cursor: pointer;
+                transition: opacity 0.3s;
+            }
+            .thumbnail-image:hover {
+                opacity: 0.8;
+            }
+            .thumbnail-image.active {
+                border: 2px solid #c41e3a;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-50">
+        <!-- ヘッダー -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <a href="index.html" class="flex items-center">
+                            <h1 class="text-xl font-bold" style="color: #c41e3a">ワールドスタンプ広島</h1>
+                        </a>
+                    </div>
+
+                    <nav class="hidden md:flex space-x-8">
+                        <a href="index.html" class="text-gray-700 hover:text-[#C41E3A]">ホーム</a>
+                        <a href="features.html" class="text-gray-700 hover:text-[#C41E3A]">特徴</a>
+                        <a href="sell.html" class="text-gray-700 hover:text-[#C41E3A]">買取</a>
+                        <a href="buy.html" class="text-gray-700 hover:text-[#C41E3A]">購入</a>
+                        <a href="appraiser.html" class="text-gray-700 hover:text-[#C41E3A]">鑑定士</a>
+                        <a href="about.html" class="text-gray-700 hover:text-[#C41E3A]">店舗案内</a>
+                        <a href="qna.html" class="text-gray-700 hover:text-[#C41E3A]">Q&A</a>
+                    </nav>
+
+                    <div class="flex items-center space-x-4">
+                        <a href="contact.html" class="bg-[#C41E3A] text-white px-4 py-2 rounded hover:bg-[#A01729]">
+                            お問い合わせ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- パンくずリスト -->
+        <nav class="container mx-auto px-4 py-3 text-sm" id="breadcrumb">
+            <ol class="flex items-center space-x-2 text-gray-600">
+                <li><a href="index.html" class="hover:text-[#C41E3A]">ホーム</a></li>
+                <li class="mx-2">></li>
+                <li><a href="#" id="category-link" class="hover:text-[#C41E3A]">カテゴリー</a></li>
+                <li class="mx-2">></li>
+                <li class="text-gray-800" id="product-name-breadcrumb">商品名</li>
+            </ol>
+        </nav>
+
+        <!-- メインコンテンツ -->
+        <main class="container mx-auto px-4 py-8">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+                    <!-- 左側：画像エリア -->
+                    <div>
+                        <!-- メイン画像 -->
+                        <div class="mb-4 bg-gray-100 rounded-lg overflow-hidden">
+                            <img id="main-image" src="/images/products/placeholder.jpg" 
+                                 alt="商品画像" class="w-full h-96 object-contain">
+                        </div>
+                        
+                        <!-- サムネイル画像 -->
+                        <div class="grid grid-cols-4 gap-2" id="thumbnail-container">
+                            <!-- サムネイルは動的に生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 右側：商品情報 -->
+                    <div>
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-600 mb-2" id="category-path">カテゴリー</p>
+                            <h1 class="text-2xl font-bold text-gray-800 mb-4" id="product-title">商品タイトル</h1>
+                        </div>
+
+                        <!-- 価格情報 -->
+                        <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                            <div class="text-3xl font-bold text-[#C41E3A] mb-2" id="price-display">
+                                ¥0
+                            </div>
+                            <p class="text-sm text-gray-600" id="tax-info">(税込)</p>
+                            <p class="text-sm text-gray-600 mt-2" id="points-info">0ポイント獲得できます</p>
+                        </div>
+
+                        <!-- 在庫状態 -->
+                        <div class="mb-6">
+                            <p class="text-sm text-gray-600" id="stock-status">在庫あり</p>
+                        </div>
+
+                        <!-- 商品番号 -->
+                        <div class="mb-6 border-b pb-4">
+                            <p class="text-sm text-gray-600">
+                                商品番号(SKU): <span id="product-sku" class="font-medium">未設定</span>
+                            </p>
+                        </div>
+
+                        <!-- お問い合わせボタン -->
+                        <div class="mb-6">
+                            <button onclick="showInquiryInfo()" 
+                                    class="w-full bg-[#C41E3A] text-white py-4 rounded-lg hover:bg-[#A01729] transition-colors text-lg font-medium">
+                                この商品について問い合わせる
+                            </button>
+                            <p class="text-xs text-gray-500 mt-2 text-center">
+                                ※ご注文は電話・FAXで承っております
+                            </p>
+                        </div>
+
+                        <!-- SNSシェア -->
+                        <div class="flex items-center space-x-4 border-t pt-4">
+                            <button class="bg-black text-white px-4 py-2 rounded flex items-center space-x-2">
+                                <span>X</span>
+                                <span class="text-sm">ポスト</span>
+                            </button>
+                            <button class="bg-green-500 text-white px-4 py-2 rounded flex items-center space-x-2">
+                                <span>LINE</span>
+                                <span class="text-sm">で送る</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品説明 -->
+                <div class="border-t px-8 py-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">商品説明</h2>
+                    <div id="product-description" class="text-gray-700 leading-relaxed">
+                        <p>商品の詳細な説明がここに入ります。</p>
+                    </div>
+                </div>
+
+                <!-- 関連商品 -->
+                <div class="border-t px-8 py-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">同じカテゴリーの商品</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="related-products">
+                        <!-- 関連商品は動的に生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近チェックしたアイテム -->
+            <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">最近チェックしたアイテム</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" id="recently-viewed">
+                    <!-- 最近見た商品は動的に生成 -->
+                </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <footer class="bg-gray-100 mt-12">
+            <div class="container mx-auto px-4 py-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-4">ワールドスタンプ広島</h3>
+                        <p class="text-sm text-gray-600 mb-2">高品質な切手を適正価格で</p>
+                        <p class="text-sm text-gray-600">初心者から愛好家まで幅広くサポート</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-4">ショッピングガイド</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="order-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                    ご注文方法
+                                </a>
+                            </li>
+                            <li>
+                                <a href="payment-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                    お支払い方法
+                                </a>
+                            </li>
+                            <li>
+                                <a href="about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                    店舗案内
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-4">お客様サポート</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                    よくあるご質問
+                                </a>
+                            </li>
+                            <li>
+                                <a href="contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                    お問い合わせ
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-4">お問い合わせ</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-2">
+                                <svg
+                                    class="w-5 h-5"
+                                    style="color: #c41e3a"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                                    ></path>
+                                </svg>
+                                <span class="text-sm text-gray-700 font-medium">082-XXX-XXXX</span>
+                            </div>
+                            <p class="text-xs text-gray-600 ml-7">
+                                平日 9:30-18:00<br />
+                                定休日: 月・水・木
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-800 text-white py-4">
+                <div class="container mx-auto px-4 text-center">
+                    <p class="text-sm">© 2024 ワールドスタンプ広島 All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- お問い合わせモーダル -->
+        <div id="inquiry-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">商品のご注文・お問い合わせ</h3>
+                <p class="text-gray-600 mb-6">
+                    この商品のご注文・お問い合わせは、お電話またはFAXでお承りしております。
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-[#C41E3A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        </svg>
+                        <div>
+                            <p class="font-medium">電話でのご注文</p>
+                            <a href="tel:082-XXX-XXXX" class="text-2xl font-bold text-[#C41E3A]">082-XXX-XXXX</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-[#C41E3A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <div>
+                            <p class="font-medium">FAXでのご注文</p>
+                            <p class="text-xl font-bold">082-XXX-XXXX</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-4">
+                    商品番号（SKU）: <span id="modal-sku" class="font-medium"></span>
+                </p>
+                <button onclick="closeInquiryModal()" 
+                        class="mt-6 w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600 transition-colors">
+                    閉じる
+                </button>
+            </div>
+        </div>
+
+        <script>
+            let storageManager;
+            let currentProduct = null;
+            let recentlyViewed = [];
+
+            // URLパラメータから商品IDを取得
+            function getProductIdFromUrl() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get('id');
+            }
+
+            // 商品詳細を表示
+            async function displayProductDetail() {
+                const productId = getProductIdFromUrl();
+                if (!productId) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // 商品データを取得
+                const products = storageManager.products;
+                currentProduct = products.find(p => p.id === productId);
+
+                if (!currentProduct) {
+                    alert('商品が見つかりませんでした');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // 最近見た商品に追加
+                addToRecentlyViewed(currentProduct);
+
+                // 商品情報を表示
+                document.getElementById('product-title').textContent = currentProduct.title;
+                document.getElementById('product-name-breadcrumb').textContent = currentProduct.title;
+                document.getElementById('category-path').textContent = currentProduct.category || '未分類';
+                document.getElementById('product-sku').textContent = currentProduct.sku || '未設定';
+                document.getElementById('modal-sku').textContent = currentProduct.sku || '未設定';
+
+                // カテゴリーリンクを設定
+                if (currentProduct.category) {
+                    const categoryLink = document.getElementById('category-link');
+                    categoryLink.textContent = currentProduct.category.split(' > ')[0];
+                    categoryLink.href = getCategoryPageUrl(currentProduct.category);
+                }
+
+                // 価格表示
+                const priceDisplay = document.getElementById('price-display');
+                const taxInfo = document.getElementById('tax-info');
+                const pointsInfo = document.getElementById('points-info');
+
+                if (currentProduct.negotiable) {
+                    priceDisplay.textContent = '応相談';
+                    priceDisplay.classList.add('text-blue-600');
+                    priceDisplay.classList.remove('text-[#C41E3A]');
+                    taxInfo.style.display = 'none';
+                    pointsInfo.style.display = 'none';
+                } else if (currentProduct.price) {
+                    priceDisplay.textContent = `¥${currentProduct.price.toLocaleString()}～`;
+                    taxInfo.style.display = 'block';
+                    pointsInfo.textContent = `${Math.floor(currentProduct.price * 0.01)}ポイント獲得できます`;
+                    pointsInfo.style.display = 'block';
+                } else {
+                    priceDisplay.textContent = '価格未設定';
+                    taxInfo.style.display = 'none';
+                    pointsInfo.style.display = 'none';
+                }
+
+                // 在庫状態
+                const stockStatus = document.getElementById('stock-status');
+                if (currentProduct.soldOut) {
+                    stockStatus.innerHTML = '<span class="text-red-600 font-bold">SOLD OUT</span>';
+                } else if (currentProduct.stock === 0) {
+                    stockStatus.innerHTML = '<span class="text-gray-600">在庫切れ</span>';
+                } else if (currentProduct.stock && currentProduct.stock <= 3) {
+                    stockStatus.innerHTML = `<span class="text-orange-600">残り${currentProduct.stock}点</span>`;
+                } else {
+                    stockStatus.innerHTML = '<span class="text-green-600">在庫あり</span>';
+                }
+
+                // 画像表示
+                const mainImage = document.getElementById('main-image');
+                const imageUrl = currentProduct.imageUrl || '/images/products/placeholder.jpg';
+                mainImage.src = imageUrl;
+                mainImage.alt = currentProduct.title;
+
+                // 説明文
+                const description = document.getElementById('product-description');
+                if (currentProduct.description) {
+                    description.innerHTML = `<p>${currentProduct.description}</p>`;
+                } else {
+                    description.innerHTML = '<p class="text-gray-500">商品説明はありません。</p>';
+                }
+
+                // 関連商品を表示
+                displayRelatedProducts();
+
+                // 最近見た商品を表示
+                displayRecentlyViewed();
+            }
+
+            // カテゴリーページのURLを取得
+            function getCategoryPageUrl(category) {
+                // カテゴリー名からURLを生成するロジック
+                // 実際のカテゴリーページ構造に合わせて調整
+                return 'category.html';
+            }
+
+            // 関連商品を表示
+            function displayRelatedProducts() {
+                const container = document.getElementById('related-products');
+                const relatedProducts = storageManager.products
+                    .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
+                    .slice(0, 8);
+
+                if (relatedProducts.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 col-span-full">関連商品はありません。</p>';
+                    return;
+                }
+
+                container.innerHTML = relatedProducts.map(product => `
+                    <a href="product-detail.html?id=${product.id}" class="group">
+                        <div class="bg-gray-100 rounded-lg overflow-hidden mb-2 aspect-square">
+                            <img src="${product.imageUrl || '/images/products/placeholder.jpg'}" 
+                                 alt="${product.title}" 
+                                 class="w-full h-full object-cover group-hover:opacity-80 transition-opacity">
+                            ${product.soldOut ? '<div class="absolute inset-0 flex items-center justify-center"><span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">SOLD OUT</span></div>' : ''}
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-800 mb-1 line-clamp-2">${product.title}</h3>
+                        <p class="text-sm font-bold ${product.negotiable ? 'text-blue-600' : 'text-[#C41E3A]'}">
+                            ${product.priceText || (product.price ? `¥${product.price.toLocaleString()}` : '価格未設定')}
+                        </p>
+                    </a>
+                `).join('');
+            }
+
+            // 最近見た商品に追加
+            function addToRecentlyViewed(product) {
+                // localStorage から取得
+                const stored = localStorage.getItem('recentlyViewed');
+                recentlyViewed = stored ? JSON.parse(stored) : [];
+
+                // 既に存在する場合は削除
+                recentlyViewed = recentlyViewed.filter(p => p.id !== product.id);
+
+                // 先頭に追加
+                recentlyViewed.unshift({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    priceText: product.priceText,
+                    negotiable: product.negotiable,
+                    imageUrl: product.imageUrl,
+                    soldOut: product.soldOut
+                });
+
+                // 最大10件まで
+                recentlyViewed = recentlyViewed.slice(0, 10);
+
+                // localStorage に保存
+                localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+            }
+
+            // 最近見た商品を表示
+            function displayRecentlyViewed() {
+                const container = document.getElementById('recently-viewed');
+                const displayItems = recentlyViewed.filter(p => p.id !== currentProduct.id).slice(0, 6);
+
+                if (displayItems.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 col-span-full">最近チェックした商品はありません。</p>';
+                    return;
+                }
+
+                container.innerHTML = displayItems.map(product => `
+                    <a href="product-detail.html?id=${product.id}" class="group">
+                        <div class="bg-gray-100 rounded-lg overflow-hidden mb-2 aspect-square relative">
+                            <img src="${product.imageUrl || '/images/products/placeholder.jpg'}" 
+                                 alt="${product.title}" 
+                                 class="w-full h-full object-cover group-hover:opacity-80 transition-opacity">
+                            ${product.soldOut ? '<div class="absolute inset-0 flex items-center justify-center"><span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">SOLD OUT</span></div>' : ''}
+                        </div>
+                        <h3 class="text-xs font-medium text-gray-800 mb-1 line-clamp-2">${product.title}</h3>
+                        <p class="text-xs font-bold ${product.negotiable ? 'text-blue-600' : 'text-[#C41E3A]'}">
+                            ${product.priceText || (product.price ? `¥${product.price.toLocaleString()}` : '価格未設定')}
+                        </p>
+                    </a>
+                `).join('');
+            }
+
+            // お問い合わせモーダルを表示
+            function showInquiryInfo() {
+                const modal = document.getElementById('inquiry-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            // お問い合わせモーダルを閉じる
+            function closeInquiryModal() {
+                const modal = document.getElementById('inquiry-modal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            // ページ読み込み時の処理
+            window.addEventListener('DOMContentLoaded', () => {
+                storageManager = new UnifiedStorageManager();
+
+                // データ変更を監視
+                storageManager.onDataChange(() => {
+                    displayProductDetail();
+                });
+
+                // モーダルの外側クリックで閉じる
+                document.getElementById('inquiry-modal').addEventListener('click', (e) => {
+                    if (e.target.id === 'inquiry-modal') {
+                        closeInquiryModal();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

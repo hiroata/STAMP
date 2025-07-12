@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>切手関連品 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .related-badge {
+            background: linear-gradient(135deg, #795548 0%, #5D4037 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">切手関連品</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">切手関連品</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                切手収集をより深く楽しむための関連品を取り揃えています。
+                初日カバー（FDC）、官製はがき、収入印紙など、切手と密接に関わる収集品から、
+                軍事切手のような歴史的資料まで、幅広いアイテムをご用意しています。
+                これらの関連品は、切手コレクションに深みと広がりを与える重要な要素です。
+            </p>
+            <div class="bg-amber-50 border-l-4 border-amber-600 p-4">
+                <p class="text-sm text-amber-800">
+                    <strong>収集の魅力：</strong>切手関連品は、単なる切手収集を超えて、
+                    郵便史、社会史、文化史を学ぶ貴重な資料となります。
+                    特に使用済みの実逓品は、当時の生活や歴史を物語る証人です。
+                </p>
+            </div>
+        </div>
+
+        <!-- サブカテゴリー -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <a href="category-related-fdc.html" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="category-icon bg-blue-100 text-blue-600">📮</div>
+                <h3 class="font-bold text-lg mb-2">初日カバー（FDC）</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    切手発行初日の記念消印が押されたカバー。
+                    美しいカシェ（装飾）付きのものが人気です。
+                </p>
+                <span class="text-blue-600 text-sm font-bold">詳細を見る →</span>
+            </a>
+            
+            <a href="category-related-postcard.html" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="category-icon bg-green-100 text-green-600">💌</div>
+                <h3 class="font-bold text-lg mb-2">官製はがき</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    年賀はがき、暑中見舞い、通常はがきなど。
+                    図案の変遷が楽しめる身近な収集品です。
+                </p>
+                <span class="text-green-600 text-sm font-bold">詳細を見る →</span>
+            </a>
+            
+            <a href="category-related-revenue.html" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="category-icon bg-purple-100 text-purple-600">🏛️</div>
+                <h3 class="font-bold text-lg mb-2">収入印紙・証紙</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    税金や手数料の納付に使用される印紙類。
+                    デザインの美しさと歴史的価値を併せ持ちます。
+                </p>
+                <span class="text-purple-600 text-sm font-bold">詳細を見る →</span>
+            </a>
+            
+            <a href="category-related-military.html" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="category-icon bg-red-100 text-red-600">⭐</div>
+                <h3 class="font-bold text-lg mb-2">軍事切手</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    戦時中の軍事郵便用切手。
+                    歴史的資料として貴重な存在です。
+                </p>
+                <span class="text-red-600 text-sm font-bold">詳細を見る →</span>
+            </a>
+            
+            <a href="category-related.html" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="category-icon bg-gray-100 text-gray-600">📦</div>
+                <h3 class="font-bold text-lg mb-2">その他関連品</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    郵便貯金通帳、電報頼信紙、航空書簡など、
+                    多様な郵便関連アイテム。
+                </p>
+                <span class="text-gray-600 text-sm font-bold">詳細を見る →</span>
+            </a>
+        </div>
+
+        <!-- 関連品収集の魅力 -->
+        <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">関連品収集の魅力と価値</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-bold text-amber-700 mb-2">歴史的価値</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 郵便制度の変遷を物語る資料</li>
+                        <li>• 社会情勢や文化の反映</li>
+                        <li>• 戦争や災害の記録</li>
+                        <li>• 技術発展の証人</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-amber-700 mb-2">収集の楽しみ</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 切手以外の分野への広がり</li>
+                        <li>• テーマ別コレクションの充実</li>
+                        <li>• 研究対象としての深み</li>
+                        <li>• 交換会での人気アイテム</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                切手関連品は入荷が不定期なものも多くございます。
+                お探しの品がございましたら、入荷時にご連絡することも可能です。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'related',
+            sub: null,
+            name: '切手関連品',
+            description: '初日カバー、官製はがき、収入印紙など切手に関連する収集品'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="related-badge absolute top-2 left-2 z-10">関連品</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        ${product.itemType ? `<p class="text-xs text-amber-600">種別: ${product.itemType}</p>` : ''}
+                        <p class="text-lg font-bold text-red-600 mt-2">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.condition ? `<p class="text-xs text-gray-500 mt-1">状態: ${product.condition}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

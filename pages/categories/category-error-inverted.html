@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>逆刷りエラー切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .inverted-badge {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            transform: rotate(180deg);
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <a href="category-error.html" class="text-gray-600 hover:text-gray-800">エラー・変種切手</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">逆刷りエラー</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">逆刷りエラー切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                逆刷りエラーは、図案が上下逆さまに印刷された極めて希少なエラー切手です。
+                世界的に有名な「逆さのジェニー」（アメリカ、1918年）や、日本の「龍五百文逆刷」など、
+                切手収集の歴史に残る名品が存在します。
+            </p>
+            <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                <h3 class="font-bold text-red-800 mb-2">逆刷りエラーの見分け方</h3>
+                <ul class="text-sm text-red-700 list-disc list-inside">
+                    <li>額面表示と図案の向きの関係を確認</li>
+                    <li>目打ちの位置と図案の関係を検証</li>
+                    <li>同時期発行の正常品との比較</li>
+                    <li>専門カタログでの確認</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">有名な逆刷りエラー</h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex justify-between">
+                        <span>逆さのジェニー（米国）</span>
+                        <span class="text-red-600 font-bold">推定価値 1億円以上</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>龍五百文逆刷（日本）</span>
+                        <span class="text-red-600 font-bold">推定価値 数千万円</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>逆さの白鳥（西ドイツ）</span>
+                        <span class="text-red-600 font-bold">推定価値 数百万円</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">収集時の注意点</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>・必ず鑑定書付きのものを選ぶ</li>
+                    <li>・偽造品や後加工品に注意</li>
+                    <li>・保存状態が価値を大きく左右</li>
+                    <li>・取引実績のある信頼できる店舗で購入</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                逆刷りエラー切手は極めて希少なため、入荷時にはお客様にご連絡いたします。
+                お探しの品がございましたら、お気軽にお問い合わせください。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'error',
+            sub: 'inverted',
+            name: '逆刷りエラー',
+            description: '図案が上下逆さまに印刷された極めて希少なエラー切手'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。入荷次第掲載いたします。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="inverted-badge absolute top-2 left-2 z-10">逆刷り</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        <p class="text-lg font-bold text-red-600">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.certificateNumber ? `<p class="text-xs text-green-600 mt-1">鑑定書番号: ${product.certificateNumber}</p>` : ''}
+                        ${product.rarity ? `<p class="text-xs text-gray-500">希少度: ★★★★★</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

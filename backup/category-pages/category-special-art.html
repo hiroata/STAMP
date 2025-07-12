@@ -1,0 +1,81 @@
+<\!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>美術切手 < /dev/null | ワールドスタンプ広島</title>
+        <link rel="stylesheet" href="css/common.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            @media (max-width: 639px) {
+                body {
+                    font-size: 18px;
+                }
+                a,
+                button {
+                    min-height: 48px;
+                    padding: 12px 16px;
+                }
+                .phone-number {
+                    text-decoration: underline;
+                    color: #1976d2;
+                }
+            }
+            .product-card {
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="header-container"></div>
+        <div class="min-h-screen bg-gray-50">
+            <nav class="container mx-auto px-4 py-2">
+                <ol class="flex text-sm text-gray-600">
+                    <li><a href="index.html" class="hover:text-[#C41E3A]">ホーム</a></li>
+                    <li class="mx-2">/</li>
+                    <li class="text-gray-800">美術切手</li>
+                </ol>
+            </nav>
+            <main class="container mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">美術切手</h1>
+                <div class="bg-white rounded-lg p-6 mb-8 shadow-sm">
+                    <p class="text-gray-700 leading-relaxed">美術作品をテーマにした切手です。</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+                    <div class="product-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="aspect-square bg-gray-100 flex items-center justify-center">
+                            <span class="text-gray-400">商品画像</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">商品例</h3>
+                            <p class="text-sm text-gray-600 mb-2">詳細情報</p>
+                            <p class="text-xl font-bold text-red-600">¥1,000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
+                    <h3 class="text-xl font-bold mb-4">商品のご注文はお電話・FAXで</h3>
+                    <a href="tel:082-XXX-XXXX" class="text-2xl font-bold text-blue-800 mb-2 phone-number block"
+                        >📞 082-XXX-XXXX</a
+                    >
+                    <p class="text-sm">FAX: 082-XXX-XXXX</p>
+                    <p class="text-sm mt-2">営業時間: 平日 9:00～18:00 / 土日祝 10:00～17:00</p>
+                </div>
+            </main>
+        </div>
+        <div id="footer-container"></div>
+        <script src="js/components.js"></script>
+        <script>
+            document.querySelectorAll('.product-card').forEach((card) => {
+                card.addEventListener('click', () => {
+                    alert('商品のご注文は、お電話（082-XXX-XXXX）またはFAX（082-XXX-XXXX）でお承りしております。');
+                });
+            });
+        </script>
+    </body>
+</html>

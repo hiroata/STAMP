@@ -1,262 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お問い合わせ | ワールドスタンプ広島</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* モバイル対応 */
-        @media (max-width: 639px) {
-            body {
-                font-size: 18px;
-            }
-            
-            .text-xs {
-                font-size: 14px;
-            }
-            
-            .text-sm {
-                font-size: 16px;
-            }
-            
-            .text-base {
-                font-size: 18px;
-            }
-            
-            .text-lg {
-                font-size: 20px;
-            }
-            
-            .text-xl {
-                font-size: 22px;
-            }
-            
-            .text-2xl {
-                font-size: 26px;
-            }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>お問い合わせ | ワールドスタンプ広島</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            /* モバイル対応 */
+            @media (max-width: 639px) {
+                body {
+                    font-size: 18px;
+                }
 
-            /* タッチフレンドリーボタン */
-            a, button {
-                min-height: 48px;
-                padding: 12px 16px;
+                .text-xs {
+                    font-size: 14px;
+                }
+
+                .text-sm {
+                    font-size: 16px;
+                }
+
+                .text-base {
+                    font-size: 18px;
+                }
+
+                .text-lg {
+                    font-size: 20px;
+                }
+
+                .text-xl {
+                    font-size: 22px;
+                }
+
+                .text-2xl {
+                    font-size: 26px;
+                }
+
+                /* タッチフレンドリーボタン */
+                a,
+                button {
+                    min-height: 48px;
+                    padding: 12px 16px;
+                }
+
+                /* 電話番号をクリック可能に */
+                .phone-number {
+                    text-decoration: underline;
+                    color: #1976d2;
+                }
             }
-
-            /* 電話番号をクリック可能に */
-            .phone-number {
-                text-decoration: underline;
-                color: #1976D2;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="min-h-screen bg-gray-50">
-        <!-- ヘッダー -->
-        <header class="bg-[#B71C1C] text-white p-4">
-            <div class="container mx-auto">
-                <h1 class="text-2xl font-bold"><a href="index.html" class="hover:text-gray-300 transition-colors">ワールドスタンプ広島</a></h1>
-                <p class="text-sm mt-2">ご注文: 📞 082-XXX-XXXX | FAX: 082-XXX-XXXX</p>
-            </div>
-        </header>
-
-        <!-- パンくずリスト -->
-        <nav class="container mx-auto px-4 py-2">
-            <ol class="flex text-sm text-gray-600">
-                <li><a href="index.html" class="hover:text-[#C41E3A]">ホーム</a></li>
-                <li class="mx-2">/</li>
-                <li class="text-gray-800">お問い合わせ</li>
-            </ol>
-        </nav>
-
-        <!-- メインコンテンツ -->
-        <main class="container mx-auto px-4 py-8">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">お問い合わせ</h2>
-            
-            <!-- 連絡先情報 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div class="bg-white rounded-lg shadow p-8">
-                    <h3 class="text-xl font-bold mb-6 text-[#C41E3A]">お電話でのお問い合わせ</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <a href="tel:082-XXX-XXXX" class="text-3xl font-bold text-gray-800 mb-2 phone-number sm:text-3xl text-lg block">📞 082-XXX-XXXX</a>
-                            <p class="text-gray-600">ご遠慮なくお問い合わせください</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-2">営業時間</h4>
-                            <p class="text-gray-600">月火金: 9:00-18:00</p>
-                            <p class="text-gray-600">土日祝: 10:00-17:00</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-2">定休日</h4>
-                            <p class="text-gray-600">正月期間（12/29-1/3）</p>
-                        </div>
-                    </div>
+        </style>
+    </head>
+    <body>
+        <div class="min-h-screen bg-gray-50">
+            <!-- ヘッダー -->
+            <header class="bg-[#B71C1C] text-white p-4">
+                <div class="container mx-auto">
+                    <h1 class="text-2xl font-bold">
+                        <a href="index.html" class="hover:text-gray-300 transition-colors">ワールドスタンプ広島</a>
+                    </h1>
+                    <p class="text-sm mt-2">ご注文: 📞 082-XXX-XXXX | FAX: 082-XXX-XXXX</p>
                 </div>
+            </header>
 
-                <div class="bg-white rounded-lg shadow p-8">
-                    <h3 class="text-xl font-bold mb-6 text-[#C41E3A]">FAXでのお問い合わせ</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <p class="text-3xl font-bold text-gray-800 mb-2 sm:text-3xl text-lg">📠 082-XXX-XXXX</p>
-                            <p class="text-gray-600">終日受信可能</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-2">FAX注文時の必要事項</h4>
-                            <ul class="text-gray-600 space-y-1 list-disc list-inside">
-                                <li>お客様氏名</li>
-                                <li>電話番号（日中連絡先）</li>
-                                <li>商品名と個数</li>
-                                <li>配送先住所</li>
-                            </ul>
-                            <p class="text-sm text-gray-500 mt-2">※後日、内容確認のお電話をいたします</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- パンくずリスト -->
+            <nav class="container mx-auto px-4 py-2">
+                <ol class="flex text-sm text-gray-600">
+                    <li><a href="index.html" class="hover:text-[#C41E3A]">ホーム</a></li>
+                    <li class="mx-2">/</li>
+                    <li class="text-gray-800">お問い合わせ</li>
+                </ol>
+            </nav>
 
-            <!-- 会社情報 -->
-            <div class="bg-white rounded-lg shadow p-8">
-                <h3 class="text-xl font-bold mb-6 text-[#C41E3A]">会社情報</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="font-bold mb-2">会社名</h4>
-                        <p class="text-gray-600 mb-4">株式会社ワールドスタンプ広島</p>
-                        
-                        <h4 class="font-bold mb-2">所在地</h4>
-                        <p class="text-gray-600 mb-4">〒730-0000<br>広島県広島市中区○○町1-2-3</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-2">事業内容</h4>
-                        <p class="text-gray-600 mb-4">切手・関連用品の買取・販売</p>
-                        
-                        <h4 class="font-bold mb-2">取扱商品</h4>
-                        <ul class="text-gray-600 list-disc list-inside">
-                            <li>国内切手各種</li>
-                            <li>海外切手各種</li>
-                            <li>コレクション用品</li>
-                            <li>特殊・記念切手</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <!-- メインコンテンツ -->
+            <main class="container mx-auto px-4 py-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">お問い合わせ</h2>
 
-            <!-- アクセス -->
-            <div class="mt-8 bg-blue-50 rounded-lg p-6">
-                <h3 class="text-lg font-bold mb-3">ご来店について</h3>
-                <p class="text-gray-700">現在、店頭販売は休止しております。<br>
-                電話・FAXによる通信販売で対応させていただいております。</p>
-            </div>
-        </main>
-
-        <!-- フッター -->
-        <footer class="bg-gray-100 mt-12">
-            <div class="container mx-auto px-4 py-8">
-                <!-- 配送・送料について -->
-                <div class="bg-white rounded-lg p-6 mb-8 border border-gray-200">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">配送・送料について</h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div>
-                            <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（書留便など）</h4>
-                            <p class="text-sm text-gray-600 mb-2">
-                                郵便局の書留便、ゆうパックなどでお送りします。お客様の玄関先まで確実にお届けします。
-                            </p>
-                            <p class="text-sm font-bold text-gray-800">料金は全国一律650円です。</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（特定記録便など）</h4>
-                            <p class="text-sm text-gray-600 mb-2">
-                                郵便局の特定記録便などでお送りします。基本的にお客様の郵便受箱に配送となります。
-                            </p>
-                            <p class="text-sm font-bold text-gray-800 mb-2">料金は全国一律400円です。</p>
-                            <p class="text-xs text-gray-500">
-                                ※特定記録便は万が一、亡失、誤配、商品破損、盗難などがあった場合に補償を受ける事ができません。<br>
-                                ※平日のみの配達となります。土日、祝日は配達がありません。
-                            </p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-[#C41E3A] mb-2">店頭お受け取り</h4>
-                            <p class="text-sm text-gray-600 mb-2">
-                                ご注文品の用意が整いましたら、メールでお知らせいたしますので、メール受信後に店舗（広島市中区）にてお受け取りください。
-                            </p>
-                            <a href="about.html" class="text-sm text-[#C41E3A] hover:underline">店舗案内はこちら »</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="font-bold text-gray-800 mb-4">ワールドスタンプ広島</h3>
-                        <p class="text-sm text-gray-600 mb-2">
-                            高品質な切手を適正価格で
-                        </p>
-                        <p class="text-sm text-gray-600">
-                            初心者から愛好家まで幅広くサポート
-                        </p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-gray-800 mb-4">ショッピングガイド</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <a href="buy.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
-                                    ご注文方法
-                                </a>
-                            </li>
-                            <li>
-                                <a href="buy.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
-                                    お支払い方法
-                                </a>
-                            </li>
-                            <li>
-                                <a href="about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
-                                    店舗案内
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-gray-800 mb-4">お客様サポート</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <a href="faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
-                                    よくあるご質問
-                                </a>
-                            </li>
-                            <li>
-                                <a href="contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
-                                    お問い合わせ
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-gray-800 mb-4">お問い合わせ</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-2">
-                                <svg class="w-5 h-5" style="color: #C41E3A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                </svg>
-                                <a href="tel:082-XXX-XXXX" class="text-sm text-gray-700 font-medium phone-number">082-XXX-XXXX</a>
+                <!-- 連絡先情報 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white rounded-lg shadow p-8">
+                        <h3 class="text-xl font-bold mb-6 text-[#C41E3A]">お電話でのお問い合わせ</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <a
+                                    href="tel:082-XXX-XXXX"
+                                    class="text-3xl font-bold text-gray-800 mb-2 phone-number sm:text-3xl text-lg block"
+                                    >📞 082-XXX-XXXX</a
+                                >
+                                <p class="text-gray-600">ご遠慮なくお問い合わせください</p>
                             </div>
-                            <p class="text-xs text-gray-600 ml-7">
-                                平日 9:00-18:00<br>
-                                休日 10:00-17:00
-                            </p>
+                            <div>
+                                <h4 class="font-bold mb-2">営業時間</h4>
+                                <p class="text-gray-600">平日: 9:30-18:00</p>
+                                <p class="text-gray-600">定休日: 月・水・木</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-2">定休日</h4>
+                                <p class="text-gray-600">正月期間（12/29-1/3）</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-8">
+                        <h3 class="text-xl font-bold mb-6 text-[#C41E3A]">FAXでのお問い合わせ</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-3xl font-bold text-gray-800 mb-2 sm:text-3xl text-lg">📠 082-XXX-XXXX</p>
+                                <p class="text-gray-600">終日受信可能</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-2">FAX注文時の必要事項</h4>
+                                <ul class="text-gray-600 space-y-1 list-disc list-inside">
+                                    <li>お客様氏名</li>
+                                    <li>電話番号（日中連絡先）</li>
+                                    <li>商品名と個数</li>
+                                    <li>配送先住所</li>
+                                </ul>
+                                <p class="text-sm text-gray-500 mt-2">※後日、内容確認のお電話をいたします</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="bg-gray-800 text-white py-4">
-                <div class="container mx-auto px-4 text-center">
-                    <p class="text-sm">
-                        © 2024 ワールドスタンプ広島 All Rights Reserved.
-                    </p>
-                    <p class="text-xs mt-2">
-                        <a href="admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
+
+                <!-- 会社情報 -->
+                <div class="bg-white rounded-lg shadow p-8">
+                    <h3 class="text-xl font-bold mb-6 text-[#C41E3A]">会社情報</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-bold mb-2">会社名</h4>
+                            <p class="text-gray-600 mb-4">株式会社ワールドスタンプ広島</p>
+
+                            <h4 class="font-bold mb-2">所在地</h4>
+                            <p class="text-gray-600 mb-4">〒730-0000<br />広島県広島市○○町1-2-3</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">事業内容</h4>
+                            <p class="text-gray-600 mb-4">切手・関連用品の買取・販売</p>
+
+                            <h4 class="font-bold mb-2">取扱商品</h4>
+                            <ul class="text-gray-600 list-disc list-inside">
+                                <li>国内切手各種</li>
+                                <li>海外切手各種</li>
+                                <li>コレクション用品</li>
+                                <li>特殊・記念切手</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- アクセス -->
+                <div class="mt-8 bg-blue-50 rounded-lg p-6">
+                    <h3 class="text-lg font-bold mb-3">ご来店について</h3>
+                    <p class="text-gray-700">
+                        現在、店頭販売は休止しております。<br />
+                        電話・FAXによる通信販売で対応させていただいております。
                     </p>
                 </div>
-            </div>
-        </footer>
-    </div>
-</body>
+            </main>
+
+            <!-- フッター -->
+            <footer class="bg-gray-100 mt-12">
+                <div class="container mx-auto px-4 py-8">
+                    <!-- 配送・送料について -->
+                    <div class="bg-white rounded-lg p-6 mb-8 border border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">配送・送料について</h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（書留便など）</h4>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    郵便局の書留便、ゆうパックなどでお送りします。お客様の玄関先まで確実にお届けします。
+                                </p>
+                                <p class="text-sm font-bold text-gray-800">料金は全国一律650円です。</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（特定記録便など）</h4>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    郵便局の特定記録便などでお送りします。基本的にお客様の郵便受箱に配送となります。
+                                </p>
+                                <p class="text-sm font-bold text-gray-800 mb-2">料金は全国一律400円です。</p>
+                                <p class="text-xs text-gray-500">
+                                    ※特定記録便は万が一、亡失、誤配、商品破損、盗難などがあった場合に補償を受ける事ができません。<br />
+                                    ※平日のみの配達となります。土日、祝日は配達がありません。
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#C41E3A] mb-2">店頭お受け取り</h4>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    ご注文品の用意が整いましたら、メールでお知らせいたしますので、メール受信後に店舗（広島市）にてお受け取りください。
+                                </p>
+                                <a href="about.html" class="text-sm text-[#C41E3A] hover:underline"
+                                    >店舗案内はこちら »</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-4">ワールドスタンプ広島</h3>
+                            <p class="text-sm text-gray-600 mb-2">高品質な切手を適正価格で</p>
+                            <p class="text-sm text-gray-600">初心者から愛好家まで幅広くサポート</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-4">ショッピングガイド</h3>
+                            <ul class="space-y-2">
+                                <li>
+                                    <a href="order-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                    ご注文方法
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="payment-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                    お支払い方法
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                        店舗案内
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-4">お客様サポート</h3>
+                            <ul class="space-y-2">
+                                <li>
+                                    <a href="faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                        よくあるご質問
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                        お問い合わせ
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-4">お問い合わせ</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <svg
+                                        class="w-5 h-5"
+                                        style="color: #c41e3a"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                                        ></path>
+                                    </svg>
+                                    <a href="tel:082-XXX-XXXX" class="text-sm text-gray-700 font-medium phone-number"
+                                        >082-XXX-XXXX</a
+                                    >
+                                </div>
+                                <p class="text-xs text-gray-600 ml-7">
+                                    平日 9:30-18:00<br />
+                                    定休日: 月・水・木
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 text-white py-4">
+                    <div class="container mx-auto px-4 text-center">
+                        <p class="text-sm">© 2024 ワールドスタンプ広島 All Rights Reserved.</p>
+                        <p class="text-xs mt-2">
+                            <a href="admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </body>
 </html>

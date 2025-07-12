@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>田沢切手 | ワールドスタンプ広島</title>
+    <link rel="stylesheet" href="../../css/common.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 639px) {
+            body { font-size: 18px; }
+            a, button { min-height: 48px; padding: 12px 16px; }
+            .phone-number { text-decoration: underline; color: #1976d2; }
+        }
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .tazawa-badge {
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .tazawa-type {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: #E8F5E9;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #2E7D32;
+        }
+        .era-indicator {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+        }
+        .taisho { background-color: #E1BEE7; color: #6A1B9A; }
+        .showa { background-color: #C5E1A5; color: #33691E; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+            <a href="../../index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+            <span class="mx-2">&gt;</span>
+            <a href="../../category.html" class="text-gray-600 hover:text-gray-800">カテゴリー一覧</a>
+            <span class="mx-2">&gt;</span>
+            <a href="category-historical.html" class="text-gray-600 hover:text-gray-800">歴史的切手</a>
+            <span class="mx-2">&gt;</span>
+            <span class="text-gray-800">田沢切手</span>
+        </nav>
+
+        <h1 class="text-3xl font-bold mb-6">田沢切手</h1>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <p class="text-gray-700 leading-relaxed mb-4">
+                田沢切手は、大正2年（1913年）から昭和12年（1937年）まで、実に24年間にわたって使用された普通切手です。
+                逓信省の田沢昌言（たざわまさこと）技師によるデザインで、日本の伝統的な意匠を近代的な感覚で表現しました。
+                大正から昭和初期という激動の時代を通じて使用され、豊富な変種と使用例から、
+                切手収集の入門としても、専門研究の対象としても人気の高いシリーズです。
+            </p>
+            <div class="bg-green-50 border-l-4 border-green-600 p-4">
+                <h3 class="font-bold text-green-800 mb-2">田沢切手の意義</h3>
+                <ul class="text-sm text-green-700 space-y-1">
+                    <li>• 大正デモクラシーの時代精神を反映したモダンなデザイン</li>
+                    <li>• 24年間の長期使用による製造・印刷技術の変遷が観察可能</li>
+                    <li>• 関東大震災、金融恐慌など歴史的事件との関連</li>
+                    <li>• 豊富な使用例（消印・カバー）が現存</li>
+                    <li>• 初心者から専門家まで楽しめる奥深さ</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">田沢切手の種類とデザイン</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-green-700 mb-2">風景図案（低額面）</h4>
+                    <ul class="text-sm space-y-1">
+                        <li><strong>5厘：</strong>富士山</li>
+                        <li><strong>1銭：</strong>富士山</li>
+                        <li><strong>1銭5厘：</strong>富士山と鹿</li>
+                        <li><strong>3銭：</strong>日本アルプス</li>
+                    </ul>
+                    <p class="text-xs text-gray-600 mt-2">日本の自然美を表現</p>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-green-700 mb-2">人物図案（中額面）</h4>
+                    <ul class="text-sm space-y-1">
+                        <li><strong>4銭：</strong>大正天皇</li>
+                        <li><strong>10銭：</strong>神功皇后</li>
+                        <li><strong>20銭：</strong>明治天皇</li>
+                    </ul>
+                    <p class="text-xs text-gray-600 mt-2">皇室への敬意を表現</p>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-green-700 mb-2">その他の図案</h4>
+                    <ul class="text-sm space-y-1">
+                        <li><strong>2銭：</strong>桜花</li>
+                        <li><strong>5銭：</strong>鳳凰</li>
+                        <li><strong>50銭：</strong>鳳凰</li>
+                        <li><strong>1円：</strong>富士山と桜</li>
+                    </ul>
+                    <p class="text-xs text-gray-600 mt-2">日本の象徴的モチーフ</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-lg p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4">田沢切手の時代区分と特徴</h3>
+            <div class="space-y-4">
+                <div class="bg-white rounded p-4">
+                    <h4 class="font-bold mb-2">
+                        旧版（大正2年～大正13年）
+                        <span class="era-indicator taisho">大正</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <strong>特徴：</strong>
+                            <ul class="ml-4 mt-1">
+                                <li>- 毛紙使用（初期）</li>
+                                <li>- 平面版印刷</li>
+                                <li>- 色調が鮮やか</li>
+                                <li>- 旧大正毛紙は特に希少</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>注目点：</strong>
+                            <ul class="ml-4 mt-1">
+                                <li>- 震災切手（関東大震災時）</li>
+                                <li>- 暫定切手各種</li>
+                                <li>- 色調の変化が顕著</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded p-4">
+                    <h4 class="font-bold mb-2">
+                        新版（大正14年～昭和12年）
+                        <span class="era-indicator taisho">大正</span>
+                        <span class="era-indicator showa">昭和</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <strong>特徴：</strong>
+                            <ul class="ml-4 mt-1">
+                                <li>- 白紙使用が主流</li>
+                                <li>- 輪転版印刷の採用</li>
+                                <li>- 大量生産による品質安定</li>
+                                <li>- コイル切手の登場</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>注目点：</strong>
+                            <ul class="ml-4 mt-1">
+                                <li>- 昭和白紙切手</li>
+                                <li>- 各種加刷切手</li>
+                                <li>- 使用例が豊富</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-green-50 rounded-lg p-4">
+                <h3 class="font-bold text-green-800 mb-2">震災切手</h3>
+                <p class="text-sm text-gray-700">
+                    関東大震災（大正12年）で印刷局が被災。
+                    民間印刷所で緊急製造された切手は、
+                    粗悪な印刷ながら歴史的価値が高い。
+                </p>
+                <p class="text-xs text-red-600 mt-2">希少度：★★★★☆</p>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-4">
+                <h3 class="font-bold text-yellow-800 mb-2">田沢型切手帳</h3>
+                <p class="text-sm text-gray-700">
+                    日本初の切手帳（大正9年発行）。
+                    田沢切手を綴じた小冊子形式で、
+                    携帯に便利と好評を博した。
+                </p>
+                <p class="text-xs text-red-600 mt-2">希少度：★★★★★</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4">
+                <h3 class="font-bold text-blue-800 mb-2">コイル切手</h3>
+                <p class="text-sm text-gray-700">
+                    自動販売機用のロール状切手。
+                    縦長の目打ちが特徴で、
+                    通常切手とは異なる収集分野。
+                </p>
+                <p class="text-xs text-red-600 mt-2">希少度：★★★☆☆</p>
+            </div>
+        </div>
+
+        <!-- 商品グリッド -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 商品カードはJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- 注文方法 -->
+        <div class="bg-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">ご注文・ご相談</h2>
+            <p class="mb-2">お電話でのご注文：<span class="phone-number font-bold">082-241-3581</span></p>
+            <p class="mb-4">FAXでのご注文：082-241-3581</p>
+            <p class="text-sm text-gray-700">
+                田沢切手は初心者にも収集しやすく、奥深い研究対象としても人気です。
+                お探しの額面や変種がございましたら、お気軽にご相談ください。
+            </p>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../js/components.js"></script>
+    <script>
+        // カテゴリー情報を設定
+        const categoryInfo = {
+            main: 'historical',
+            sub: 'tazawa',
+            name: '田沢切手',
+            description: '大正2年-昭和12年の24年間使用された田沢昌言デザインの切手'
+        };
+        
+        // 商品を動的に読み込み
+        async function loadCategoryProducts() {
+            try {
+                if (window.UnifiedStorageManager) {
+                    const products = await window.UnifiedStorageManager.getProductsByCategory(
+                        categoryInfo.sub ? `${categoryInfo.main}-${categoryInfo.sub}` : categoryInfo.main
+                    );
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('商品の読み込みエラー:', error);
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500">現在、このカテゴリーに商品はありません。入荷次第掲載いたします。</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" 
+                     onclick="alert('商品詳細ページは準備中です')">
+                    <div class="relative">
+                        <span class="tazawa-badge absolute top-2 left-2 z-10">田沢切手</span>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300'}" 
+                             alt="${product.title}" 
+                             class="w-full h-48 object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">${product.title}</h3>
+                        ${product.tazawaType ? `<span class="tazawa-type mb-2">${product.tazawaType}</span>` : ''}
+                        <p class="text-gray-600 text-sm mb-2">${product.description || ''}</p>
+                        ${product.printType ? `<p class="text-xs text-green-600">印刷: ${product.printType}</p>` : ''}
+                        ${product.paperType ? `<p class="text-xs text-gray-600">用紙: ${product.paperType}</p>` : ''}
+                        ${product.isEarthquake ? `<p class="text-xs text-red-600 font-bold">震災切手</p>` : ''}
+                        <p class="text-lg font-bold text-red-600 mt-2">¥${product.price?.toLocaleString() || '価格未定'}</p>
+                        ${product.condition ? `<p class="text-xs text-gray-500 mt-1">状態: ${product.condition}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に商品を表示
+        document.addEventListener('DOMContentLoaded', loadCategoryProducts);
+    </script>
+</body>
+</html>

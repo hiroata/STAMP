@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="ワールドスタンプ広島のお支払い方法について。銀行振込、郵便振替、代金引換からお選びいただけます。" />
+        <title>お支払い方法 | ワールドスタンプ広島</title>
+        <link rel="stylesheet" href="css/common.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            @media (max-width: 639px) {
+                body { font-size: 18px; }
+                a, button { min-height: 48px; padding: 12px 16px; }
+                .phone-number { text-decoration: underline; color: #1976d2; }
+            }
+            .payment-method {
+                border-left: 4px solid #C41E3A;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-50">
+        <div id="header-container"></div>
+
+        <main class="container mx-auto px-4 py-8">
+            <!-- パンくずリスト -->
+            <nav class="text-sm mb-6">
+                <a href="index.html" class="text-gray-600 hover:text-gray-800">ホーム</a>
+                <span class="mx-2">&gt;</span>
+                <span class="text-gray-800">お支払い方法</span>
+            </nav>
+
+            <h1 class="text-3xl font-bold mb-8">お支払い方法</h1>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+                <p class="text-blue-800">
+                    ワールドスタンプ広島では、お客様のご都合に合わせて3つのお支払い方法をご用意しております。
+                    安心・確実なお取引のため、ご注文内容によってはお支払い方法を限定させていただく場合がございます。
+                </p>
+            </div>
+
+            <!-- 銀行振込 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6 payment-method">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold mb-3">銀行振込</h2>
+                        <div class="bg-gray-50 rounded p-4 mb-4">
+                            <h3 class="font-bold mb-2">振込先情報</h3>
+                            <dl class="space-y-1 text-sm">
+                                <div class="flex">
+                                    <dt class="w-20 font-medium">銀行名：</dt>
+                                    <dd>広島銀行</dd>
+                                </div>
+                                <div class="flex">
+                                    <dt class="w-20 font-medium">支店名：</dt>
+                                    <dd>本店営業部</dd>
+                                </div>
+                                <div class="flex">
+                                    <dt class="w-20 font-medium">口座種別：</dt>
+                                    <dd>普通預金</dd>
+                                </div>
+                                <div class="flex">
+                                    <dt class="w-20 font-medium">口座番号：</dt>
+                                    <dd>1234567</dd>
+                                </div>
+                                <div class="flex">
+                                    <dt class="w-20 font-medium">口座名義：</dt>
+                                    <dd>ワールドスタンプ広島</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>• ご注文確認後、お振込み金額をご案内いたします</li>
+                            <li>• 振込手数料はお客様のご負担となります</li>
+                            <li>• ご入金確認後、1-3営業日以内に発送いたします</li>
+                            <li>• 振込名義人はご注文者様と同一にしてください</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 郵便振替 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6 payment-method">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold mb-3">郵便振替</h2>
+                        <div class="bg-gray-50 rounded p-4 mb-4">
+                            <h3 class="font-bold mb-2">振替口座情報</h3>
+                            <dl class="space-y-1 text-sm">
+                                <div class="flex">
+                                    <dt class="w-20 font-medium">口座番号：</dt>
+                                    <dd>00000-0-00000</dd>
+                                </div>
+                                <div class="flex">
+                                    <dt class="w-20 font-medium">加入者名：</dt>
+                                    <dd>ワールドスタンプ広島</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>• 郵便局備え付けの払込取扱票をご利用ください</li>
+                            <li>• 振替手数料はお客様のご負担となります</li>
+                            <li>• ご入金確認後、1-3営業日以内に発送いたします</li>
+                            <li>• 通信欄にご注文番号をご記入ください</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm">
+                            <p class="font-medium text-yellow-800">ゆうちょ銀行からの振込も可能です</p>
+                            <p class="text-yellow-700 text-xs mt-1">他の金融機関からの振込用口座番号はお問い合わせください</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 代金引換 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6 payment-method">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold mb-3">代金引換</h2>
+                        <p class="mb-4 text-gray-700">
+                            商品到着時に配送員に代金をお支払いください。
+                        </p>
+                        <div class="bg-gray-50 rounded p-4 mb-4">
+                            <h3 class="font-bold mb-2">代引手数料</h3>
+                            <table class="w-full text-sm">
+                                <tbody>
+                                    <tr class="border-b">
+                                        <td class="py-2">1万円未満</td>
+                                        <td class="text-right font-medium">330円</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2">1万円以上～3万円未満</td>
+                                        <td class="text-right font-medium">440円</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2">3万円以上～10万円未満</td>
+                                        <td class="text-right font-medium">660円</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">10万円以上</td>
+                                        <td class="text-right font-medium">1,100円</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>• 現金のみのお取り扱いとなります</li>
+                            <li>• 商品代金＋送料＋代引手数料の合計をお支払いください</li>
+                            <li>• 高額商品の場合はご利用いただけない場合があります</li>
+                            <li>• ご不在の場合は不在票が投函されます</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded text-sm">
+                            <p class="font-medium text-red-800">ご注意</p>
+                            <p class="text-red-700 text-xs mt-1">30万円を超えるご注文には代金引換をご利用いただけません</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- お支払いに関する注意事項 -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+                <h3 class="font-bold text-lg mb-4">お支払いに関する重要事項</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>• ご注文から7日以内にお支払いがない場合は、ご注文をキャンセルさせていただく場合があります</li>
+                    <li>• 初回のご注文や高額商品のご注文の場合は、前払いをお願いする場合があります</li>
+                    <li>• 領収書の発行をご希望の場合は、ご注文時にお申し付けください</li>
+                    <li>• クレジットカード決済は現在お取り扱いしておりません</li>
+                    <li>• 海外からのご注文・海外への発送は承っておりません</li>
+                </ul>
+            </div>
+
+            <!-- 配送・送料について -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">配送・送料について</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="font-bold text-red-600 mb-2">郵便局（書留便など）</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            郵便局の書留便、ゆうパックなどでお送りします。お客様の玄関先まで確実にお届けします。
+                        </p>
+                        <p class="text-sm font-bold text-gray-800">料金は全国一律650円です。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-red-600 mb-2">郵便局（特定記録便など）</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            郵便局の特定記録便などでお送りします。基本的にお客様の郵便受箱に配送となります。
+                        </p>
+                        <p class="text-sm font-bold text-gray-800">料金は全国一律400円です。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-red-600 mb-2">店頭お受け取り</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            ご注文品の用意が整いましたら、メールでお知らせいたしますので、店舗にてお受け取りください。
+                        </p>
+                        <p class="text-sm font-bold text-gray-800">送料無料</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- お問い合わせ -->
+            <div class="bg-blue-50 rounded-lg p-6 text-center">
+                <h3 class="text-xl font-bold mb-4">お支払い方法についてのお問い合わせ</h3>
+                <p class="mb-2">
+                    お電話：<span class="phone-number font-bold text-xl">082-XXX-XXXX</span>
+                </p>
+                <p class="text-sm text-gray-700">
+                    営業時間：平日 9:30-18:00（月・水・木休業）
+                </p>
+            </div>
+        </main>
+
+        <div id="footer-container"></div>
+
+        <script src="js/components.js"></script>
+    </body>
+</html>
