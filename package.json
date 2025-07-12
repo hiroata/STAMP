@@ -7,13 +7,15 @@
     "serve": "firebase serve",
     "deploy": "firebase deploy",
     "deploy:hosting": "firebase deploy --only hosting",
+    "build:css": "tailwindcss -i ./css/tailwind.css -o ./css/tailwind-compiled.css --watch",
+    "build:css:prod": "tailwindcss -i ./css/tailwind.css -o ./css/tailwind-compiled.css --minify",
     "lint": "eslint js/**/*.js --fix",
     "format": "prettier --write \"**/*.{js,json,html,md}\"",
     "lint:check": "eslint js/**/*.js",
     "format:check": "prettier --check \"**/*.{js,json,html,md}\"",
     "test": "jest",
     "build:categories": "node scripts/generate-category-pages.js",
-    "build": "npm run build:categories"
+    "build": "npm run build:css:prod && npm run build:categories"
   },
   "keywords": ["stamp", "e-commerce", "firebase"],
   "author": "ワールドスタンプ広島",
@@ -26,6 +28,9 @@
     "prettier": "^3.2.5",
     "firebase-tools": "^13.0.0",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest-environment-jsdom": "^29.7.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33"
   }
 }

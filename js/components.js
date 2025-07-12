@@ -114,44 +114,115 @@ function createHeader() {
 // フッターコンポーネント
 function createFooter() {
     return `
-    <footer class="bg-gray-800 text-white mt-16">
-        <div class="container mx-auto px-4 py-12">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-                <!-- 店舗情報 -->
-                <div>
-                    <h3 class="text-lg font-bold mb-4">ワールドスタンプ広島</h3>
-                    <p class="text-sm text-gray-300 mb-2">〒XXX-XXXX</p>
-                    <p class="text-sm text-gray-300 mb-2">広島県広島市中区XXX</p>
-                    <p class="text-sm text-gray-300 mb-2">TEL: 082-XXX-XXXX</p>
-                    <p class="text-sm text-gray-300">営業時間: 平日9:30-18:00</p>
-                </div>
-                
-                <!-- サイトマップ -->
-                <div>
-                    <h3 class="text-lg font-bold mb-4">サイトマップ</h3>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-sm text-gray-300 hover:text-white transition-colors">ホーム</a></li>
-                        <li><a href="features.html" class="text-sm text-gray-300 hover:text-white transition-colors">当店の特徴</a></li>
-                        <li><a href="sell.html" class="text-sm text-gray-300 hover:text-white transition-colors">切手を売りたい</a></li>
-                        <li><a href="buy.html" class="text-sm text-gray-300 hover:text-white transition-colors">切手を買いたい</a></li>
-                        <li><a href="about.html" class="text-sm text-gray-300 hover:text-white transition-colors">店舗アクセス</a></li>
-                        <li><a href="contact.html" class="text-sm text-gray-300 hover:text-white transition-colors">お問い合わせ</a></li>
-                    </ul>
-                </div>
-                
-                <!-- その他 -->
-                <div>
-                    <h3 class="text-lg font-bold mb-4">その他</h3>
-                    <ul class="space-y-2">
-                        <li><a href="privacy.html" class="text-sm text-gray-300 hover:text-white transition-colors">プライバシーポリシー</a></li>
-                        <li><a href="terms.html" class="text-sm text-gray-300 hover:text-white transition-colors">利用規約</a></li>
-                        <li><a href="admin-login.html" class="text-sm text-gray-300 hover:text-white transition-colors">管理者ログイン</a></li>
-                    </ul>
+    <footer class="bg-gray-100 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <!-- 配送・送料について -->
+            <div class="bg-white rounded-lg p-6 mb-8 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">配送・送料について</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（書留便など）</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            郵便局の書留便、ゆうパックなどでお送りします。お客様の玄関先まで確実にお届けします。
+                        </p>
+                        <p class="text-sm font-bold text-gray-800">料金は全国一律650円です。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#C41E3A] mb-2">郵便局（特定記録便など）</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            郵便局の特定記録便などでお送りします。基本的にお客様の郵便受箱に配送となります。
+                        </p>
+                        <p class="text-sm font-bold text-gray-800 mb-2">料金は全国一律400円です。</p>
+                        <p class="text-xs text-gray-500">
+                            ※特定記録便は万が一、亡失、誤配、商品破損、盗難などがあった場合に補償を受ける事ができません。<br />
+                            ※平日のみの配達となります。土日、祝日は配達がありません。
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#C41E3A] mb-2">店頭お受け取り</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            ご注文品の用意が整いましたら、メールでお知らせいたしますので、メール受信後に店舗（広島市）にてお受け取りください。
+                        </p>
+                        <a href="about.html" class="text-sm text-[#C41E3A] hover:underline">店舗案内はこちら »</a>
+                    </div>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="text-sm text-gray-400">&copy; 2024 ワールドスタンプ広島. All rights reserved.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">ワールドスタンプ広島</h3>
+                    <p class="text-sm text-gray-600 mb-2">高品質な切手を適正価格で</p>
+                    <p class="text-sm text-gray-600">初心者から愛好家まで幅広くサポート</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">ショッピングガイド</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="order-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                ご注文方法
+                            </a>
+                        </li>
+                        <li>
+                            <a href="payment-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                お支払い方法
+                            </a>
+                        </li>
+                        <li>
+                            <a href="about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                店舗案内
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">お客様サポート</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                よくあるご質問
+                            </a>
+                        </li>
+                        <li>
+                            <a href="contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                お問い合わせ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-4">お問い合わせ</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2">
+                            <svg
+                                class="w-5 h-5"
+                                style="color: #c41e3a"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                                ></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 font-medium">082-XXX-XXXX</span>
+                        </div>
+                        <p class="text-xs text-gray-600 ml-7">
+                            平日 9:30-18:00<br />
+                            定休日: 月・水・木
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-800 text-white py-4">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-sm">© 2024 ワールドスタンプ広島 All Rights Reserved.</p>
+                <p class="text-xs mt-2">
+                    <a href="admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
+                </p>
             </div>
         </div>
     </footer>`;

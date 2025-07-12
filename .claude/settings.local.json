@@ -69,7 +69,9 @@
       "Bash(git push:*)",
       "Bash(git commit:*)",
       "Bash(npx eslint:*)",
-      "Bash(npx stylelint:*)"
+      "Bash(npx stylelint:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npx update-browserslist-db:*)"
     ],
     "deny": []
   }

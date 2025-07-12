@@ -72,8 +72,14 @@ npm install
 cp .env.example .env
 # .envファイルを編集してFirebase認証情報を設定
 
+# Tailwind CSSのコンパイル
+npm run build:css:prod
+
 # 開発サーバー起動
 firebase serve
+
+# 開発時のCSSウォッチ（別ターミナル）
+npm run build:css
 
 # コード品質チェック
 npm run lint          # ESLint実行
