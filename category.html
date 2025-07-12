@@ -3,12 +3,43 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
+        <meta http-equiv="Last-Modified" content="0" />
         <title>商品カテゴリー - 切手販売サイト</title>
-        <link rel="stylesheet" href="css/common.css?v=20250113">
+        <link rel="stylesheet" href="css/common.css?v=20250713-1">
         <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            /* Force consistent category title styling - override any cached or conflicting styles */
+            .category-title, 
+            h3.text-xl.font-bold.text-gray-800,
+            .bg-white h3,
+            div.bg-white h3,
+            .shadow-md h3 {
+                color: #1f2937 !important; /* text-gray-800 color */
+                font-weight: 700 !important;
+            }
+            
+            /* Specific overrides for problematic categories */
+            h3:contains("エラー"), 
+            h3:contains("歴史"), 
+            h3:contains("関連") {
+                color: #1f2937 !important;
+            }
+            
+            /* Reset any inherited colors */
+            .bg-white.rounded-lg.shadow-md h3 {
+                color: #1f2937 !important;
+                text-decoration: none !important;
+            }
+            
+            /* Ensure no browser cache interference */
+            * {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        </style>
     </head>
     <body>
         <div class="min-h-screen bg-gray-50">
@@ -36,7 +67,7 @@
                     <!-- 普通切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">📮</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">普通切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">普通切手</h3>
                         <p class="text-gray-600 mb-4">
                             現行・旧版の普通切手を取り揃えています
                         </p>
@@ -46,7 +77,7 @@
                     <!-- 記念切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🎌</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">記念切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">記念切手</h3>
                         <p class="text-gray-600 mb-4">
                             日本の歴史的な出来事や文化を記念した切手
                         </p>
@@ -61,7 +92,7 @@
                     <!-- 特殊切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🌸</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">特殊切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">特殊切手</h3>
                         <p class="text-gray-600 mb-4">
                             グリーティング、アニメ、芸術など特別な切手
                         </p>
@@ -75,7 +106,7 @@
                     <!-- 年賀切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🎍</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">年賀切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">年賀切手</h3>
                         <p class="text-gray-600 mb-4">昭和から令和までの年賀切手、お年玉シート</p>
                         <ul class="space-y-2 mb-4">
                             <li><a href="pages/categories/category-nenga-showa.html" class="text-[#C41E3A] hover:underline">→ 昭和年賀</a></li>
@@ -87,7 +118,7 @@
                     <!-- ふるさと切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🏔️</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">ふるさと切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">ふるさと切手</h3>
                         <p class="text-gray-600 mb-4">地方の風景、文化、特産品を描いた切手</p>
                         <ul class="space-y-2 mb-4">
                             <li><a href="pages/categories/category-furusato-landscape.html" class="text-[#C41E3A] hover:underline">→ 風景シリーズ</a></li>
@@ -99,7 +130,7 @@
                     <!-- 外国切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🌍</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">外国切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">外国切手</h3>
                         <p class="text-gray-600 mb-4">世界各国の切手を国別に取り揃えています</p>
                         <ul class="space-y-2 mb-4">
                             <li><a href="pages/categories/category-foreign-usa.html" class="text-[#C41E3A] hover:underline">→ アメリカ</a></li>
@@ -117,7 +148,7 @@
                     <!-- エラー・変種切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🔍</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">エラー・変種切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">エラー・変種切手</h3>
                         <p class="text-gray-600 mb-4">印刷ミスや製造エラーによる希少切手</p>
                         <ul class="space-y-2 mb-4">
                             <li><a href="pages/categories/category-error-inverted.html" class="text-[#C41E3A] hover:underline">→ 逆刷りエラー</a></li>
@@ -130,7 +161,7 @@
                     <!-- 歴史的切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">📜</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">歴史的切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">歴史的切手</h3>
                         <p class="text-gray-600 mb-4">明治から昭和初期の貴重な切手</p>
                         <ul class="space-y-2 mb-4">
                             <li><a href="pages/categories/category-historical-tebori.html" class="text-[#C41E3A] hover:underline">→ 手彫切手</a></li>
@@ -143,7 +174,7 @@
                     <!-- 切手関連品 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">📮</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">切手関連品</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">切手関連品</h3>
                         <p class="text-gray-600 mb-4">FDC、官製はがき、収入印紙など</p>
                         <ul class="space-y-2 mb-4">
                             <li><a href="pages/categories/category-related-fdc.html" class="text-[#C41E3A] hover:underline">→ 初日カバー</a></li>
@@ -160,7 +191,7 @@
                     <!-- 沖縄切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🏝️</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">沖縄切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">沖縄切手</h3>
                         <p class="text-gray-600 mb-4">琉球政府時代、米国統治時代の切手</p>
                         <a href="pages/categories/category-okinawa.html" class="block text-center bg-[#C41E3A] text-white py-3 px-6 rounded hover:bg-[#A01729] transition-colors font-medium">沖縄切手を見る</a>
                     </div>
@@ -168,7 +199,7 @@
                     <!-- 国立公園切手 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">🏔️</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">国立公園切手</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">国立公園切手</h3>
                         <p class="text-gray-600 mb-4">日本の美しい国立公園を描いた切手</p>
                         <a href="pages/categories/category-park.html" class="block text-center bg-[#C41E3A] text-white py-3 px-6 rounded hover:bg-[#A01729] transition-colors font-medium">公園切手を見る</a>
                     </div>
@@ -176,7 +207,7 @@
                     <!-- 収集用品 -->
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="text-4xl mb-4">📦</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">収集用品</h3>
+                        <h3 class="category-title text-xl font-bold text-gray-800 mb-2">収集用品</h3>
                         <p class="text-gray-600 mb-4">アルバム、ストックブック、ルーペなど</p>
                         <ul class="space-y-2 mb-4">
                             <li><a href="pages/categories/category-supplies-album.html" class="text-[#C41E3A] hover:underline">→ 切手アルバム</a></li>

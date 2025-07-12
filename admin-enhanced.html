@@ -206,24 +206,71 @@
             <!-- バルク操作ツール -->
             <div class="bg-white rounded-lg shadow-md p-4 mb-6">
                 <h3 class="text-lg font-semibold mb-3">バルク操作</h3>
-                <div class="flex gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <button
                         onclick="showImportDialog()"
-                        class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                        class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"
                     >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
                         CSVインポート
                     </button>
                     <button
                         onclick="exportProducts()"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2"
                     >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+                        </svg>
                         CSVエクスポート
                     </button>
                     <button
-                        onclick="showBulkEditDialog()"
-                        class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+                        onclick="bulkMarkSoldOut()"
+                        class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 flex items-center justify-center gap-2"
                     >
-                        一括編集
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 14.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        一括売切れ
+                    </button>
+                    <button
+                        onclick="generateMissingSKUs()"
+                        class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        SKU自動生成
+                    </button>
+                </div>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button
+                        onclick="showStockManagement()"
+                        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        在庫管理
+                    </button>
+                    <button
+                        onclick="showPriceManagement()"
+                        class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 flex items-center justify-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                        価格管理
+                    </button>
+                    <button
+                        onclick="cleanupProducts()"
+                        class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center justify-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        データ整理
                     </button>
                 </div>
             </div>
@@ -434,8 +481,8 @@
                             <button onclick="editProduct('${product.id}')" class="text-blue-600 hover:text-blue-800 font-medium">
                                 編集
                             </button>
-                            <button onclick="duplicateProduct('${product.id}')" class="text-green-600 hover:text-green-800 font-medium">
-                                複製
+                            <button onclick="toggleSoldOut('${product.id}')" class="text-${product.soldOut ? 'green' : 'orange'}-600 hover:text-${product.soldOut ? 'green' : 'orange'}-800 font-medium">
+                                ${product.soldOut ? '販売再開' : '売り切れ'}
                             </button>
                             <button onclick="deleteProduct('${product.id}')" class="text-red-600 hover:text-red-800 font-medium">
                                 削除
@@ -582,18 +629,32 @@
                     const products = [];
                     for (let i = 1; i < lines.length; i++) {
                         const values = parseCSVLine(lines[i]);
+                        const skuValue = values[headers.indexOf('SKU')] || values[headers.indexOf('sku')] || '';
                         const product = {
-                            sku: values[headers.indexOf('SKU')] || generateSKU(),
+                            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                            sku: skuValue.trim() || generateRandomSKU(),
                             title: values[headers.indexOf('商品名')] || values[headers.indexOf('title')] || '',
                             price: parseInt(values[headers.indexOf('価格')] || values[headers.indexOf('price')]) || null,
+                            priceText: '',
                             category: values[headers.indexOf('カテゴリー')] || values[headers.indexOf('category')] || '',
                             description: values[headers.indexOf('説明')] || values[headers.indexOf('description')] || '',
                             stock: parseInt(values[headers.indexOf('在庫数')] || values[headers.indexOf('stock')]) || 1,
                             negotiable: values[headers.indexOf('negotiable')] === 'true',
                             status: 'active',
                             isNew: true,
+                            soldOut: false,
+                            created_at: new Date().toISOString().split('T')[0],
                             imageUrl: '/images/products/placeholder.jpg'
                         };
+                        
+                        // priceTextを設定
+                        if (product.negotiable) {
+                            product.priceText = '応相談';
+                        } else if (product.price) {
+                            product.priceText = `¥${product.price.toLocaleString()}`;
+                        } else {
+                            product.priceText = '価格未設定';
+                        }
                         
                         if (product.title) {
                             products.push(product);
@@ -644,7 +705,7 @@
                 return values;
             }
 
-            // SKU生成関数
+            // SKU生成関数（日付ベース）
             function generateSKU() {
                 const date = new Date();
                 const year = date.getFullYear().toString().slice(-2);
@@ -654,28 +715,34 @@
                 return `ST-${year}${month}${day}-${random}`;
             }
 
-            // 商品を複製
-            async function duplicateProduct(id) {
-                const products = storageManager.getProducts();
-                const product = products.find(p => p.id === id);
-                if (!product) return;
+            // ランダムSKU生成関数（未入力時用）
+            function generateRandomSKU() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let result = 'ST-';
+                for (let i = 0; i < 8; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
 
-                const newProduct = {
-                    ...product,
-                    id: undefined,
-                    sku: generateSKU(),
-                    title: product.title + ' (コピー)',
-                    created_at: new Date().toISOString()
-                };
-
-                delete newProduct.id;
-
+            // 売り切れ状態をトグル
+            async function toggleSoldOut(id) {
                 try {
-                    await storageManager.addProduct(newProduct);
-                    alert('商品を複製しました');
+                    const products = storageManager.getProducts();
+                    const product = products.find(p => p.id === id);
+                    if (!product) return;
+
+                    const updatedProduct = {
+                        ...product,
+                        soldOut: !product.soldOut,
+                        status: !product.soldOut ? 'soldout' : (product.stock > 0 ? 'active' : 'outofstock')
+                    };
+
+                    await storageManager.updateProduct(id, updatedProduct);
+                    displayProducts(); // リストを更新
                 } catch (error) {
-                    console.error('Duplicate error:', error);
-                    alert('複製に失敗しました');
+                    console.error('Toggle sold out error:', error);
+                    alert('状態の変更に失敗しました');
                 }
             }
 
@@ -705,6 +772,139 @@
             function editProduct(id) {
                 // 編集は元のadmin.htmlで行う
                 window.location.href = `admin.html#edit-${id}`;
+            }
+
+            // 一括売り切れ設定
+            async function bulkMarkSoldOut() {
+                const confirmed = confirm('現在フィルターされている商品をすべて売り切れにしますか？');
+                if (!confirmed) return;
+
+                try {
+                    const filteredProducts = storageManager.getFilteredProducts();
+                    const availableProducts = filteredProducts.filter(p => !p.soldOut);
+                    
+                    if (availableProducts.length === 0) {
+                        alert('売り切れ対象の商品がありません');
+                        return;
+                    }
+
+                    for (const product of availableProducts) {
+                        const updatedProduct = {
+                            ...product,
+                            soldOut: true,
+                            status: 'soldout'
+                        };
+                        await storageManager.updateProduct(product.id, updatedProduct);
+                    }
+
+                    alert(`${availableProducts.length}件の商品を売り切れにしました`);
+                    displayProducts();
+                } catch (error) {
+                    console.error('Bulk sold out error:', error);
+                    alert('一括売り切れ処理に失敗しました');
+                }
+            }
+
+            // 未設定SKU自動生成
+            async function generateMissingSKUs() {
+                const confirmed = confirm('SKUが未設定の商品に自動でSKUを割り当てますか？');
+                if (!confirmed) return;
+
+                try {
+                    const allProducts = storageManager.getProducts();
+                    const noSkuProducts = allProducts.filter(p => !p.sku || p.sku.trim() === '');
+                    
+                    if (noSkuProducts.length === 0) {
+                        alert('SKU未設定の商品はありません');
+                        return;
+                    }
+
+                    for (const product of noSkuProducts) {
+                        const updatedProduct = {
+                            ...product,
+                            sku: generateRandomSKU()
+                        };
+                        await storageManager.updateProduct(product.id, updatedProduct);
+                    }
+
+                    alert(`${noSkuProducts.length}件の商品にSKUを自動生成しました`);
+                    displayProducts();
+                } catch (error) {
+                    console.error('SKU generation error:', error);
+                    alert('SKU自動生成に失敗しました');
+                }
+            }
+
+            // 在庫管理画面表示
+            function showStockManagement() {
+                alert('在庫管理機能:\n・在庫切れ商品の一覧表示\n・在庫数の一括更新\n・在庫アラート設定\n\n（実装予定）');
+            }
+
+            // 価格管理画面表示
+            function showPriceManagement() {
+                alert('価格管理機能:\n・価格帯別商品分析\n・価格の一括変更\n・割引設定\n\n（実装予定）');
+            }
+
+            // データ整理機能
+            async function cleanupProducts() {
+                const confirmed = confirm('データ整理を実行しますか？\n・重複商品の検出\n・不要データの削除\n・データの正規化');
+                if (!confirmed) return;
+
+                try {
+                    const allProducts = storageManager.getProducts();
+                    let cleanupCount = 0;
+
+                    // 重複タイトルをチェック
+                    const titleMap = new Map();
+                    const duplicates = [];
+                    
+                    allProducts.forEach(product => {
+                        const title = product.title?.toLowerCase().trim();
+                        if (title) {
+                            if (titleMap.has(title)) {
+                                duplicates.push(product);
+                            } else {
+                                titleMap.set(title, product);
+                            }
+                        }
+                    });
+
+                    // 空のデータフィールドを整理
+                    for (const product of allProducts) {
+                        let needsUpdate = false;
+                        const updatedProduct = { ...product };
+
+                        // 空文字列をnullに変換
+                        if (updatedProduct.description === '') {
+                            updatedProduct.description = null;
+                            needsUpdate = true;
+                        }
+                        if (updatedProduct.category === '') {
+                            updatedProduct.category = '未分類';
+                            needsUpdate = true;
+                        }
+                        // デフォルト在庫数設定
+                        if (!updatedProduct.stock || updatedProduct.stock < 0) {
+                            updatedProduct.stock = 1;
+                            needsUpdate = true;
+                        }
+
+                        if (needsUpdate) {
+                            await storageManager.updateProduct(product.id, updatedProduct);
+                            cleanupCount++;
+                        }
+                    }
+
+                    let message = `データ整理完了:\n・${cleanupCount}件のデータを修正`;
+                    if (duplicates.length > 0) {
+                        message += `\n・${duplicates.length}件の重複商品を検出（手動確認が必要）`;
+                    }
+                    alert(message);
+                    displayProducts();
+                } catch (error) {
+                    console.error('Cleanup error:', error);
+                    alert('データ整理に失敗しました');
+                }
             }
         </script>
 

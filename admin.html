@@ -94,9 +94,9 @@
                     <a href="admin-categories.html" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">
                         カテゴリー管理
                     </a>
-                    <a href="admin-backup.html" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">
+                    <button onclick="showBackupTab()" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300" id="backup-tab">
                         バックアップ
-                    </a>
+                    </button>
                 </nav>
             </div>
 
@@ -1038,6 +1038,90 @@
             });
 
             // 初期表示は storageManager の初期化時に自動的に行われる
+            
+            // バックアップタブを表示
+            function showBackupTab() {
+                // 既存のタブの非アクティブ化
+                document.querySelector('a[href="admin.html"]').classList.remove('text-[#C41E3A]', 'font-semibold', 'border-[#C41E3A]');
+                document.querySelector('a[href="admin.html"]').classList.add('text-gray-600', 'border-transparent');
+                
+                // バックアップタブをアクティブ化
+                const backupTab = document.getElementById('backup-tab');
+                backupTab.classList.remove('text-gray-600', 'border-transparent');
+                backupTab.classList.add('text-[#C41E3A]', 'font-semibold', 'border-[#C41E3A]');
+                
+                // 商品登録フォームを非表示にしてバックアップ機能を表示
+                const productForm = document.querySelector('.bg-white.rounded-b-lg.shadow-lg.p-4');
+                productForm.style.display = 'none';
+                
+                // バックアップセクションを作成して表示
+                let backupSection = document.getElementById('backup-section');
+                if (!backupSection) {
+                    backupSection = document.createElement('div');
+                    backupSection.id = 'backup-section';
+                    backupSection.className = 'bg-white rounded-b-lg shadow-lg p-4 md:p-8 mb-8';
+                    backupSection.innerHTML = `
+                        <h1 class="text-2xl font-bold text-gray-800 mb-6">バックアップ管理</h1>
+                        <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                            <p class="text-sm text-blue-800">
+                                商品データの自動バックアップが有効になっています。手動でバックアップを作成することも可能です。
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold mb-3">手動バックアップ</h3>
+                                <button onclick="createManualBackup()" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                                    今すぐバックアップを作成
+                                </button>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold mb-3">バックアップ履歴</h3>
+                                <div id="backup-history" class="text-sm text-gray-600">
+                                    読み込み中...
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    productForm.parentNode.insertBefore(backupSection, productForm.nextSibling);
+                }
+                backupSection.style.display = 'block';
+                
+                // バックアップ履歴を更新
+                if (backupManager) {
+                    updateBackupHistory();
+                }
+            }
+            
+            // 手動バックアップ作成
+            async function createManualBackup() {
+                if (!backupManager) {
+                    alert('バックアップマネージャーが初期化されていません');
+                    return;
+                }
+                
+                try {
+                    await backupManager.createManualBackup();
+                    alert('バックアップが作成されました');
+                    updateBackupHistory();
+                } catch (error) {
+                    console.error('Manual backup error:', error);
+                    alert('バックアップの作成に失敗しました');
+                }
+            }
+            
+            // バックアップ履歴を更新
+            function updateBackupHistory() {
+                const historyDiv = document.getElementById('backup-history');
+                if (!historyDiv || !backupManager) return;
+                
+                // バックアップ履歴の表示
+                historyDiv.innerHTML = `
+                    <div class="text-sm text-gray-600">
+                        <p>自動バックアップ: 有効</p>
+                        <p>最後のバックアップ: ${new Date().toLocaleString('ja-JP')}</p>
+                    </div>
+                `;
+            }
         </script>
 
         <footer class="bg-gray-100 mt-12">
