@@ -7,9 +7,20 @@ class AuthManager {
         this.isAdmin = false;
         this.sessionTimeout = null;
         this.SESSION_TIMEOUT_DURATION = 30 * 60 * 1000; // 30分
+        
+        // デモモードのチェック
+        this.checkDemoMode();
 
         // 認証状態の監視
         this.auth.onAuthStateChanged(async (user) => {
+            console.log('Auth state changed:', user ? user.email : 'null');
+            
+            // デモモードの場合はFirebase認証をスキップ
+            if (window.isDemoMode) {
+                console.log('Demo mode active, skipping Firebase auth');
+                return;
+            }
+            
             this.currentUser = user;
             if (user) {
                 // 管理者権限をチェック
@@ -59,6 +70,8 @@ class AuthManager {
             // デモ用: ハードコーディングされた認証情報でのログイン
             // 本番環境では必ず削除してください
             if (email === 'admin@test.com' && password === 'password123') {
+                console.log('Demo login attempted');
+                
                 // デモ用のモックユーザーオブジェクトを作成
                 const mockUser = {
                     uid: 'demo-admin-uid',
@@ -71,11 +84,26 @@ class AuthManager {
                 this.isAdmin = true;
                 
                 // セッション情報を保存
+                const authData = { 
+                    email, 
+                    timestamp: Date.now(),
+                    isDemo: true,
+                    uid: mockUser.uid
+                };
+                
                 if (remember) {
-                    localStorage.setItem('demoAuth', JSON.stringify({ email, timestamp: Date.now() }));
+                    localStorage.setItem('demoAuth', JSON.stringify(authData));
                 } else {
-                    sessionStorage.setItem('demoAuth', JSON.stringify({ email, timestamp: Date.now() }));
+                    sessionStorage.setItem('demoAuth', JSON.stringify(authData));
                 }
+                
+                // デモモードフラグを設定
+                window.isDemoMode = true;
+                
+                // セッションタイムアウトを開始
+                this.startSessionTimeout();
+                
+                console.log('Demo login successful');
                 
                 return {
                     success: true,
@@ -160,6 +188,7 @@ class AuthManager {
             // 状態をリセット
             this.currentUser = null;
             this.isAdmin = false;
+            window.isDemoMode = false;
             
             return { success: true };
         } catch (error) {
@@ -188,6 +217,12 @@ class AuthManager {
 
     // 認証状態の確認（ページ保護用）
     async requireAuth(redirectUrl = 'admin-login.html') {
+        // デモモードの場合
+        if (window.isDemoMode && this.currentUser) {
+            console.log('Demo mode auth check passed');
+            return true;
+        }
+        
         return new Promise((resolve) => {
             const unsubscribe = this.auth.onAuthStateChanged(async (user) => {
                 unsubscribe();
@@ -200,8 +235,15 @@ class AuthManager {
                         resolve(false);
                     }
                 } else {
-                    window.location.href = redirectUrl;
-                    resolve(false);
+                    // デモモードの再チェック
+                    this.checkDemoMode();
+                    if (window.isDemoMode && this.currentUser) {
+                        console.log('Demo mode revalidated');
+                        resolve(true);
+                    } else {
+                        window.location.href = redirectUrl;
+                        resolve(false);
+                    }
                 }
             });
         });
@@ -252,6 +294,30 @@ class AuthManager {
                 this.resetSessionTimeout();
             }, true);
         });
+    }
+    
+    // デモモードのチェック
+    checkDemoMode() {
+        const demoAuth = localStorage.getItem('demoAuth') || sessionStorage.getItem('demoAuth');
+        if (demoAuth) {
+            try {
+                const authData = JSON.parse(demoAuth);
+                if (authData.isDemo && authData.email === 'admin@test.com') {
+                    console.log('Demo mode detected from storage');
+                    window.isDemoMode = true;
+                    this.currentUser = {
+                        uid: authData.uid,
+                        email: authData.email,
+                        displayName: 'Demo Admin',
+                        getIdToken: async () => 'demo-token'
+                    };
+                    this.isAdmin = true;
+                    this.startSessionTimeout();
+                }
+            } catch (error) {
+                console.error('Error parsing demo auth:', error);
+            }
+        }
     }
 }
 

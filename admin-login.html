@@ -92,15 +92,9 @@
             // ページ読み込み時の初期化
             window.addEventListener('DOMContentLoaded', () => {
                 authManager = new AuthManager();
-
-                // 自動ログイン機能を無効化（セキュリティ強化のため）
-                // ユーザーは毎回ログイン情報を入力する必要があります
-                authManager.auth.onAuthStateChanged(async (user) => {
-                    if (user) {
-                        // 既存のセッションがある場合は一旦ログアウト
-                        await authManager.logout();
-                    }
-                });
+                
+                // デバッグ情報
+                console.log('Admin login page initialized');
             });
 
             // ログイン処理
