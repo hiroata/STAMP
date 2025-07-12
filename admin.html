@@ -56,21 +56,7 @@
             // AuthManagerインスタンス
             let authManager;
 
-            // アクセス制御と初期化
-            window.addEventListener('DOMContentLoaded', async () => {
-                authManager = new AuthManager();
-
-                // 認証チェック
-                const isAuthenticated = await authManager.requireAuth();
-                if (!isAuthenticated) {
-                    return; // 認証されていない場合は自動的にリダイレクトされる
-                }
-
-                // 既存の初期化処理を実行
-                if (typeof initializeApp === 'function') {
-                    initializeApp();
-                }
-            });
+            // アクセス制御と初期化は後の方の処理で行うため、ここでは削除
 
             // ログアウト機能
             async function logout() {
@@ -79,6 +65,7 @@
                 }
                 window.location.href = 'admin-login.html';
             }
+            
         </script>
         <div class="container mx-auto px-4 py-8 max-w-4xl">
             <!-- ナビゲーション -->
@@ -353,6 +340,20 @@
                     // バックアップマネージャーを初期化（自動バックアップを開始）
                     backupManager = new BackupManager();
                     
+                    // UnifiedStorageManagerの初期化を待つ
+                    await new Promise((resolve) => {
+                        if (storageManager.isInitialized) {
+                            resolve();
+                        } else {
+                            const checkInterval = setInterval(() => {
+                                if (storageManager.isInitialized) {
+                                    clearInterval(checkInterval);
+                                    resolve();
+                                }
+                            }, 100);
+                        }
+                    });
+                    
                     // グローバルに公開（デバッグ用）
                     window.imageUploader = imageUploader;
                     
@@ -374,6 +375,14 @@
                         products = updatedProducts;
                         displayProducts();
                     });
+                    
+                    // 初期データを読み込む
+                    console.log('Loading initial products...');
+                    const initialProducts = await storageManager.getProducts();
+                    console.log('Initial products loaded:', initialProducts);
+                    console.log('Number of products:', initialProducts.length);
+                    products = initialProducts;
+                    displayProducts();
                 } catch (error) {
                     console.error('StorageManager initialization error:', error);
                     alert('初期化エラー: ' + error.message);
