@@ -71,7 +71,8 @@
       "Bash(npx eslint:*)",
       "Bash(npx stylelint:*)",
       "Bash(npx tailwindcss:*)",
-      "Bash(npx update-browserslist-db:*)"
+      "Bash(npx update-browserslist-db:*)",
+      "Bash(tail:*)"
     ],
     "deny": []
   }

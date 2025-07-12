@@ -1,7 +1,21 @@
 // 共通コンポーネント - DRY原則に基づく実装
 
+// パスの深度を計算する関数
+function getBasePath() {
+    const path = window.location.pathname;
+    // pages/categories/ 内のページかどうかを判定
+    if (path.includes('/pages/categories/')) {
+        return '../../';
+    } else if (path.includes('/pages/')) {
+        return '../';
+    } else {
+        return '';
+    }
+}
+
 // ヘッダーコンポーネント
 function createHeader() {
+    const basePath = getBasePath();
     return `
     <header class="w-full">
         <!-- 上部の薄い茶色バー -->
@@ -20,7 +34,7 @@ function createHeader() {
                         </div>
                         <div>
                             <h1 class="text-2xl font-bold text-gray-800">
-                                <a href="index.html" class="hover:text-red-700 transition-colors">ワールドスタンプ広島</a>
+                                <a href="${basePath}index.html" class="hover:text-red-700 transition-colors">ワールドスタンプ広島</a>
                             </h1>
                         </div>
                     </div>
@@ -38,7 +52,7 @@ function createHeader() {
                             <p class="text-xs md:text-sm text-gray-600">平日9:30-18:00 休業日：月水木・臨時休業あり</p>
                         </div>
                         <!-- お問い合わせボタン（モバイルでは非表示） -->
-                        <a href="contact.html" class="hidden sm:flex bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-md hover:bg-red-700 transition-colors items-center gap-2 text-sm md:text-base">
+                        <a href="${basePath}contact.html" class="hidden sm:flex bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-md hover:bg-red-700 transition-colors items-center gap-2 text-sm md:text-base">
                             <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
@@ -59,13 +73,13 @@ function createHeader() {
         <div class="bg-red-50 border-b border-red-200 hidden sm:block">
             <div class="container mx-auto px-4">
                 <nav class="flex items-center justify-center gap-8 py-3">
-                    <a href="index.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">HOME</a>
-                    <a href="features.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">当店の特徴</a>
-                    <a href="sell.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">切手を売りたい</a>
-                    <a href="buy.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">切手を買いたい</a>
-                    <a href="appraiser.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">鑑定人と切手</a>
-                    <a href="about.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">店舗アクセス</a>
-                    <a href="qna.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">Q&A</a>
+                    <a href="${basePath}index.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">HOME</a>
+                    <a href="${basePath}features.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">当店の特徴</a>
+                    <a href="${basePath}sell.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">切手を売りたい</a>
+                    <a href="${basePath}buy.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">切手を買いたい</a>
+                    <a href="${basePath}appraiser.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">鑑定人と切手</a>
+                    <a href="${basePath}about.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">店舗アクセス</a>
+                    <a href="${basePath}qna.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">Q&A</a>
                 </nav>
             </div>
         </div>
@@ -90,20 +104,20 @@ function createHeader() {
                             <a href="tel:082-XXX-XXXX" class="text-lg font-bold text-gray-900">082-XXX-XXXX</a>
                         </div>
                         <p class="text-xs text-gray-600 mb-3">平日9:30-18:00 休業日：月水木・臨時休業あり</p>
-                        <a href="contact.html" class="block bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors text-center">
+                        <a href="${basePath}contact.html" class="block bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors text-center">
                             お問い合わせ
                         </a>
                     </div>
                     
                     <!-- ナビゲーションリンク -->
                     <ul class="space-y-1">
-                        <li><a href="index.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">HOME</a></li>
-                        <li><a href="features.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">当店の特徴</a></li>
-                        <li><a href="sell.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">切手を売りたい</a></li>
-                        <li><a href="buy.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">切手を買いたい</a></li>
-                        <li><a href="appraiser.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">鑑定人と切手</a></li>
-                        <li><a href="about.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">店舗アクセス</a></li>
-                        <li><a href="qna.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">Q&A</a></li>
+                        <li><a href="${basePath}index.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">HOME</a></li>
+                        <li><a href="${basePath}features.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">当店の特徴</a></li>
+                        <li><a href="${basePath}sell.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">切手を売りたい</a></li>
+                        <li><a href="${basePath}buy.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">切手を買いたい</a></li>
+                        <li><a href="${basePath}appraiser.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">鑑定人と切手</a></li>
+                        <li><a href="${basePath}about.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">店舗アクセス</a></li>
+                        <li><a href="${basePath}qna.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-md transition-colors">Q&A</a></li>
                     </ul>
                 </nav>
             </div>
@@ -113,6 +127,7 @@ function createHeader() {
 
 // フッターコンポーネント
 function createFooter() {
+    const basePath = getBasePath();
     return `
     <footer class="bg-gray-100 mt-12">
         <div class="container mx-auto px-4 py-8">
@@ -143,7 +158,7 @@ function createFooter() {
                         <p class="text-sm text-gray-600 mb-2">
                             ご注文品の用意が整いましたら、メールでお知らせいたしますので、メール受信後に店舗（広島市）にてお受け取りください。
                         </p>
-                        <a href="about.html" class="text-sm text-[#C41E3A] hover:underline">店舗案内はこちら »</a>
+                        <a href="${basePath}about.html" class="text-sm text-[#C41E3A] hover:underline">店舗案内はこちら »</a>
                     </div>
                 </div>
             </div>
@@ -158,17 +173,17 @@ function createFooter() {
                     <h3 class="font-bold text-gray-800 mb-4">ショッピングガイド</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="order-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                            <a href="${basePath}order-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 ご注文方法
                             </a>
                         </li>
                         <li>
-                            <a href="payment-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                            <a href="${basePath}payment-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 お支払い方法
                             </a>
                         </li>
                         <li>
-                            <a href="about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                            <a href="${basePath}about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 店舗案内
                             </a>
                         </li>
@@ -178,12 +193,12 @@ function createFooter() {
                     <h3 class="font-bold text-gray-800 mb-4">お客様サポート</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                            <a href="${basePath}faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 よくあるご質問
                             </a>
                         </li>
                         <li>
-                            <a href="contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                            <a href="${basePath}contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 お問い合わせ
                             </a>
                         </li>
@@ -221,7 +236,7 @@ function createFooter() {
             <div class="container mx-auto px-4 text-center">
                 <p class="text-sm">© 2024 ワールドスタンプ広島 All Rights Reserved.</p>
                 <p class="text-xs mt-2">
-                    <a href="admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
+                    <a href="${basePath}admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
                 </p>
             </div>
         </div>

@@ -12,63 +12,12 @@
         <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
         <script src="/firebase-config.js"></script>
         <script src="/js/unified-storage.js"></script>
-        <style>
-            /* モバイル対応 */
-            @media (max-width: 639px) {
-                body {
-                    font-size: 18px;
-                }
-
-                .text-xs {
-                    font-size: 14px;
-                }
-
-                .text-sm {
-                    font-size: 16px;
-                }
-
-                .text-base {
-                    font-size: 18px;
-                }
-
-                .text-lg {
-                    font-size: 20px;
-                }
-
-                .text-xl {
-                    font-size: 22px;
-                }
-
-                .text-2xl {
-                    font-size: 26px;
-                }
-
-                /* タッチフレンドリーボタン */
-                a,
-                button {
-                    min-height: 48px;
-                    padding: 12px 16px;
-                }
-
-                /* 電話番号をクリック可能に */
-                .phone-number {
-                    text-decoration: underline;
-                    color: #1976d2;
-                }
-            }
-        </style>
+        <link rel="stylesheet" href="css/common.css">
     </head>
     <body>
         <div class="min-h-screen bg-gray-50">
-            <!-- ヘッダー -->
-            <header class="bg-[#B71C1C] text-white p-4">
-                <div class="container mx-auto">
-                    <h1 class="text-2xl font-bold">
-                        <a href="index.html" class="hover:text-gray-300 transition-colors">ワールドスタンプ広島</a>
-                    </h1>
-                    <p class="text-sm mt-2">ご注文: 📞 082-XXX-XXXX | FAX: 082-XXX-XXXX</p>
-                </div>
-            </header>
+            <!-- 統一ヘッダー -->
+            <div id="header-container"></div>
 
             <!-- パンくずリスト -->
             <nav class="container mx-auto px-4 py-2">
