@@ -32,12 +32,15 @@ const firebaseConfig =
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const auth = firebase.auth();
-const storage = firebase.storage();
+// Storageは明示的にインポートが必要
+const storage = firebase.storage ? firebase.storage() : null;
 
 // Firebase参照をグローバルに公開（各マネージャーで使用）
 window.firebaseDatabase = database;
 window.firebaseAuth = auth;
-window.firebaseStorage = storage;
+if (storage) {
+    window.firebaseStorage = storage;
+}
 
 // FirebaseStorageManagerは削除し、UnifiedStorageManagerを使用
 // 詳細はjs/unified-storage.jsを参照

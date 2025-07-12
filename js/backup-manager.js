@@ -48,9 +48,14 @@ class BackupManager {
             const productsSnapshot = await this.database.ref('products').once('value');
             const products = productsSnapshot.val() || {};
 
-            // カテゴリーデータを取得
-            const categoriesSnapshot = await this.database.ref('categories').once('value');
-            const categories = categoriesSnapshot.val() || {};
+            // カテゴリーデータを取得（エラーを回避）
+            let categories = {};
+            try {
+                const categoriesSnapshot = await this.database.ref('categories').once('value');
+                categories = categoriesSnapshot.val() || {};
+            } catch (error) {
+                console.warn('カテゴリーデータの取得をスキップ:', error);
+            }
 
             // バックアップデータの作成
             const backupData = {

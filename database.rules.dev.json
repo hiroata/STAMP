@@ -1,0 +1,53 @@
+{
+  "rules": {
+    "products": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["category", "subcategory", "createdAt", "price", "created_at", "status", "sku", "title", "soldOut", "stock"]
+    },
+    "categories": {
+      ".read": true,
+      ".write": true
+    },
+    "orders": {
+      ".read": true,
+      ".write": true
+    },
+    "users": {
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    "admins": {
+      ".read": true,
+      ".write": false,
+      "demo-admin-uid": {
+        ".read": true,
+        ".write": false
+      }
+    },
+    "analytics": {
+      ".read": true,
+      ".write": true
+    },
+    "images": {
+      ".read": true,
+      ".write": true
+    },
+    "backups": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["timestamp", "type"]
+    },
+    "backupMetadata": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["timestamp", "type"]
+    },
+    "restoreLogs": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

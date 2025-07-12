@@ -310,7 +310,6 @@
             let storageManager;
             let imageUploader;
             let categoryManager;
-            let authManager;
             let backupManager;
             let products = [];
             let filteredProducts = [];
@@ -319,8 +318,10 @@
             // Firebase初期化を待ってから商品データを取得
             window.addEventListener('DOMContentLoaded', async () => {
                 try {
-                    // 認証チェック
-                    authManager = new AuthManager();
+                    // 認証チェック（authManagerが未定義の場合のみ初期化）
+                    if (!authManager) {
+                        authManager = new AuthManager();
+                    }
                     const isAuthenticated = await authManager.requireAuth();
                     
                     if (!isAuthenticated) {

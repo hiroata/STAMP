@@ -40,25 +40,12 @@ class AuthManager {
     // 管理者権限をチェック
     async checkAdminStatus(uid) {
         try {
-            // デモ用: 特定のユーザーに管理者権限を付与
-            // 本番環境では、Firebase Realtime DatabaseやFirestoreで管理者リストを管理してください
-            const adminEmails = ['admin@test.com', 'admin@worldstamp.com'];
-            if (this.currentUser && adminEmails.includes(this.currentUser.email)) {
-                this.isAdmin = true;
-                return true;
-            }
-            
-            // Firebase Databaseでの管理者チェック（将来の実装用）
+            // Firebase Databaseで管理者権限をチェック
             const snapshot = await this.database.ref(`admins/${uid}`).once('value');
             this.isAdmin = snapshot.val() === true;
             return this.isAdmin;
         } catch (error) {
             console.error('管理者権限チェックエラー:', error);
-            // デモ用: エラー時でも特定のメールアドレスは管理者として扱う
-            if (this.currentUser && ['admin@test.com', 'admin@worldstamp.com'].includes(this.currentUser.email)) {
-                this.isAdmin = true;
-                return true;
-            }
             this.isAdmin = false;
             return false;
         }
@@ -67,50 +54,13 @@ class AuthManager {
     // ログイン
     async login(email, password, remember = false) {
         try {
-            // デモ用: ハードコーディングされた認証情報でのログイン
-            // 本番環境では必ず削除してください
-            if (email === 'admin@test.com' && password === 'password123') {
-                console.log('Demo login attempted');
-                
-                // デモ用のモックユーザーオブジェクトを作成
-                const mockUser = {
-                    uid: 'demo-admin-uid',
-                    email: email,
-                    displayName: 'Demo Admin',
-                    getIdToken: async () => 'demo-token'
-                };
-                
-                this.currentUser = mockUser;
-                this.isAdmin = true;
-                
-                // セッション情報を保存
-                const authData = { 
-                    email, 
-                    timestamp: Date.now(),
-                    isDemo: true,
-                    uid: mockUser.uid
-                };
-                
-                if (remember) {
-                    localStorage.setItem('demoAuth', JSON.stringify(authData));
-                } else {
-                    sessionStorage.setItem('demoAuth', JSON.stringify(authData));
-                }
-                
-                // デモモードフラグを設定
-                window.isDemoMode = true;
-                
-                // セッションタイムアウトを開始
-                this.startSessionTimeout();
-                
-                console.log('Demo login successful');
-                
-                return {
-                    success: true,
-                    user: mockUser,
-                    token: 'demo-token'
-                };
+            // デモモードは本番環境では無効化されています
+            // 開発環境でのみ使用する場合は、以下のコメントを解除してください
+            /*
+            if (false) { // 本番環境では常にfalse
+                // デモモードのコードはここに配置
             }
+            */
             
             // Firebase認証でログイン（本番用）
             const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
@@ -296,28 +246,10 @@ class AuthManager {
         });
     }
     
-    // デモモードのチェック
+    // デモモードのチェック（本番環境では無効）
     checkDemoMode() {
-        const demoAuth = localStorage.getItem('demoAuth') || sessionStorage.getItem('demoAuth');
-        if (demoAuth) {
-            try {
-                const authData = JSON.parse(demoAuth);
-                if (authData.isDemo && authData.email === 'admin@test.com') {
-                    console.log('Demo mode detected from storage');
-                    window.isDemoMode = true;
-                    this.currentUser = {
-                        uid: authData.uid,
-                        email: authData.email,
-                        displayName: 'Demo Admin',
-                        getIdToken: async () => 'demo-token'
-                    };
-                    this.isAdmin = true;
-                    this.startSessionTimeout();
-                }
-            } catch (error) {
-                console.error('Error parsing demo auth:', error);
-            }
-        }
+        // 本番環境ではデモモードは無効化されています
+        return;
     }
 }
 
