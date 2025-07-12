@@ -1,0 +1,76 @@
+# Firebase Hosting自動デプロイ設定
+# mainブランチへのプッシュ時に自動的にFirebase Hostingへデプロイします
+
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+      - master  # masterブランチも対象に含める
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # リポジトリのチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # Node.jsのセットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: npm ci
+      
+      # ビルド（必要な場合）
+      # - name: Build project
+      #   run: npm run build
+      
+      # Firebase Hostingへのデプロイ（プルリクエストの場合はプレビュー）
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_STAMP_E20F2 }}'
+          channelId: live  # 本番環境へのデプロイ
+          projectId: stamp-e20f2
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+
+  # プルリクエスト用のプレビューデプロイ
+  preview-deploy:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Deploy preview to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_STAMP_E20F2 }}'
+          projectId: stamp-e20f2
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
