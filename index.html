@@ -7,11 +7,6 @@
         <title>ホーム | ワールドスタンプ広島</title>
         <link rel="icon" type="image/svg+xml" href="icon.svg">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
-        <link rel="manifest" href="manifest.json">
-        <meta name="theme-color" content="#c41e3a">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
-        <meta name="apple-mobile-web-app-title" content="スタンプ広島">
         <link rel="stylesheet" href="css/common.css">
         <link rel="stylesheet" href="css/tailwind-compiled.css?v=20250713-1">
         <style>
@@ -1605,18 +1600,12 @@
                         container.appendChild(article);
                     });
                 } else {
-                    // 商品がない場合でもセクションは表示
-                    console.log('No products found, showing default message');
-                    container.innerHTML = `
-                        <div class="col-span-full text-center py-12 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg">
-                            <div class="text-6xl mb-4">📮</div>
-                            <h3 class="text-lg font-medium text-gray-700 mb-2">新着商品を準備中です</h3>
-                            <p class="text-gray-500 mb-4">素敵な切手をまもなくご紹介いたします</p>
-                            <button onclick="window.location.reload()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                                最新情報を確認
-                            </button>
-                        </div>
-                    `;
+                    // 商品がない場合はセクション全体を非表示
+                    console.log('No products found, hiding section');
+                    const section = container.closest('section');
+                    if (section) {
+                        section.style.display = 'none';
+                    }
                 }
                 } catch (error) {
                     console.error('Error displaying products:', error);
@@ -1636,22 +1625,11 @@
                 const container = document.getElementById('new-products-container');
                 if (!container) return;
 
-                // セクションを表示し続ける（非表示にしない）
+                // 商品がない場合はセクション全体を非表示
                 const section = container.closest('section');
                 if (section) {
-                    section.style.display = 'block';
+                    section.style.display = 'none';
                 }
-
-                // デバッグ情報を表示
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-8 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <p class="text-yellow-800 font-medium">⚠️ 商品データの読み込み中です</p>
-                        <p class="text-sm text-yellow-600 mt-2">Firebase接続を確認しています...</p>
-                        <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors">
-                            再読み込み
-                        </button>
-                    </div>
-                `;
             }
 
             function displayDummyProducts() {
@@ -1677,7 +1655,6 @@
                 // Firebase初期化チェック
                 if (typeof firebase === 'undefined') {
                     console.error('Firebase not loaded!');
-                    displayDefaultProducts();
                     return;
                 }
 
@@ -1686,28 +1663,15 @@
 
                 // データ変更を監視
                 storageManager.onDataChange(() => {
-                    console.log('Data changed, updating products...');
                     displayNewProducts();
                 });
 
-                // 定期的にチェック（Firebase接続まで待機）
-                const initCheck = setInterval(() => {
-                    console.log('Checking initialization...', storageManager.isInitialized);
+                // 初期化待ち（簡素化）
+                setTimeout(() => {
                     if (storageManager.isInitialized) {
-                        clearInterval(initCheck);
-                        console.log('Storage manager initialized, displaying products...');
                         displayNewProducts();
                     }
-                }, 500);
-
-                // 10秒でタイムアウト
-                setTimeout(() => {
-                    clearInterval(initCheck);
-                    if (!storageManager.isInitialized) {
-                        console.error('Timeout: Firebase initialization failed');
-                        displayDefaultProducts();
-                    }
-                }, 10000);
+                }, 2000);
             });
 
             // 商品カードのクリック処理（既存の静的カード用）
@@ -1723,7 +1687,6 @@
 
         <div id="footer-container"></div>
 
-        <script src="sw-disable.js"></script>
         <script src="firebase-config.js"></script>
         <script src="js/unified-storage.js"></script>
         <script src="js/components.js?v=20250713-2"></script>
