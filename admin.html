@@ -670,35 +670,37 @@
                 }
 
                 listElement.innerHTML = filteredProducts.map(product => `
-                    <div class="border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row items-start gap-4 ${product.soldOut ? 'bg-gray-50' : ''}">
-                        <div class="relative">
-                            <img src="${product.imageUrl}" alt="${product.title}" class="w-full md:w-20 h-32 md:h-20 object-cover rounded-lg ${product.soldOut ? 'opacity-60' : ''}">
-                            ${product.soldOut ? '<div class="absolute inset-0 flex items-center justify-center"><span class="bg-gray-400 text-white text-xs px-2 py-1 rounded">在庫切れ</span></div>' : ''}
-                        </div>
-                        <div class="flex-1 w-full">
-                            <div class="flex items-start gap-2">
-                                <h3 class="font-semibold text-lg ${product.soldOut ? 'text-gray-500' : ''}">${product.title}</h3>
-                                ${product.soldOut ? '<span class="text-xs text-gray-500">在庫切れ</span>' : ''}
+                    <div class="border border-gray-200 rounded-lg p-4 ${product.soldOut ? 'bg-gray-50' : ''}">
+                        <div class="flex flex-col md:flex-row items-start gap-4">
+                            <!-- 画像 -->
+                            <div class="relative flex-shrink-0">
+                                <img src="${product.imageUrl}" alt="${product.title}" class="w-full md:w-24 h-32 md:h-24 object-cover rounded-lg ${product.soldOut ? 'opacity-60' : ''}">
+                                ${product.soldOut ? '<div class="absolute inset-0 flex items-center justify-center"><span class="bg-gray-400 text-white text-xs px-2 py-1 rounded">在庫切れ</span></div>' : ''}
                             </div>
-                            <p class="text-xs text-gray-500 mb-1">SKU: ${product.sku || '未設定'}</p>
-                            <p class="text-lg font-bold ${product.negotiable ? 'text-blue-600' : 'text-red-600'} mb-1">
-                                ${product.priceText || (product.price ? `¥${product.price.toLocaleString()}` : '価格未設定')}
-                            </p>
-                            <p class="text-sm text-gray-600">
-                                カテゴリー: ${product.category} |
-                                在庫: ${product.stock}
-                                ${product.isNew && !product.soldOut ? '<span class="ml-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
-                            </p>
-                        </div>
-                        <div class="flex flex-col gap-2 self-end md:self-start">
-                            <div class="flex gap-2">
-                                <button onclick="editProduct('${product.id}')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium">
-                                    編集
-                                </button>
-                                <button onclick="deleteProduct('${product.id}')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-medium">
-                                    削除
-                                </button>
+                            <!-- 商品情報 -->
+                            <div class="flex-1">
+                                <div class="flex items-start gap-2 flex-wrap">
+                                    <h3 class="font-semibold text-lg ${product.soldOut ? 'text-gray-500' : ''}">${product.title}</h3>
+                                    ${product.soldOut ? '<span class="text-xs text-gray-500">在庫切れ</span>' : ''}
+                                    ${product.isNew && !product.soldOut ? '<span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
+                                </div>
+                                <p class="text-xs text-gray-500 mb-1">SKU: ${product.sku || '未設定'}</p>
+                                <p class="text-lg font-bold ${product.negotiable ? 'text-blue-600' : 'text-red-600'} mb-1">
+                                    ${product.priceText || (product.price ? `¥${product.price.toLocaleString()}` : '価格未設定')}
+                                </p>
+                                <p class="text-sm text-gray-600">
+                                    カテゴリー: ${product.category} | 在庫: ${product.stock}
+                                </p>
                             </div>
+                        </div>
+                        <!-- ボタンエリア -->
+                        <div class="mt-4 flex flex-wrap gap-2 justify-center md:justify-end">
+                            <button onclick="editProduct('${product.id}')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium transition-colors">
+                                編集
+                            </button>
+                            <button onclick="deleteProduct('${product.id}')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-medium transition-colors">
+                                削除
+                            </button>
                             ${!product.soldOut ? `
                                 <button onclick="toggleSoldOut('${product.id}')" class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500">
                                     在庫切れにする
