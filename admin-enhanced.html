@@ -518,6 +518,8 @@
 
             // アプリ初期化関数
             function initializeApp() {
+                // デフォルトのソート順を設定（新しい商品が上に来るように）
+                storageManager.setSorting('created_at', 'desc');
                 updateStatistics();
                 displayProducts();
                 loadCategoriesToSelect();

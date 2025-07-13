@@ -669,7 +669,14 @@
                     return;
                 }
 
-                listElement.innerHTML = filteredProducts.map(product => `
+                // 新しく登録された商品が上に来るように日付でソート
+                const sortedProducts = [...filteredProducts].sort((a, b) => {
+                    const dateA = new Date(a.created_at || a.createdAt || 0);
+                    const dateB = new Date(b.created_at || b.createdAt || 0);
+                    return dateB - dateA; // 新しい順（降順）
+                });
+
+                listElement.innerHTML = sortedProducts.map(product => `
                     <div class="border border-gray-200 rounded-lg p-4 ${product.soldOut ? 'bg-gray-50' : ''}">
                         <div class="flex flex-col md:flex-row items-start gap-4">
                             <!-- 画像 -->
