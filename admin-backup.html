@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>バックアップ管理 | 切手販売ショップ</title>
+        <link rel="icon" type="image/svg+xml" href="icon.svg">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" href="css/tailwind-compiled.css?v=20250713-1">
+        <style>
+            body {
+                font-family:
+                    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            }
+            .backup-item {
+                transition: all 0.3s ease;
+            }
+            .backup-item:hover {
+                background-color: #f3f4f6;
+            }
+            .status-indicator {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 8px;
+            }
+            .status-success { background-color: #10b981; }
+            .status-error { background-color: #ef4444; }
+            .status-pending { background-color: #f59e0b; }
+        </style>
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+        <script src="/firebase-config.js"></script>
+        <script src="/js/auth-manager.js"></script>
+        <script src="/js/backup-manager.js"></script>
+    </head>
+    <body class="bg-gray-100">
+        <script>
+            // AuthManagerインスタンス
+            let authManager;
+            let backupManager;
+
+            // アクセス制御と初期化
+            window.addEventListener('DOMContentLoaded', async () => {
+                authManager = new AuthManager();
+
+                // 認証チェック
+                const isAuthenticated = await authManager.requireAuth();
+                if (!isAuthenticated) {
+                    return; // 認証されていない場合は自動的にリダイレクトされる
+                }
+
+                // バックアップマネージャーの初期化
+                backupManager = new BackupManager();
+                initializeBackupPage();
+            });
+
+            // ログアウト機能
+            async function logout() {
+                if (authManager) {
+                    await authManager.logout();
+                }
+                window.location.href = 'admin-login.html';
+            }
+
+            // バックアップページの初期化
+            async function initializeBackupPage() {
+                await loadBackupList();
+                updateAutoBackupStatus();
+            }
+
+            // バックアップリストの読み込み
+            async function loadBackupList() {
+                try {
+                    const backupListElement = document.getElementById('backup-list');
+                    backupListElement.innerHTML = '<div class="text-center py-4"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div><p class="mt-2 text-gray-600">バックアップ一覧を読み込み中...</p></div>';
+
+                    // Firebase Realtime Database からバックアップ一覧を取得
+                    const backups = await backupManager.getBackupList();
+                    
+                    if (backups.length === 0) {
+                        backupListElement.innerHTML = '<div class="text-center py-8 text-gray-500"><p>バックアップがありません</p><p class="text-sm mt-2">「今すぐバックアップ」ボタンでバックアップを作成してください</p></div>';
+                        return;
+                    }
+
+                    backupListElement.innerHTML = backups.map(backup => `
+                        <div class="backup-item border rounded-lg p-4 bg-white">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <span class="status-indicator status-${backup.status || 'success'}"></span>
+                                        <h3 class="font-semibold text-gray-800">${backup.name || backup.id}</h3>
+                                        <span class="ml-2 px-2 py-1 text-xs rounded-full ${backup.type === 'auto' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}">${backup.type === 'auto' ? '自動' : '手動'}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-1">作成日時: ${new Date(backup.timestamp).toLocaleString('ja-JP')}</p>
+                                    <p class="text-sm text-gray-600 mb-1">商品数: ${backup.productCount || 0}件</p>
+                                    <p class="text-sm text-gray-600">サイズ: ${formatFileSize(backup.size || 0)}</p>
+                                </div>
+                                <div class="flex gap-2 ml-4">
+                                    <button onclick="downloadBackup('${backup.id}')" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                        ダウンロード
+                                    </button>
+                                    <button onclick="restoreBackup('${backup.id}')" class="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                                        復元
+                                    </button>
+                                    <button onclick="deleteBackup('${backup.id}')" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+                                        削除
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    console.error('バックアップ一覧の読み込みエラー:', error);
+                    document.getElementById('backup-list').innerHTML = '<div class="text-center py-8 text-red-500"><p>バックアップ一覧の読み込みに失敗しました</p><p class="text-sm mt-2">ページを再読み込みして再試行してください</p></div>';
+                }
+            }
+
+            // ファイルサイズの表示形式変換
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            // 手動バックアップの作成
+            async function createManualBackup() {
+                try {
+                    const button = document.getElementById('create-backup-btn');
+                    const originalText = button.textContent;
+                    button.disabled = true;
+                    button.textContent = 'バックアップ作成中...';
+
+                    await backupManager.createBackup('manual');
+                    
+                    showNotification('バックアップが正常に作成されました', 'success');
+                    await loadBackupList(); // リストを再読み込み
+
+                } catch (error) {
+                    console.error('バックアップ作成エラー:', error);
+                    showNotification('バックアップの作成に失敗しました: ' + error.message, 'error');
+                } finally {
+                    const button = document.getElementById('create-backup-btn');
+                    button.disabled = false;
+                    button.textContent = '今すぐバックアップ';
+                }
+            }
+
+            // バックアップのダウンロード
+            async function downloadBackup(backupId) {
+                try {
+                    await backupManager.downloadBackup(backupId);
+                    showNotification('バックアップのダウンロードを開始しました', 'success');
+                } catch (error) {
+                    console.error('ダウンロードエラー:', error);
+                    showNotification('ダウンロードに失敗しました: ' + error.message, 'error');
+                }
+            }
+
+            // バックアップの復元
+            async function restoreBackup(backupId) {
+                if (!confirm('バックアップを復元すると、現在のデータが上書きされます。続行しますか？')) {
+                    return;
+                }
+
+                try {
+                    await backupManager.restoreBackup(backupId);
+                    showNotification('バックアップが正常に復元されました', 'success');
+                } catch (error) {
+                    console.error('復元エラー:', error);
+                    showNotification('復元に失敗しました: ' + error.message, 'error');
+                }
+            }
+
+            // バックアップの削除
+            async function deleteBackup(backupId) {
+                if (!confirm('このバックアップを削除しますか？この操作は元に戻せません。')) {
+                    return;
+                }
+
+                try {
+                    await backupManager.deleteBackup(backupId);
+                    showNotification('バックアップが削除されました', 'success');
+                    await loadBackupList(); // リストを再読み込み
+                } catch (error) {
+                    console.error('削除エラー:', error);
+                    showNotification('削除に失敗しました: ' + error.message, 'error');
+                }
+            }
+
+            // 自動バックアップ状態の更新
+            function updateAutoBackupStatus() {
+                const lastBackup = localStorage.getItem('lastAutoBackupTime');
+                const statusElement = document.getElementById('auto-backup-status');
+                
+                if (lastBackup) {
+                    const lastDate = new Date(lastBackup);
+                    statusElement.innerHTML = `最終自動バックアップ: ${lastDate.toLocaleString('ja-JP')}`;
+                } else {
+                    statusElement.innerHTML = '自動バックアップ: 未実行';
+                }
+            }
+
+            // 通知の表示
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 max-w-sm ${
+                    type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' :
+                    type === 'error' ? 'bg-red-100 text-red-800 border border-red-200' :
+                    'bg-blue-100 text-blue-800 border border-blue-200'
+                }`;
+                notification.textContent = message;
+
+                document.body.appendChild(notification);
+
+                // 3秒後に自動削除
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        </script>
+
+        <div class="container mx-auto px-4 py-8 max-w-6xl">
+            <!-- ナビゲーション -->
+            <div class="flex justify-between items-center mb-4">
+                <a href="index.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                    ← トップページに戻る
+                </a>
+                <div class="flex gap-4">
+                    <a href="admin.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        商品管理
+                    </a>
+                    <a href="admin-enhanced.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        高度な管理
+                    </a>
+                    <button onclick="logout()" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                        ログアウト
+                    </button>
+                </div>
+            </div>
+
+            <!-- タブナビゲーション -->
+            <div class="bg-white rounded-t-lg shadow-md">
+                <nav class="flex border-b">
+                    <a href="admin.html" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">
+                        商品登録
+                    </a>
+                    <a href="admin-categories.html" class="px-6 py-3 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">
+                        カテゴリー管理
+                    </a>
+                    <a href="admin-backup.html" class="px-6 py-3 text-[#C41E3A] font-semibold border-b-2 border-[#C41E3A]">
+                        バックアップ
+                    </a>
+                </nav>
+            </div>
+
+            <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">バックアップ管理</h1>
+
+                <!-- バックアップ作成セクション -->
+                <div class="bg-blue-50 rounded-lg p-6 mb-8">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">バックアップの作成</h2>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-700 mb-2">商品データと設定を安全にバックアップできます</p>
+                            <p class="text-sm text-gray-600" id="auto-backup-status">自動バックアップ: 確認中...</p>
+                        </div>
+                        <button 
+                            id="create-backup-btn"
+                            onclick="createManualBackup()" 
+                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            今すぐバックアップ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 自動バックアップ設定 -->
+                <div class="bg-green-50 rounded-lg p-6 mb-8">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">自動バックアップ設定</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-gray-700 mb-2">📅 実行間隔: 24時間ごと</p>
+                            <p class="text-gray-700 mb-2">💾 保持期間: 最大7世代</p>
+                            <p class="text-gray-700">🔄 状態: 有効</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <h3 class="font-medium text-gray-800 mb-2">バックアップ内容</h3>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• 全商品データ</li>
+                                <li>• カテゴリー設定</li>
+                                <li>• 管理者設定</li>
+                                <li>• システム設定</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- バックアップ一覧 -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">バックアップ一覧</h2>
+                        <button onclick="loadBackupList()" class="px-4 py-2 text-sm bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors">
+                            🔄 更新
+                        </button>
+                    </div>
+                    <div id="backup-list" class="space-y-4">
+                        <!-- バックアップリストがここに動的に読み込まれます -->
+                    </div>
+                </div>
+
+                <!-- 使用方法 -->
+                <div class="bg-yellow-50 rounded-lg p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">📋 使用方法</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-medium text-gray-800 mb-2">バックアップの作成</h3>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• 「今すぐバックアップ」ボタンで手動作成</li>
+                                <li>• 自動バックアップは24時間ごとに実行</li>
+                                <li>• 最大7世代まで自動保持</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-800 mb-2">復元について</h3>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• 復元前に必ず現在のデータをバックアップ</li>
+                                <li>• 復元により現在のデータは上書きされます</li>
+                                <li>• 画像ファイルも復元されます</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

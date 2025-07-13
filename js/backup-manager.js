@@ -3,7 +3,7 @@ class BackupManager {
     constructor() {
         this.database = firebase.database();
         this.storage = firebase.storage();
-        this.MAX_BACKUPS = 7; // 保持する最大バックアップ数
+        this.MAX_BACKUPS = 5; // 保持する最大バックアップ数（軽量化）
         this.AUTO_BACKUP_INTERVAL = 24 * 60 * 60 * 1000; // 24時間ごと
         this.lastAutoBackupTime = null;
         
@@ -317,6 +317,42 @@ class BackupManager {
                 success: false,
                 error: error.message
             };
+        }
+    }
+
+    // バックアップのダウンロード（admin-backup.htmlで使用）
+    async downloadBackup(backupId) {
+        return await this.exportBackup(backupId);
+    }
+
+    // バックアップからの復元（admin-backup.htmlで使用）
+    async restoreBackup(backupId) {
+        return await this.restoreFromBackup(backupId);
+    }
+
+    // 全バックアップの統計情報取得
+    async getBackupStats() {
+        try {
+            const metadataSnapshot = await this.database.ref('backupMetadata').once('value');
+            const backups = [];
+            let totalSize = 0;
+
+            metadataSnapshot.forEach((child) => {
+                const backup = child.val();
+                backups.push(backup);
+                totalSize += backup.size || 0;
+            });
+
+            return {
+                totalCount: backups.length,
+                autoCount: backups.filter(b => b.type === 'auto').length,
+                manualCount: backups.filter(b => b.type === 'manual').length,
+                totalSize: totalSize,
+                lastBackup: backups.length > 0 ? Math.max(...backups.map(b => new Date(b.timestamp).getTime())) : null
+            };
+        } catch (error) {
+            console.error('バックアップ統計情報取得エラー:', error);
+            return null;
         }
     }
 }

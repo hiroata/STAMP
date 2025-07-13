@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>バックアップ管理（改良版） | 切手販売ショップ</title>
+        <link rel="icon" type="image/svg+xml" href="icon.svg">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" href="css/tailwind-compiled.css?v=20250713-1">
+        <style>
+            body {
+                font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            }
+            .backup-card {
+                transition: all 0.2s ease;
+            }
+            .backup-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            .loading {
+                opacity: 0.6;
+                pointer-events: none;
+            }
+        </style>
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+        <script src="/firebase-config.js"></script>
+        <script src="/js/auth-manager.js"></script>
+        <script src="/js/simple-backup.js"></script>
+    </head>
+    <body class="bg-gray-100">
+        <script>
+            let authManager;
+            let backupManager;
+
+            // 初期化
+            window.addEventListener('DOMContentLoaded', async () => {
+                try {
+                    authManager = new AuthManager();
+                    
+                    // 認証チェック
+                    const isAuthenticated = await authManager.requireAuth();
+                    if (!isAuthenticated) {
+                        return;
+                    }
+
+                    backupManager = new SimpleBackupManager();
+                    await initializePage();
+                    
+                } catch (error) {
+                    console.error('初期化エラー:', error);
+                    showAlert('初期化に失敗しました: ' + error.message, 'error');
+                }
+            });
+
+            // ページ初期化
+            async function initializePage() {
+                await loadBackupList();
+                await updateStats();
+                showAlert('バックアップ管理画面を読み込みました', 'success');
+            }
+
+            // ログアウト
+            async function logout() {
+                if (authManager) {
+                    await authManager.logout();
+                }
+                window.location.href = 'admin-login.html';
+            }
+
+            // バックアップ一覧の読み込み
+            async function loadBackupList() {
+                try {
+                    const container = document.getElementById('backup-list');
+                    container.innerHTML = '<div class="text-center py-8"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div><p class="mt-2 text-gray-600">読み込み中...</p></div>';
+                    
+                    const backups = await backupManager.getBackupList();
+                    
+                    if (backups.length === 0) {
+                        container.innerHTML = `
+                            <div class="text-center py-12 text-gray-500">
+                                <div class="text-6xl mb-4">📦</div>
+                                <h3 class="text-lg font-medium mb-2">バックアップがありません</h3>
+                                <p class="text-sm">「今すぐバックアップ」ボタンで最初のバックアップを作成してください</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = backups.map(backup => `
+                        <div class="backup-card bg-white rounded-lg p-6 border border-gray-200">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                        <h3 class="text-lg font-semibold text-gray-800">${backup.name}</h3>
+                                    </div>
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <p>📅 作成日時: ${backup.created}</p>
+                                        <p>📦 商品数: ${backup.productCount}件</p>
+                                        <p>💾 サイズ: ${backupManager.formatFileSize(backup.size)}</p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-2 ml-4">
+                                    <button onclick="downloadBackup('${backup.id}')" 
+                                            class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                        📥 ダウンロード
+                                    </button>
+                                    <button onclick="restoreBackup('${backup.id}', '${backup.name}')" 
+                                            class="px-4 py-2 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                                        🔄 復元
+                                    </button>
+                                    <button onclick="deleteBackup('${backup.id}', '${backup.name}')" 
+                                            class="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+                                        🗑️ 削除
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                } catch (error) {
+                    console.error('バックアップ一覧読み込みエラー:', error);
+                    document.getElementById('backup-list').innerHTML = `
+                        <div class="text-center py-8 text-red-500">
+                            <p>❌ バックアップ一覧の読み込みに失敗しました</p>
+                            <button onclick="loadBackupList()" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded text-sm">
+                                再試行
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            // 統計情報更新
+            async function updateStats() {
+                try {
+                    const stats = await backupManager.getStats();
+                    document.getElementById('stats-total').textContent = stats.totalBackups;
+                    document.getElementById('stats-size').textContent = stats.totalSize;
+                    document.getElementById('stats-latest').textContent = stats.latestBackup;
+                } catch (error) {
+                    console.error('統計情報更新エラー:', error);
+                }
+            }
+
+            // バックアップ作成
+            async function createBackup() {
+                try {
+                    const button = document.getElementById('create-backup-btn');
+                    const originalText = button.textContent;
+                    
+                    button.disabled = true;
+                    button.textContent = '⏳ 作成中...';
+                    
+                    const result = await backupManager.quickBackup();
+                    
+                    if (result.success) {
+                        showAlert(`✅ バックアップ作成完了: ${result.name}`, 'success');
+                        await loadBackupList();
+                        await updateStats();
+                    } else {
+                        showAlert(`❌ バックアップ作成失敗: ${result.error}`, 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('バックアップ作成エラー:', error);
+                    showAlert('バックアップ作成中にエラーが発生しました', 'error');
+                } finally {
+                    const button = document.getElementById('create-backup-btn');
+                    button.disabled = false;
+                    button.textContent = '📦 今すぐバックアップ';
+                }
+            }
+
+            // バックアップダウンロード
+            async function downloadBackup(backupId) {
+                try {
+                    showAlert('📥 ダウンロード準備中...', 'info');
+                    const result = await backupManager.downloadBackup(backupId);
+                    
+                    if (result.success) {
+                        showAlert(`✅ ダウンロード完了: ${result.filename}`, 'success');
+                    } else {
+                        showAlert(`❌ ダウンロード失敗: ${result.error}`, 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('ダウンロードエラー:', error);
+                    showAlert('ダウンロード中にエラーが発生しました', 'error');
+                }
+            }
+
+            // バックアップ復元
+            async function restoreBackup(backupId, backupName) {
+                try {
+                    showAlert('🔄 復元中...', 'info');
+                    const result = await backupManager.restoreBackup(backupId);
+                    
+                    if (result.success) {
+                        showAlert(`✅ 復元完了: ${result.restoredCount}件のデータを復元しました`, 'success');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else if (result.cancelled) {
+                        showAlert('復元がキャンセルされました', 'info');
+                    } else {
+                        showAlert(`❌ 復元失敗: ${result.error}`, 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('復元エラー:', error);
+                    showAlert('復元中にエラーが発生しました', 'error');
+                }
+            }
+
+            // バックアップ削除
+            async function deleteBackup(backupId, backupName) {
+                try {
+                    const result = await backupManager.deleteBackup(backupId);
+                    
+                    if (result.success) {
+                        showAlert(`✅ バックアップを削除しました: ${backupName}`, 'success');
+                        await loadBackupList();
+                        await updateStats();
+                    } else if (result.cancelled) {
+                        showAlert('削除がキャンセルされました', 'info');
+                    } else {
+                        showAlert(`❌ 削除失敗: ${result.error}`, 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('削除エラー:', error);
+                    showAlert('削除中にエラーが発生しました', 'error');
+                }
+            }
+
+            // アラート表示
+            function showAlert(message, type = 'info') {
+                const alertDiv = document.createElement('div');
+                const bgColor = type === 'success' ? 'bg-green-100 border-green-500 text-green-700' :
+                               type === 'error' ? 'bg-red-100 border-red-500 text-red-700' :
+                               'bg-blue-100 border-blue-500 text-blue-700';
+                
+                alertDiv.className = `fixed top-4 right-4 max-w-sm p-4 border-l-4 ${bgColor} rounded shadow-lg z-50`;
+                alertDiv.textContent = message;
+                
+                document.body.appendChild(alertDiv);
+                
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 4000);
+            }
+        </script>
+
+        <div class="container mx-auto px-4 py-8 max-w-6xl">
+            <!-- ナビゲーション -->
+            <div class="flex justify-between items-center mb-6">
+                <a href="index.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                    ← トップページに戻る
+                </a>
+                <div class="flex gap-4">
+                    <a href="admin.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">商品管理</a>
+                    <a href="admin-categories.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">カテゴリー管理</a>
+                    <button onclick="logout()" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">ログアウト</button>
+                </div>
+            </div>
+
+            <!-- ヘッダー -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">📦 バックアップ管理</h1>
+                <p class="text-gray-600">商品データを安全にバックアップ・復元できます</p>
+            </div>
+
+            <!-- 統計情報 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg p-6 text-center">
+                    <div class="text-3xl font-bold text-blue-600" id="stats-total">-</div>
+                    <div class="text-sm text-gray-600 mt-1">総バックアップ数</div>
+                </div>
+                <div class="bg-white rounded-lg p-6 text-center">
+                    <div class="text-3xl font-bold text-green-600" id="stats-size">-</div>
+                    <div class="text-sm text-gray-600 mt-1">合計サイズ</div>
+                </div>
+                <div class="bg-white rounded-lg p-6 text-center">
+                    <div class="text-sm font-medium text-purple-600" id="stats-latest">-</div>
+                    <div class="text-sm text-gray-600 mt-1">最新バックアップ</div>
+                </div>
+            </div>
+
+            <!-- バックアップ作成 -->
+            <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 mb-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2">📦 新しいバックアップを作成</h2>
+                        <p class="text-gray-600">現在の商品データとカテゴリー設定をバックアップします</p>
+                    </div>
+                    <button id="create-backup-btn" onclick="createBackup()" 
+                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium whitespace-nowrap">
+                        📦 今すぐバックアップ
+                    </button>
+                </div>
+            </div>
+
+            <!-- バックアップ一覧 -->
+            <div class="bg-white rounded-lg shadow-sm">
+                <div class="flex justify-between items-center p-6 border-b">
+                    <h2 class="text-xl font-semibold text-gray-800">📋 バックアップ一覧</h2>
+                    <button onclick="loadBackupList()" class="px-4 py-2 text-sm bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors">
+                        🔄 更新
+                    </button>
+                </div>
+                <div id="backup-list" class="p-6 space-y-4">
+                    <!-- バックアップリストがここに動的に読み込まれます -->
+                </div>
+            </div>
+
+            <!-- 使用方法 -->
+            <div class="mt-8 bg-yellow-50 rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">💡 使用方法</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700">
+                    <div>
+                        <h3 class="font-medium mb-2">📦 バックアップ作成</h3>
+                        <ul class="space-y-1">
+                            <li>• 重要な作業前に手動作成を推奨</li>
+                            <li>• 自動的に最大10個まで保持</li>
+                            <li>• 商品データとカテゴリーを含む</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-medium mb-2">🔄 復元について</h3>
+                        <ul class="space-y-1">
+                            <li>• 復元前に自動バックアップ作成</li>
+                            <li>• 現在のデータは完全に上書き</li>
+                            <li>• 復元後は自動的にページ更新</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
