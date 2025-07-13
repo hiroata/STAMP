@@ -77,7 +77,18 @@ class PaginatedStorageManager extends UnifiedStorageManager {
 
         // ステータスフィルター
         if (this.filters.status) {
-            filtered = filtered.filter(product => product.status === this.filters.status);
+            filtered = filtered.filter(product => {
+                switch (this.filters.status) {
+                    case 'active':
+                        return !product.soldOut && (product.stock === undefined || product.stock > 0);
+                    case 'soldout':
+                        return product.soldOut;
+                    case 'outofstock':
+                        return !product.soldOut && product.stock === 0;
+                    default:
+                        return true;
+                }
+            });
         }
 
         // ソート
@@ -198,10 +209,14 @@ class PaginatedStorageManager extends UnifiedStorageManager {
         let priceCount = 0;
 
         this.products.forEach(product => {
-            // ステータス別カウント
-            if (product.status === 'active') stats.active++;
-            else if (product.status === 'soldout') stats.soldOut++;
-            else if (product.status === 'outofstock') stats.outOfStock++;
+            // ステータス別カウント（実際のプロパティに基づく）
+            if (product.soldOut) {
+                stats.soldOut++;
+            } else if (product.stock === 0) {
+                stats.outOfStock++;
+            } else {
+                stats.active++;
+            }
 
             // カテゴリー別カウント
             const mainCategory = product.category ? product.category.split(' > ')[0] : '未分類';
@@ -211,8 +226,8 @@ class PaginatedStorageManager extends UnifiedStorageManager {
             if (product.price && !product.negotiable) {
                 priceSum += product.price;
                 priceCount++;
-                if (product.status === 'active' && product.stock) {
-                    stats.totalValue += product.price * product.stock;
+                if (!product.soldOut && product.stock > 0) {
+                    stats.totalValue += product.price * (product.stock || 1);
                 }
             }
         });

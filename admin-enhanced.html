@@ -278,9 +278,121 @@
                     </h2>
                 </div>
                 <div id="product-form-container" class="p-4 md:p-8 hidden">
-                    <!-- 既存のフォーム内容をここに含める -->
-                    <form id="product-form">
-                        <!-- フォーム内容は元のadmin.htmlと同じ -->
+                    <form id="product-form" onsubmit="handleProductSubmit(event)">
+                        <!-- 画像アップロード -->
+                        <div class="text-center mb-8">
+                            <div id="image-preview" class="mb-4 flex justify-center" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                <div class="w-[200px] h-[200px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 transition-all" id="drop-zone">
+                                    <p class="text-gray-400">画像をドラッグ&ドロップ<br />または</p>
+                                </div>
+                            </div>
+                            <label for="image" class="cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">
+                                画像を選択
+                            </label>
+                            <input type="file" id="image" accept="image/*" class="hidden" onchange="previewImage(event)" />
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- 左側：基本情報 -->
+                            <div class="space-y-6">
+                                <!-- 商品名 -->
+                                <div>
+                                    <label class="block text-lg font-medium text-gray-700 mb-2">商品名 <span class="text-red-500">*</span></label>
+                                    <input type="text" id="title" required class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：日本の風景切手セット" />
+                                </div>
+
+                                <!-- 価格 -->
+                                <div>
+                                    <label class="block text-lg font-medium text-gray-700 mb-2">価格</label>
+                                    <div class="flex gap-2">
+                                        <input type="number" id="price" class="flex-1 px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：1280" />
+                                        <label class="flex items-center px-4 py-3 bg-gray-50 rounded-lg">
+                                            <input type="checkbox" id="negotiable" class="mr-2" />
+                                            <span class="text-base">応相談</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- SKU -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">商品コード（SKU）</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" id="sku" class="flex-1 px-3 py-2 border border-gray-300 rounded-md" placeholder="例：JP-MJ-001" />
+                                        <button type="button" onclick="generateRandomSKU()" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                                            自動生成
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">※未入力の場合は自動生成されます</p>
+                                </div>
+                            </div>
+
+                            <!-- 右側：詳細情報 -->
+                            <div class="space-y-6">
+                                <!-- 在庫 -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">在庫数</label>
+                                    <input type="number" id="stock" class="w-full px-3 py-2 border border-gray-300 rounded-md" value="1" min="0" max="999" />
+                                    <p class="text-xs text-gray-500 mt-1">※0で在庫切れ表示</p>
+                                </div>
+
+                                <!-- カテゴリー -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">大カテゴリー</label>
+                                    <select id="mainCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md" onchange="updateSubCategories()">
+                                        <option value="">大カテゴリーを選択</option>
+                                        <option value="普通切手">普通切手</option>
+                                        <option value="航空切手">航空切手</option>
+                                        <option value="記念切手">記念切手</option>
+                                        <option value="特殊切手">特殊切手</option>
+                                        <option value="公園切手">公園切手</option>
+                                        <option value="年賀切手">年賀切手</option>
+                                        <option value="ふるさと切手">ふるさと切手</option>
+                                        <option value="沖縄切手">沖縄切手</option>
+                                        <option value="限定販売品">限定販売品</option>
+                                        <option value="外国切手">外国切手</option>
+                                        <option value="テーマ別切手">テーマ別切手</option>
+                                        <option value="エラー・変種切手">エラー・変種切手</option>
+                                        <option value="歴史的切手">歴史的切手</option>
+                                        <option value="切手関連品">切手関連品</option>
+                                        <option value="通信用切手">通信用切手</option>
+                                        <option value="収集用品">収集用品</option>
+                                    </select>
+                                </div>
+
+                                <!-- サブカテゴリー -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">サブカテゴリー</label>
+                                    <select id="subCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md" disabled>
+                                        <option value="">まず大カテゴリーを選択してください</option>
+                                    </select>
+                                    <input type="hidden" id="category" value="" />
+                                </div>
+
+                                <!-- オプション -->
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="isNew" class="mr-2" checked />
+                                        <span class="text-sm">新着商品として表示</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 商品説明 -->
+                        <div class="mt-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">商品説明</label>
+                            <textarea id="description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="商品の詳細な説明を入力してください"></textarea>
+                        </div>
+
+                        <!-- 登録ボタン -->
+                        <div class="mt-8 flex gap-4">
+                            <button type="submit" class="flex-1 bg-green-600 text-white text-lg font-medium px-6 py-4 rounded-lg hover:bg-green-700 transition-colors">
+                                <span id="submit-text">商品を登録する</span>
+                            </button>
+                            <button type="button" onclick="resetForm()" class="px-6 py-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                リセット
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -308,19 +420,43 @@
         <!-- インポートダイアログ -->
         <div id="import-dialog" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
             <div class="flex items-center justify-center min-h-screen p-4">
-                <div class="bg-white rounded-lg max-w-2xl w-full p-6">
-                    <h3 class="text-xl font-semibold mb-4">CSVインポート</h3>
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-600 mb-2">CSVファイルをアップロードして商品を一括登録できます。</p>
-                        <p class="text-xs text-gray-500">必須列: title, price | オプション列: sku, category, description, stock, negotiable</p>
+                <div class="bg-white rounded-lg max-w-3xl w-full p-6">
+                    <h3 class="text-xl font-semibold mb-4">📥 CSVインポート</h3>
+                    
+                    <!-- 説明とサンプル -->
+                    <div class="mb-6">
+                        <div class="bg-blue-50 rounded-lg p-4 mb-4">
+                            <p class="text-sm text-blue-800 mb-2">
+                                CSVファイルをアップロードして商品を一括登録できます。
+                            </p>
+                            <div class="text-xs text-blue-600">
+                                <p><strong>必須列:</strong> 商品名 (title)</p>
+                                <p><strong>オプション列:</strong> SKU, 価格, 応相談, カテゴリー, 説明, 在庫数, 売り切れ</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-2 mb-4">
+                            <button onclick="downloadSampleCSV()" class="px-3 py-2 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">
+                                📄 サンプルCSVダウンロード
+                            </button>
+                            <span class="text-xs text-gray-500 self-center">← サンプルファイルを参考にしてください</span>
+                        </div>
                     </div>
-                    <input type="file" id="csv-file" accept=".csv" class="mb-4">
+                    
+                    <!-- ファイル選択 -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">CSVファイルを選択</label>
+                        <input type="file" id="csv-file" accept=".csv" 
+                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    </div>
+                    
+                    <!-- アクションボタン -->
                     <div class="flex justify-end gap-2">
                         <button onclick="closeImportDialog()" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
                             キャンセル
                         </button>
                         <button onclick="importCSV()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-                            インポート
+                            📥 インポート
                         </button>
                     </div>
                 </div>
@@ -333,6 +469,26 @@
             let imageUploader;
             let editingProductId = null;
             let formVisible = false;
+
+            // カテゴリーデータ
+            let categoryData = {
+                "普通切手": ["明治普通切手", "手彫切手", "竜文切手", "桜切手", "菊切手", "コイル切手"],
+                "航空切手": ["球部航空", "大正航空", "昭和航空（戦前）", "五銭位航空", "円位航空", "銅版航空", "立山航空"],
+                "記念切手": ["明治記念", "大正記念", "昭和戦前記念", "昭和戦後記念", "平成記念", "令和記念", "小型シート", "文化人シリーズ", "国体シリーズ", "オリンピック関連"],
+                "特殊切手": ["グリーティング切手", "シール式切手", "フレーム切手", "慶弔切手", "弔筒切手", "夏のおたより", "美術切手", "アニメ・ヒーロー"],
+                "公園切手": ["第1次国立公園", "第2次国立公園", "国定公園", "富士箱根", "日光", "吉野熊野", "阿蘇", "大山瑠璃"],
+                "年賀切手": ["昭和10年以前", "昭和11-20年", "昭和21-30年", "昭和31-40年", "昭和41-50年", "昭和51-64年", "平成年賀", "令和年賀", "お年玉小型シート"],
+                "ふるさと切手": ["北海道・東北", "関東・信越", "東海・北陸", "近畿", "中国・四国", "九州・沖縄", "花シリーズ", "風景シリーズ"],
+                "沖縄切手": ["米国統治時代", "琉球政府", "暫定切手", "航空切手", "速達切手", "収入印紙"],
+                "限定販売品": ["プレミアム切手", "特別販売品", "郵便局限定", "オリジナルフレーム", "年賀パック", "フォルムカード"],
+                "外国切手": ["アメリカ", "イギリス", "フランス", "ドイツ", "中国", "韓国", "カナダ", "オーストラリア", "その他の国"],
+                "テーマ別切手": ["動物切手", "花・植物切手", "鉄道切手", "芸術・美術切手", "スポーツ切手", "宇宙切手", "船舶切手"],
+                "エラー・変種切手": ["逆刷りエラー", "色違いエラー", "目打ちエラー", "印刷ズレ", "定常変種"],
+                "歴史的切手": ["手彫切手", "小判切手", "菊切手", "田沢切手", "震災切手"],
+                "切手関連品": ["初日カバー", "官製はがき", "収入印紙", "軍事切手"],
+                "通信用切手": [],
+                "収集用品": ["切手アルバム", "ピンセット", "ルーペ", "マウント", "保存ケース", "カタログ"]
+            };
 
             // 初期化
             window.addEventListener('DOMContentLoaded', () => {
@@ -351,11 +507,46 @@
                         applyFilters();
                     }, 300));
 
+                    // 初期データ読み込み
+                    initializeApp();
+
                 } catch (error) {
                     console.error('Initialization error:', error);
                     alert('初期化エラー: ' + error.message);
                 }
             });
+
+            // アプリ初期化関数
+            function initializeApp() {
+                updateStatistics();
+                displayProducts();
+                loadCategoriesToSelect();
+            }
+
+            // カテゴリーをセレクトボックスに読み込み
+            function loadCategoriesToSelect() {
+                const categorySelect = document.getElementById('category');
+                if (categorySelect) {
+                    categorySelect.innerHTML = '<option value="">カテゴリーを選択</option>';
+                    Object.keys(categoryData).forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category;
+                        option.textContent = category;
+                        categorySelect.appendChild(option);
+                    });
+                }
+
+                const filterCategorySelect = document.getElementById('filterCategory');
+                if (filterCategorySelect) {
+                    filterCategorySelect.innerHTML = '<option value="">すべてのカテゴリー</option>';
+                    Object.keys(categoryData).forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category;
+                        option.textContent = category;
+                        filterCategorySelect.appendChild(option);
+                    });
+                }
+            }
 
             // デバウンス関数
             function debounce(func, wait) {
@@ -559,37 +750,54 @@
 
             // CSVエクスポート
             function exportProducts() {
-                const products = storageManager.getFilteredProducts();
-                
-                // CSVヘッダー
-                const headers = ['SKU', '商品名', '価格', 'カテゴリー', '説明', '在庫数', '状態', '登録日'];
-                const csvContent = [
-                    headers.join(','),
-                    ...products.map(p => [
-                        p.sku || '',
-                        `"${(p.title || '').replace(/"/g, '""')}"`,
-                        p.price || '',
-                        `"${(p.category || '').replace(/"/g, '""')}"`,
-                        `"${(p.description || '').replace(/"/g, '""')}"`,
-                        p.stock || 0,
-                        p.status || '',
-                        p.created_at || ''
-                    ].join(','))
-                ].join('\n');
+                try {
+                    const products = storageManager.getFilteredProducts();
+                    
+                    if (products.length === 0) {
+                        alert('エクスポートする商品がありません');
+                        return;
+                    }
+                    
+                    // CSVヘッダー
+                    const headers = ['SKU', '商品名', '価格', '応相談', 'カテゴリー', '説明', '在庫数', '売り切れ', '登録日'];
+                    const csvContent = [
+                        headers.join(','),
+                        ...products.map(p => [
+                            p.sku || '',
+                            `"${(p.title || '').replace(/"/g, '""')}"`,
+                            p.price || '',
+                            p.negotiable ? 'true' : 'false',
+                            `"${(p.category || '').replace(/"/g, '""')}"`,
+                            `"${(p.description || '').replace(/"/g, '""')}"`,
+                            p.stock || 0,
+                            p.soldOut ? 'true' : 'false',
+                            p.created_at || ''
+                        ].join(','))
+                    ].join('\n');
 
-                // BOMを追加（Excel対応）
-                const bom = '\uFEFF';
-                const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                
-                link.setAttribute('href', url);
-                link.setAttribute('download', `stamp_products_${new Date().toISOString().split('T')[0]}.csv`);
-                link.style.visibility = 'hidden';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                    // BOMを追加（Excel対応）
+                    const bom = '\uFEFF';
+                    const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', `stamp_products_${new Date().toISOString().split('T')[0]}.csv`);
+                    link.style.visibility = 'hidden';
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // 成功メッセージ
+                    setTimeout(() => {
+                        alert(`${products.length}件の商品をCSVでエクスポートしました`);
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('Export error:', error);
+                    alert('エクスポートに失敗しました: ' + error.message);
+                }
             }
 
             // インポートダイアログを表示
@@ -603,6 +811,35 @@
                 document.getElementById('csv-file').value = '';
             }
 
+            // サンプルCSVダウンロード
+            function downloadSampleCSV() {
+                const sampleData = [
+                    ['SKU', '商品名', '価格', '応相談', 'カテゴリー', '説明', '在庫数', '売り切れ'],
+                    ['ST-20250101-001', '明治普通切手 1銭', '5000', 'false', '普通切手 > 明治普通切手', '明治時代の貴重な普通切手です', '1', 'false'],
+                    ['ST-20250101-002', '桜切手 2銭 美品', '8000', 'false', '普通切手 > 桜切手', '保存状態の良い桜切手', '2', 'false'],
+                    ['ST-20250101-003', '航空切手セット', '', 'true', '航空切手 > 昭和航空（戦前）', '戦前の航空切手セット、価格は応相談', '1', 'false'],
+                    ['ST-20250101-004', '記念切手 東京オリンピック', '3000', 'false', '記念切手 > オリンピック関連', '1964年東京オリンピック記念切手', '5', 'false'],
+                    ['', '年賀切手 令和6年', '120', 'false', '年賀切手 > 令和年賀', 'SKU未設定の例（自動生成されます）', '10', 'false']
+                ];
+
+                const csvContent = sampleData.map(row => 
+                    row.map(field => `"${field}"`).join(',')
+                ).join('\n');
+
+                const bom = '\uFEFF';
+                const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'stamp_products_sample.csv');
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
             // CSVインポート
             async function importCSV() {
                 const fileInput = document.getElementById('csv-file');
@@ -613,59 +850,118 @@
                     return;
                 }
 
+                if (!file.name.toLowerCase().endsWith('.csv')) {
+                    alert('CSVファイルを選択してください');
+                    return;
+                }
+
                 try {
+                    // ローディング表示
+                    const originalText = document.querySelector('#import-dialog button[onclick="importCSV()"]').textContent;
+                    document.querySelector('#import-dialog button[onclick="importCSV()"]').textContent = 'インポート中...';
+                    document.querySelector('#import-dialog button[onclick="importCSV()"]').disabled = true;
+
                     const text = await file.text();
                     const lines = text.split('\n').filter(line => line.trim());
-                    const headers = lines[0].split(',').map(h => h.trim());
+                    
+                    if (lines.length < 2) {
+                        throw new Error('CSVファイルにデータが不足しています');
+                    }
+                    
+                    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                    
+                    // 必須列の確認
+                    const requiredColumns = ['商品名', 'title'];
+                    const hasRequiredColumn = requiredColumns.some(col => headers.includes(col));
+                    if (!hasRequiredColumn) {
+                        throw new Error('必須列「商品名」または「title」が見つかりません');
+                    }
                     
                     const products = [];
+                    const errors = [];
+                    
                     for (let i = 1; i < lines.length; i++) {
-                        const values = parseCSVLine(lines[i]);
-                        const skuValue = values[headers.indexOf('SKU')] || values[headers.indexOf('sku')] || '';
-                        const product = {
-                            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-                            sku: skuValue.trim() || generateRandomSKU(),
-                            title: values[headers.indexOf('商品名')] || values[headers.indexOf('title')] || '',
-                            price: parseInt(values[headers.indexOf('価格')] || values[headers.indexOf('price')]) || null,
-                            priceText: '',
-                            category: values[headers.indexOf('カテゴリー')] || values[headers.indexOf('category')] || '',
-                            description: values[headers.indexOf('説明')] || values[headers.indexOf('description')] || '',
-                            stock: parseInt(values[headers.indexOf('在庫数')] || values[headers.indexOf('stock')]) || 1,
-                            negotiable: values[headers.indexOf('negotiable')] === 'true',
-                            status: 'active',
-                            isNew: true,
-                            soldOut: false,
-                            created_at: new Date().toISOString().split('T')[0],
-                            imageUrl: '/images/products/placeholder.jpg'
-                        };
-                        
-                        // priceTextを設定
-                        if (product.negotiable) {
-                            product.priceText = '応相談';
-                        } else if (product.price) {
-                            product.priceText = `¥${product.price.toLocaleString()}`;
-                        } else {
-                            product.priceText = '価格未設定';
-                        }
-                        
-                        if (product.title) {
+                        try {
+                            const values = parseCSVLine(lines[i]);
+                            if (values.length === 0 || values.every(v => !v.trim())) continue;
+                            
+                            const skuValue = values[headers.indexOf('SKU')] || values[headers.indexOf('sku')] || '';
+                            const titleValue = values[headers.indexOf('商品名')] || values[headers.indexOf('title')] || '';
+                            const priceValue = values[headers.indexOf('価格')] || values[headers.indexOf('price')] || '';
+                            const negotiableValue = values[headers.indexOf('応相談')] || values[headers.indexOf('negotiable')] || '';
+                            const soldOutValue = values[headers.indexOf('売り切れ')] || values[headers.indexOf('soldOut')] || '';
+                            
+                            if (!titleValue.trim()) {
+                                errors.push(`行${i + 1}: 商品名が入力されていません`);
+                                continue;
+                            }
+                            
+                            const price = priceValue ? parseFloat(priceValue.replace(/[^\d.-]/g, '')) : null;
+                            const negotiable = negotiableValue.toLowerCase() === 'true';
+                            const soldOut = soldOutValue.toLowerCase() === 'true';
+                            
+                            const product = {
+                                id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                                sku: skuValue.trim() || generateRandomSKU(),
+                                title: titleValue.trim(),
+                                price: negotiable ? null : (isNaN(price) ? null : price),
+                                priceText: '',
+                                category: (values[headers.indexOf('カテゴリー')] || values[headers.indexOf('category')] || '').trim(),
+                                description: (values[headers.indexOf('説明')] || values[headers.indexOf('description')] || '').trim(),
+                                stock: parseInt(values[headers.indexOf('在庫数')] || values[headers.indexOf('stock')] || '1') || 1,
+                                negotiable: negotiable,
+                                status: soldOut ? 'soldout' : 'active',
+                                isNew: true,
+                                soldOut: soldOut,
+                                created_at: new Date().toISOString().split('T')[0],
+                                imageUrl: '/images/products/placeholder.jpg'
+                            };
+                            
+                            // priceTextを設定
+                            if (product.negotiable) {
+                                product.priceText = '応相談';
+                            } else if (product.price) {
+                                product.priceText = `¥${product.price.toLocaleString()}`;
+                            } else {
+                                product.priceText = '価格未設定';
+                            }
+                            
                             products.push(product);
+                            
+                        } catch (rowError) {
+                            errors.push(`行${i + 1}: ${rowError.message}`);
                         }
                     }
 
                     if (products.length === 0) {
-                        alert('インポートする商品が見つかりませんでした');
-                        return;
+                        throw new Error('インポート可能な商品が見つかりませんでした');
                     }
 
                     // バルクインポート
                     await storageManager.addProductsBulk(products);
-                    alert(`${products.length}件の商品をインポートしました`);
+                    
+                    let message = `${products.length}件の商品をインポートしました`;
+                    if (errors.length > 0) {
+                        message += `\n\n⚠️ ${errors.length}件のエラーがありました:\n${errors.slice(0, 5).join('\n')}`;
+                        if (errors.length > 5) {
+                            message += `\n... 他${errors.length - 5}件`;
+                        }
+                    }
+                    
+                    alert(message);
                     closeImportDialog();
+                    displayProducts(); // リストを更新
                     
                 } catch (error) {
                     console.error('Import error:', error);
                     alert('インポートエラー: ' + error.message);
+                } finally {
+                    // ローディング解除
+                    const button = document.querySelector('#import-dialog button[onclick="importCSV()"]');
+                    if (button) {
+                        button.textContent = 'インポート';
+                        button.disabled = false;
+                    }
                 }
             }
 
@@ -829,12 +1125,222 @@
 
             // 在庫管理画面表示
             function showStockManagement() {
-                alert('在庫管理機能:\n・在庫切れ商品の一覧表示\n・在庫数の一括更新\n・在庫アラート設定\n\n（実装予定）');
+                const allProducts = storageManager.getProducts();
+                
+                // 在庫状況別に分類
+                const stockStatus = {
+                    outOfStock: allProducts.filter(p => !p.soldOut && (p.stock === 0 || !p.stock)),
+                    lowStock: allProducts.filter(p => !p.soldOut && p.stock > 0 && p.stock <= 3),
+                    normal: allProducts.filter(p => !p.soldOut && p.stock > 3),
+                    soldOut: allProducts.filter(p => p.soldOut)
+                };
+
+                const modalHtml = `
+                    <div id="stock-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+                            <div class="p-6 border-b">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xl font-semibold">在庫管理</h3>
+                                    <button onclick="closeStockModal()" class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <!-- 在庫統計 -->
+                                <div class="grid grid-cols-4 gap-4 mb-6">
+                                    <div class="text-center p-4 bg-red-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-red-600">${stockStatus.outOfStock.length}</div>
+                                        <div class="text-sm text-gray-600">在庫切れ</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-yellow-600">${stockStatus.lowStock.length}</div>
+                                        <div class="text-sm text-gray-600">少在庫(1-3)</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-green-600">${stockStatus.normal.length}</div>
+                                        <div class="text-sm text-gray-600">十分在庫</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-600">${stockStatus.soldOut.length}</div>
+                                        <div class="text-sm text-gray-600">売り切れ</div>
+                                    </div>
+                                </div>
+
+                                <!-- 在庫切れ商品 -->
+                                ${stockStatus.outOfStock.length > 0 ? `
+                                <div class="mb-6">
+                                    <h4 class="font-semibold text-red-600 mb-3">在庫切れ商品 (${stockStatus.outOfStock.length}件)</h4>
+                                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                                        ${stockStatus.outOfStock.map(product => `
+                                            <div class="flex justify-between items-center p-3 bg-red-50 rounded">
+                                                <span class="font-medium">${product.title}</span>
+                                                <input type="number" min="1" max="999" placeholder="在庫数" 
+                                                       class="w-20 px-2 py-1 border rounded text-sm"
+                                                       onchange="updateStock('${product.id}', this.value)">
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                ` : ''}
+
+                                <!-- 少在庫商品 -->
+                                ${stockStatus.lowStock.length > 0 ? `
+                                <div class="mb-6">
+                                    <h4 class="font-semibold text-yellow-600 mb-3">少在庫商品 (${stockStatus.lowStock.length}件)</h4>
+                                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                                        ${stockStatus.lowStock.map(product => `
+                                            <div class="flex justify-between items-center p-3 bg-yellow-50 rounded">
+                                                <span class="font-medium">${product.title}</span>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-sm text-gray-600">現在: ${product.stock}</span>
+                                                    <input type="number" min="1" max="999" value="${product.stock}"
+                                                           class="w-20 px-2 py-1 border rounded text-sm"
+                                                           onchange="updateStock('${product.id}', this.value)">
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                ` : ''}
+
+                                <div class="flex gap-2">
+                                    <button onclick="bulkSetStock()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                        一括在庫設定
+                                    </button>
+                                    <button onclick="closeStockModal()" class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">
+                                        閉じる
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
             }
 
             // 価格管理画面表示
             function showPriceManagement() {
-                alert('価格管理機能:\n・価格帯別商品分析\n・価格の一括変更\n・割引設定\n\n（実装予定）');
+                const allProducts = storageManager.getProducts();
+                
+                // 価格帯別分析
+                const priceRanges = {
+                    under1000: allProducts.filter(p => p.price && p.price < 1000),
+                    range1000to5000: allProducts.filter(p => p.price && p.price >= 1000 && p.price < 5000),
+                    range5000to10000: allProducts.filter(p => p.price && p.price >= 5000 && p.price < 10000),
+                    over10000: allProducts.filter(p => p.price && p.price >= 10000),
+                    negotiable: allProducts.filter(p => p.negotiable),
+                    noPrice: allProducts.filter(p => !p.price && !p.negotiable)
+                };
+
+                const modalHtml = `
+                    <div id="price-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+                            <div class="p-6 border-b">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xl font-semibold">価格管理</h3>
+                                    <button onclick="closePriceModal()" class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <!-- 価格帯統計 -->
+                                <div class="grid grid-cols-3 gap-4 mb-6">
+                                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-green-600">${priceRanges.under1000.length}</div>
+                                        <div class="text-sm text-gray-600">1,000円未満</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-blue-600">${priceRanges.range1000to5000.length}</div>
+                                        <div class="text-sm text-gray-600">1,000-5,000円</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-purple-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-purple-600">${priceRanges.range5000to10000.length}</div>
+                                        <div class="text-sm text-gray-600">5,000-10,000円</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-red-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-red-600">${priceRanges.over10000.length}</div>
+                                        <div class="text-sm text-gray-600">10,000円以上</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-yellow-600">${priceRanges.negotiable.length}</div>
+                                        <div class="text-sm text-gray-600">応相談</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-600">${priceRanges.noPrice.length}</div>
+                                        <div class="text-sm text-gray-600">価格未設定</div>
+                                    </div>
+                                </div>
+
+                                <!-- 一括価格操作 -->
+                                <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                                    <h4 class="font-semibold mb-3">一括価格変更</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">価格範囲</label>
+                                            <select id="priceRangeSelect" class="w-full px-3 py-2 border rounded">
+                                                <option value="">選択してください</option>
+                                                <option value="under1000">1,000円未満</option>
+                                                <option value="range1000to5000">1,000-5,000円</option>
+                                                <option value="range5000to10000">5,000-10,000円</option>
+                                                <option value="over10000">10,000円以上</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">操作</label>
+                                            <div class="flex gap-2">
+                                                <select id="priceOperationType" class="px-3 py-2 border rounded">
+                                                    <option value="multiply">倍率</option>
+                                                    <option value="add">加算</option>
+                                                    <option value="set">設定</option>
+                                                </select>
+                                                <input type="number" id="priceOperationValue" class="flex-1 px-3 py-2 border rounded" placeholder="値">
+                                                <button onclick="bulkPriceChange()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                                    実行
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 価格未設定商品 -->
+                                ${priceRanges.noPrice.length > 0 ? `
+                                <div class="mb-6">
+                                    <h4 class="font-semibold text-gray-600 mb-3">価格未設定商品 (${priceRanges.noPrice.length}件)</h4>
+                                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                                        ${priceRanges.noPrice.map(product => `
+                                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                                                <span class="font-medium">${product.title}</span>
+                                                <div class="flex items-center gap-2">
+                                                    <input type="number" min="1" placeholder="価格"
+                                                           class="w-24 px-2 py-1 border rounded text-sm"
+                                                           onchange="updatePrice('${product.id}', this.value)">
+                                                    <label class="flex items-center text-sm">
+                                                        <input type="checkbox" class="mr-1" onchange="toggleNegotiable('${product.id}', this.checked)">
+                                                        応相談
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                ` : ''}
+
+                                <button onclick="closePriceModal()" class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">
+                                    閉じる
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
             }
 
             // データ整理機能
@@ -896,6 +1402,278 @@
                 } catch (error) {
                     console.error('Cleanup error:', error);
                     alert('データ整理に失敗しました');
+                }
+            }
+
+            // 在庫管理モーダル関数
+            function closeStockModal() {
+                const modal = document.getElementById('stock-modal');
+                if (modal) {
+                    modal.remove();
+                }
+            }
+
+            async function updateStock(productId, newStock) {
+                try {
+                    const stock = parseInt(newStock);
+                    if (isNaN(stock) || stock < 0) {
+                        alert('正しい在庫数を入力してください');
+                        return;
+                    }
+
+                    const products = storageManager.getProducts();
+                    const product = products.find(p => p.id === productId);
+                    if (!product) return;
+
+                    const updatedProduct = {
+                        ...product,
+                        stock: stock,
+                        status: product.soldOut ? 'soldout' : (stock > 0 ? 'active' : 'outofstock')
+                    };
+
+                    await storageManager.updateProduct(productId, updatedProduct);
+                } catch (error) {
+                    console.error('Update stock error:', error);
+                    alert('在庫数の更新に失敗しました');
+                }
+            }
+
+            async function bulkSetStock() {
+                const stockValue = prompt('一括設定する在庫数を入力してください:');
+                if (!stockValue) return;
+
+                const stock = parseInt(stockValue);
+                if (isNaN(stock) || stock < 0) {
+                    alert('正しい在庫数を入力してください');
+                    return;
+                }
+
+                const confirmed = confirm(`在庫切れ・少在庫商品の在庫数を ${stock} に設定しますか？`);
+                if (!confirmed) return;
+
+                try {
+                    const allProducts = storageManager.getProducts();
+                    const targetProducts = allProducts.filter(p => !p.soldOut && (p.stock === 0 || p.stock <= 3));
+
+                    for (const product of targetProducts) {
+                        const updatedProduct = {
+                            ...product,
+                            stock: stock,
+                            status: 'active'
+                        };
+                        await storageManager.updateProduct(product.id, updatedProduct);
+                    }
+
+                    alert(`${targetProducts.length}件の商品の在庫数を更新しました`);
+                    closeStockModal();
+                    displayProducts();
+                } catch (error) {
+                    console.error('Bulk stock update error:', error);
+                    alert('一括在庫更新に失敗しました');
+                }
+            }
+
+            // 価格管理モーダル関数
+            function closePriceModal() {
+                const modal = document.getElementById('price-modal');
+                if (modal) {
+                    modal.remove();
+                }
+            }
+
+            async function updatePrice(productId, newPrice) {
+                try {
+                    const price = parseFloat(newPrice);
+                    if (isNaN(price) || price < 0) {
+                        alert('正しい価格を入力してください');
+                        return;
+                    }
+
+                    const products = storageManager.getProducts();
+                    const product = products.find(p => p.id === productId);
+                    if (!product) return;
+
+                    const updatedProduct = {
+                        ...product,
+                        price: price,
+                        priceText: `¥${price.toLocaleString()}`,
+                        negotiable: false
+                    };
+
+                    await storageManager.updateProduct(productId, updatedProduct);
+                } catch (error) {
+                    console.error('Update price error:', error);
+                    alert('価格の更新に失敗しました');
+                }
+            }
+
+            async function toggleNegotiable(productId, isNegotiable) {
+                try {
+                    const products = storageManager.getProducts();
+                    const product = products.find(p => p.id === productId);
+                    if (!product) return;
+
+                    const updatedProduct = {
+                        ...product,
+                        negotiable: isNegotiable,
+                        priceText: isNegotiable ? '応相談' : (product.price ? `¥${product.price.toLocaleString()}` : '価格未設定')
+                    };
+
+                    if (isNegotiable) {
+                        updatedProduct.price = null;
+                    }
+
+                    await storageManager.updateProduct(productId, updatedProduct);
+                } catch (error) {
+                    console.error('Toggle negotiable error:', error);
+                    alert('応相談フラグの変更に失敗しました');
+                }
+            }
+
+            async function bulkPriceChange() {
+                const rangeSelect = document.getElementById('priceRangeSelect');
+                const operationType = document.getElementById('priceOperationType');
+                const operationValue = document.getElementById('priceOperationValue');
+
+                const range = rangeSelect.value;
+                const operation = operationType.value;
+                const value = parseFloat(operationValue.value);
+
+                if (!range || !operation || isNaN(value)) {
+                    alert('すべての項目を正しく入力してください');
+                    return;
+                }
+
+                const confirmed = confirm(`価格範囲「${rangeSelect.options[rangeSelect.selectedIndex].text}」の商品に対して、${operation === 'multiply' ? '倍率' : operation === 'add' ? '加算' : '設定'}: ${value} を実行しますか？`);
+                if (!confirmed) return;
+
+                try {
+                    const allProducts = storageManager.getProducts();
+                    let targetProducts = [];
+
+                    // 価格範囲でフィルター
+                    switch (range) {
+                        case 'under1000':
+                            targetProducts = allProducts.filter(p => p.price && p.price < 1000);
+                            break;
+                        case 'range1000to5000':
+                            targetProducts = allProducts.filter(p => p.price && p.price >= 1000 && p.price < 5000);
+                            break;
+                        case 'range5000to10000':
+                            targetProducts = allProducts.filter(p => p.price && p.price >= 5000 && p.price < 10000);
+                            break;
+                        case 'over10000':
+                            targetProducts = allProducts.filter(p => p.price && p.price >= 10000);
+                            break;
+                    }
+
+                    for (const product of targetProducts) {
+                        let newPrice = product.price;
+                        
+                        switch (operation) {
+                            case 'multiply':
+                                newPrice = Math.round(product.price * value);
+                                break;
+                            case 'add':
+                                newPrice = Math.round(product.price + value);
+                                break;
+                            case 'set':
+                                newPrice = Math.round(value);
+                                break;
+                        }
+
+                        const updatedProduct = {
+                            ...product,
+                            price: newPrice,
+                            priceText: `¥${newPrice.toLocaleString()}`
+                        };
+
+                        await storageManager.updateProduct(product.id, updatedProduct);
+                    }
+
+                    alert(`${targetProducts.length}件の商品の価格を更新しました`);
+                    closePriceModal();
+                    displayProducts();
+                } catch (error) {
+                    console.error('Bulk price change error:', error);
+                    alert('一括価格変更に失敗しました');
+                }
+            }
+
+            // 商品登録フォーム関数
+            function toggleProductForm() {
+                const section = document.getElementById('product-form-section');
+                const button = document.querySelector('button[onclick="toggleProductForm()"]');
+                
+                if (section.classList.contains('hidden')) {
+                    section.classList.remove('hidden');
+                    button.textContent = 'フォームを閉じる';
+                } else {
+                    section.classList.add('hidden');
+                    button.textContent = '新商品を登録';
+                }
+            }
+
+            function resetForm() {
+                document.getElementById('product-form').reset();
+                document.getElementById('generated-sku').textContent = generateSKU();
+                document.getElementById('image-preview').innerHTML = '<p class="text-gray-500">画像をドラッグ＆ドロップまたはクリックして選択</p>';
+                updateSubCategories();
+            }
+
+            function updateSubCategories() {
+                const mainCategory = document.getElementById('category').value;
+                const subCategorySelect = document.getElementById('sub-category');
+                
+                subCategorySelect.innerHTML = '<option value="">サブカテゴリーを選択</option>';
+                
+                if (mainCategory && categoryData[mainCategory]) {
+                    categoryData[mainCategory].forEach(subCat => {
+                        const option = document.createElement('option');
+                        option.value = subCat;
+                        option.textContent = subCat;
+                        subCategorySelect.appendChild(option);
+                    });
+                }
+            }
+
+            async function handleProductSubmit(event) {
+                event.preventDefault();
+                
+                try {
+                    const formData = new FormData(event.target);
+                    const category = formData.get('category');
+                    const subCategory = formData.get('sub-category');
+                    const fullCategory = subCategory ? `${category} > ${subCategory}` : category;
+                    
+                    const price = parseFloat(formData.get('price'));
+                    const negotiable = formData.get('negotiable') === 'on';
+                    
+                    const product = {
+                        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                        sku: formData.get('sku') || generateSKU(),
+                        title: formData.get('title'),
+                        price: negotiable ? null : (isNaN(price) ? null : price),
+                        priceText: negotiable ? '応相談' : (isNaN(price) ? '価格未設定' : `¥${price.toLocaleString()}`),
+                        category: fullCategory,
+                        description: formData.get('description'),
+                        stock: parseInt(formData.get('stock')) || 1,
+                        negotiable: negotiable,
+                        status: 'active',
+                        isNew: true,
+                        soldOut: false,
+                        created_at: new Date().toISOString().split('T')[0],
+                        imageUrl: '/images/products/placeholder.jpg'
+                    };
+
+                    await storageManager.addProduct(product);
+                    alert('商品を登録しました');
+                    resetForm();
+                    displayProducts();
+                    
+                } catch (error) {
+                    console.error('Product submit error:', error);
+                    alert('商品登録に失敗しました');
                 }
             }
         </script>
