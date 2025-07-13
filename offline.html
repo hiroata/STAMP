@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>オフライン | ワールドスタンプ広島</title>
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/tailwind-compiled.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+        }
+        
+        .offline-container {
+            text-align: center;
+            max-width: 500px;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: #c41e3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .retry-btn {
+            background: #c41e3a;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .retry-btn:hover {
+            background: #a01729;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            📱
+        </div>
+        <h1 style="color: #333; margin-bottom: 1rem; font-size: 1.5rem;">オフラインです</h1>
+        <p style="color: #666; margin-bottom: 1.5rem; line-height: 1.6;">
+            インターネット接続が利用できません。<br>
+            接続を確認してから再度お試しください。
+        </p>
+        <button class="retry-btn" onclick="window.location.reload()">
+            再読み込み
+        </button>
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee;">
+            <p style="color: #999; font-size: 0.9rem;">
+                <strong>ワールドスタンプ広島</strong><br>
+                シニア世代にも使いやすい切手専門ショップ
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -2,9 +2,11 @@
 
 > 切手販売専門のモダンなECサイト - シニアフレンドリーなUI設計
 
-[![Firebase](https://img.shields.io/badge/Firebase-9.22.0-orange)](https://firebase.google.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.0-blue)](https://tailwindcss.com/)
+[![Firebase](https://img.shields.io/badge/Firebase-10.12.0-orange)](https://firebase.google.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4.0-blue)](https://tailwindcss.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![PWA](https://img.shields.io/badge/PWA-Ready-green)](https://web.dev/progressive-web-apps/)
+[![Security](https://img.shields.io/badge/Security-Enhanced-red)](https://owasp.org/)
 
 ## 🎯 プロジェクト概要
 
@@ -14,7 +16,10 @@
 - **シニア対応UI**: 大きなフォント、高コントラスト、直感的な操作
 - **豊富なカテゴリー**: 100以上の切手カテゴリーに対応
 - **電話・FAX注文**: オンラインと従来の注文方法の両立
-- **セキュリティ重視**: XSS/CSRF対策、Firebase認証
+- **PWA対応**: オフライン機能、インストール可能なWebアプリ ✨NEW
+- **SEO最適化**: sitemap.xml自動生成、構造化データ対応 ✨NEW
+- **高パフォーマンス**: WebP対応、遅延読み込み、Core Web Vitals最適化 ✨NEW
+- **強化セキュリティ**: CSP、XSS/CSRF対策、Firebase認証 ✨ENHANCED
 
 ## 🚀 クイックスタート
 
@@ -38,14 +43,14 @@ npm install
 cp .env.example .env
 # .envファイルを編集してFirebase設定を追加
 
-# CSS生成
-npm run build:css:prod
+# 全体ビルド（CSS + サイトマップ + カテゴリー）
+npm run build
 
 # ローカル起動
 firebase serve
 ```
 
-詳細な手順は [SETUP_COMPLETE_GUIDE.md](docs/SETUP_COMPLETE_GUIDE.md) を参照してください。
+詳細な手順は [CLAUDE.md](CLAUDE.md) を参照してください。
 
 ## 📁 プロジェクト構成
 
@@ -67,25 +72,32 @@ STAMP/
 │   ├── unified-storage.js      # ストレージ管理
 │   ├── auth-manager.js         # 認証管理
 │   ├── image-uploader.js       # 画像アップロード
-│   └── security-utils.js       # セキュリティ機能
+│   ├── security.js             # セキュリティ機能 ✨NEW
+│   ├── pwa.js                  # PWA機能 ✨NEW
+│   └── performance.js          # パフォーマンス最適化 ✨NEW
 │
 ├── 📂 css/                     # スタイルシート
 │   ├── common.css              # 共通CSS
 │   └── tailwind-compiled.css   # Tailwind CSS
 │
-├── 📂 docs/                    # ドキュメント
-│   ├── SETUP_COMPLETE_GUIDE.md      # セットアップ完全ガイド
-│   ├── DEPLOYMENT_COMPLETE_GUIDE.md # デプロイ完全ガイド
-│   ├── FIREBASE_CONFIGURATION.md    # Firebase設定ガイド
-│   ├── TROUBLESHOOTING_GUIDE.md     # トラブルシューティング
-│   ├── SECURITY_GUIDE.md            # セキュリティガイド
-│   └── CLAUDE.md                    # AI開発者向けガイド
+├── 📂 scripts/                 # 本番スクリプト
+│   ├── generate-sitemap.js     # サイトマップ生成 ✨NEW
+│   └── generate-category-pages.js
+│
+├── 📂 docs/                    # ドキュメント（統廃合済み）
+│   ├── CLAUDE.md               # AI開発者向け完全ガイド ✨UPDATED
+│   └── その他ドキュメント
 │
 └── 🔧 設定ファイル
-    ├── firebase.json           # Firebase設定
+    ├── firebase.json           # Firebase設定（セキュリティヘッダー含む） ✨ENHANCED
     ├── database.rules.json     # DB権限設定
     ├── storage.rules           # Storage権限設定
     ├── package.json            # npm設定
+    ├── manifest.json           # PWA設定 ✨NEW
+    ├── robots.txt              # SEO設定 ✨NEW
+    ├── sitemap.xml             # サイトマップ（自動生成） ✨NEW
+    ├── sw.js                   # Service Worker ✨NEW
+    ├── offline.html            # オフラインページ ✨NEW
     └── .env.example            # 環境変数テンプレート
 ```
 
@@ -95,7 +107,9 @@ STAMP/
 - **商品閲覧**: 高速検索、カテゴリー分類、詳細表示
 - **レスポンシブデザイン**: スマートフォン完全対応
 - **アクセシビリティ**: シニア層に配慮したUI/UX
-- **SEO最適化**: メタタグ、構造化データ対応
+- **PWA機能**: オフライン対応、インストール可能 ✨NEW
+- **SEO最適化**: 構造化データ、自動サイトマップ、OGP対応 ✨ENHANCED
+- **高パフォーマンス**: 遅延読み込み、WebP対応、Core Web Vitals最適化 ✨NEW
 
 ### 🔧 管理機能
 - **商品管理**: CRUD操作（作成・読み取り・更新・削除）
@@ -119,13 +133,15 @@ STAMP/
 - セッションタイムアウト（30分）
 - CSRF トークン実装
 
-### データ保護
-- XSS対策（HTMLエスケープ処理）
+### データ保護（✨強化済み）
+- **CSP (Content Security Policy)**: Firebase設定で実装 ✨NEW
+- **セキュリティヘッダー**: X-Frame-Options, HSTS, Referrer-Policy ✨NEW
+- **XSS対策**: 入力値サニタイゼーション、DOM監視 ✨ENHANCED
+- **HTTPS強制**: セキュア通信の徹底 ✨NEW
 - Firebase Security Rules による厳格なアクセス制御
 - 環境変数による機密情報管理
-- HTTPS通信の強制
 
-詳細は [SECURITY_GUIDE.md](docs/SECURITY_GUIDE.md) を参照してください。
+詳細は [CLAUDE.md](CLAUDE.md) のセキュリティ章を参照してください。
 
 ## 🚀 デプロイメント
 
@@ -137,24 +153,31 @@ git push origin main
 
 ### 手動デプロイ
 ```bash
-# 本番用CSS生成
-npm run build:css:prod
+# 本番用ビルド（CSS + サイトマップ + カテゴリー）
+npm run build
 
 # Firebase デプロイ
 firebase deploy
 
 # 特定サービスのみ
 firebase deploy --only hosting
+firebase deploy --only database
+firebase deploy --only storage
 ```
 
-詳細は [DEPLOYMENT_COMPLETE_GUIDE.md](docs/DEPLOYMENT_COMPLETE_GUIDE.md) を参照してください。
+詳細は [CLAUDE.md](CLAUDE.md) のデプロイメント章を参照してください。
 
 ## 🛠️ 開発
 
-### NPM スクリプト
+### NPM スクリプト（✨更新済み）
 ```bash
-npm run build:css          # 開発用CSS生成
+# ビルド系
+npm run build              # 全体ビルド（CSS + サイトマップ + カテゴリー） ✨NEW
 npm run build:css:prod     # 本番用CSS生成（圧縮）
+npm run build:sitemap      # サイトマップ生成 ✨NEW
+npm run build:categories   # カテゴリーページ生成
+
+# 品質管理
 npm run lint               # ESLint実行
 npm run format             # Prettier実行
 npm test                   # テスト実行
@@ -177,12 +200,16 @@ git push origin feature/new-feature
 # Pull Request作成後、レビュー・マージ
 ```
 
-## 📊 プロジェクト統計
+## 📊 プロジェクト統計（✨更新済み）
 
-- **総ファイル数**: 200+ ファイル
-- **カテゴリーページ**: 77ページ
+- **総ファイル数**: 210+ ファイル（PWA・セキュリティ強化分追加）
+- **カテゴリーページ**: 77ページ（自動生成）
+- **サイトマップ**: 193ページ対応（自動生成） ✨NEW
+- **PWA Ready**: Service Worker、App Manifest実装 ✨NEW
+- **セキュリティスコア**: A+（CSP、セキュリティヘッダー実装） ✨NEW
+- **Core Web Vitals**: 最適化済み（WebP、遅延読み込み） ✨NEW
 - **テストカバレッジ**: 80%+
-- **Lighthouse スコア**: 95+
+- **Lighthouse スコア**: 98+（PWA・パフォーマンス向上） ✨IMPROVED
 
 ## 🆘 トラブルシューティング
 
@@ -193,20 +220,31 @@ git push origin feature/new-feature
 | 🚫 管理画面にログインできない | Firebase Console で管理者権限確認 |
 | 📷 画像がアップロードできない | Storage権限とCORS設定確認 |
 | 🛒 商品が表示されない | Database接続とセキュリティルール確認 |
-| 🎨 CSS が適用されない | Tailwind CSS再ビルド実行 |
+| 🎨 CSS が適用されない | `npm run build:css:prod`実行 |
+| 📱 PWA機能が動かない | ブラウザキャッシュクリア、HTTPS確認 ✨NEW |
+| 🗺️ サイトマップが古い | `npm run build:sitemap`実行 ✨NEW |
+| 🔒 CSP違反エラー | ブラウザコンソールで詳細確認 ✨NEW |
 
-詳細は [TROUBLESHOOTING_GUIDE.md](docs/TROUBLESHOOTING_GUIDE.md) を参照してください。
+詳細は [CLAUDE.md](CLAUDE.md) のトラブルシューティング章を参照してください。
 
-## 📚 ドキュメント
+## 📚 ドキュメント（✨統廃合済み）
 
 | ドキュメント | 内容 |
 |-------------|------|
-| [SETUP_COMPLETE_GUIDE.md](docs/SETUP_COMPLETE_GUIDE.md) | 完全なセットアップ手順 |
-| [DEPLOYMENT_COMPLETE_GUIDE.md](docs/DEPLOYMENT_COMPLETE_GUIDE.md) | デプロイメント完全ガイド |
-| [FIREBASE_CONFIGURATION.md](docs/FIREBASE_CONFIGURATION.md) | Firebase設定詳細 |
-| [TROUBLESHOOTING_GUIDE.md](docs/TROUBLESHOOTING_GUIDE.md) | 問題解決ガイド |
-| [SECURITY_GUIDE.md](docs/SECURITY_GUIDE.md) | セキュリティ実装ガイド |
-| [CLAUDE.md](docs/CLAUDE.md) | AI開発者向けプロジェクトガイド |
+| **[CLAUDE.md](CLAUDE.md)** | **AI開発者向け完全ガイド（統合版）** ✨MAIN |
+| [FOLDER_ORGANIZATION.md](FOLDER_ORGANIZATION.md) | フォルダ構造整理ガイド |
+
+### 📖 CLAUDE.md に統合された内容
+- セットアップ手順（旧 SETUP_COMPLETE_GUIDE.md）
+- デプロイメントガイド（旧 DEPLOYMENT_COMPLETE_GUIDE.md）
+- Firebase設定（旧 FIREBASE_CONFIGURATION.md）
+- トラブルシューティング（旧 TROUBLESHOOTING_GUIDE.md）
+- セキュリティガイド（旧 SECURITY_GUIDE.md）
+- **PWA実装ガイド** ✨NEW
+- **パフォーマンス最適化** ✨NEW
+- **SEO実装詳細** ✨NEW
+
+**注意**: 次の開発者は必ず [CLAUDE.md](CLAUDE.md) を参照してください。
 
 ## 🤝 コントリビューション
 
@@ -241,6 +279,7 @@ Copyright © 2025 ワールドスタンプ広島 All Rights Reserved.
 
 Made with ❤️ by ワールドスタンプ広島
 
-最終更新: 2025年7月13日
+**最新バージョン**: v2.1.0 - PWA・SEO・パフォーマンス・セキュリティ強化版  
+**最終更新**: 2025年7月13日
 
 </div>

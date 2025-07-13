@@ -1,0 +1,27 @@
+{
+  "name": "ワールドスタンプ広島",
+  "short_name": "スタンプ広島",
+  "description": "シニア世代にも使いやすい切手専門ショップ。初めての方も気軽にご相談ください",
+  "lang": "ja",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#c41e3a",
+  "background_color": "#ffffff",
+  "categories": ["shopping", "lifestyle"],
+  "scope": "/",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

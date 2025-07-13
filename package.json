@@ -15,7 +15,8 @@
     "format:check": "prettier --check \"**/*.{js,json,html,md}\"",
     "test": "jest",
     "build:categories": "node scripts/generate-category-pages.js",
-    "build": "npm run build:css:prod && npm run build:categories"
+    "build:sitemap": "node scripts/generate-sitemap.js",
+    "build": "npm run build:css:prod && npm run build:categories && npm run build:sitemap"
   },
   "keywords": ["stamp", "e-commerce", "firebase"],
   "author": "ワールドスタンプ広島",

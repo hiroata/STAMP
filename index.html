@@ -7,6 +7,11 @@
         <title>ホーム | ワールドスタンプ広島</title>
         <link rel="icon" type="image/svg+xml" href="icon.svg">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="manifest" href="manifest.json">
+        <meta name="theme-color" content="#c41e3a">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="スタンプ広島">
         <link rel="stylesheet" href="css/common.css">
         <link rel="stylesheet" href="css/tailwind-compiled.css?v=20250713-1">
         <style>
@@ -228,6 +233,64 @@
         <script src="/firebase-config.js"></script>
         <script src="/js/unified-storage.js"></script>
         <script src="/js/security-utils.js"></script>
+        
+        <!-- 構造化データ (JSON-LD) -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "ワールドスタンプ広島",
+          "description": "シニア世代にも使いやすい切手専門ショップ。初めての方も気軽にご相談ください",
+          "url": "https://stamp-e20f2.web.app",
+          "telephone": "082-XXX-XXXX",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "広島市",
+            "addressRegion": "広島県",
+            "addressCountry": "JP"
+          },
+          "openingHours": "Mo,Tu,Fr 09:30-18:00",
+          "priceRange": "¥¥",
+          "image": "https://stamp-e20f2.web.app/icon.svg",
+          "sameAs": [],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "切手商品カタログ",
+            "itemListElement": [
+              {
+                "@type": "OfferCatalog",
+                "name": "記念切手",
+                "description": "日本の歴史的な出来事や文化を記念して発行された切手"
+              },
+              {
+                "@type": "OfferCatalog", 
+                "name": "普通切手",
+                "description": "日常的に使用される一般的な切手"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "特殊切手", 
+                "description": "特別な目的で発行される切手"
+              }
+            ]
+          }
+        }
+        </script>
+        
+        <!-- OGP設定 -->
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="ホーム | ワールドスタンプ広島">
+        <meta property="og:description" content="シニア世代にも使いやすい切手専門ショップ。初めての方も気軽にご相談ください">
+        <meta property="og:url" content="https://stamp-e20f2.web.app">
+        <meta property="og:image" content="https://stamp-e20f2.web.app/icon.svg">
+        <meta property="og:site_name" content="ワールドスタンプ広島">
+        <meta property="og:locale" content="ja_JP">
+        
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="ホーム | ワールドスタンプ広島">
+        <meta name="twitter:description" content="シニア世代にも使いやすい切手専門ショップ。初めての方も気軽にご相談ください">
+        <meta name="twitter:image" content="https://stamp-e20f2.web.app/icon.svg">
     </head>
     <body>
         <!-- スキップリンク -->
@@ -1591,6 +1654,9 @@
         <div id="footer-container"></div>
 
         <script src="js/components.js?v=20250713-2"></script>
+        <script src="js/security.js"></script>
+        <script src="js/pwa.js"></script>
+        <script src="js/performance.js"></script>
         <script>
             // Initialize header and footer
             document.addEventListener('DOMContentLoaded', function() {
