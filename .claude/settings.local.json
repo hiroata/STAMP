@@ -76,7 +76,8 @@
       "Bash(do echo \"Checking $file:\")",
       "Bash(do [ ! -f \"$file\" ])",
       "Bash(touch:*)",
-      "Bash(firebase serve:*)"
+      "Bash(firebase serve:*)",
+      "Bash(python:*)"
     ],
     "deny": []
   }

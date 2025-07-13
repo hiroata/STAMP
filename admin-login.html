@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>管理者ログイン | ワールドスタンプ広島</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="css/tailwind-compiled.css">
         <!-- Firebase SDK -->
         <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -12,7 +12,7 @@
         <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
         <script src="firebase-config.js"></script>
         <script src="js/auth-manager.js"></script>
-        <script src="js/security.js"></script>
+        <!-- <script src="js/security.js"></script> -->
         <style>
             body {
                 font-family:
@@ -20,41 +20,47 @@
             }
         </style>
     </head>
-    <body class="bg-gray-100">
-        <div class="min-h-screen flex items-center justify-center">
-            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <div class="text-center mb-8">
-                    <h1 class="text-2xl font-bold text-gray-800">管理者ログイン</h1>
-                    <p class="text-gray-600 mt-2">ワールドスタンプ広島 管理システム</p>
+    <body style="background: linear-gradient(135deg, #b71c1c 0%, #c41e3a 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); width: 100%; max-width: 450px; backdrop-filter: blur(10px);">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #c41e3a, #b71c1c); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);">
+                    <span style="color: white; font-size: 2rem; font-weight: bold;">WS</span>
                 </div>
+                <h1 style="font-size: 1.875rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">管理者ログイン</h1>
+                <p style="color: #6b7280; font-size: 1rem;">ワールドスタンプ広島 管理システム</p>
+            </div>
 
                 <form id="loginForm" onsubmit="handleLogin(event)">
                     <!-- CSRF Token -->
                     <input type="hidden" id="csrfToken" value="" />
 
-                    <div class="mb-6">
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2"> メールアドレス </label>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="email" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">メールアドレス</label>
                         <input
                             type="email"
                             id="email"
                             name="email"
                             required
                             autocomplete="email"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C41E3A] focus:border-transparent"
+                            style="width: 100%; padding: 0.875rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fafafa;"
                             placeholder="メールアドレスを入力"
+                            onfocus="this.style.borderColor='#c41e3a'; this.style.boxShadow='0 0 0 3px rgba(196, 30, 58, 0.1)'; this.style.background='white';"
+                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafafa';"
                         />
                     </div>
 
-                    <div class="mb-6">
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2"> パスワード </label>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="password" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">パスワード</label>
                         <input
                             type="password"
                             id="password"
                             name="password"
                             required
                             autocomplete="current-password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C41E3A] focus:border-transparent"
+                            style="width: 100%; padding: 0.875rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fafafa;"
                             placeholder="パスワードを入力"
+                            onfocus="this.style.borderColor='#c41e3a'; this.style.boxShadow='0 0 0 3px rgba(196, 30, 58, 0.1)'; this.style.background='white';"
+                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafafa';"
                         />
                     </div>
 
@@ -80,8 +86,11 @@
                     </button>
                 </form>
 
-                <div class="mt-6 text-center">
-                    <a href="index.html" class="text-sm text-gray-600 hover:text-[#C41E3A]"> ← トップページに戻る </a>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <a href="index.html" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.3s ease;" 
+                       onmouseover="this.style.color='#c41e3a';" onmouseout="this.style.color='#6b7280';">
+                        ← トップページに戻る
+                    </a>
                 </div>
             </div>
         </div>
@@ -114,20 +123,10 @@
                 const password = document.getElementById('password').value;
                 const remember = document.getElementById('remember').checked;
                 
-                // CSRFトークンの検証（将来の実装のための準備）
-                const csrfToken = document.getElementById('csrfToken').value;
-                const storedToken = sessionStorage.getItem('csrfToken');
-                if (window.SecurityUtils && csrfToken && csrfToken === storedToken) {
-                    // トークンが一致している場合のみ処理を続行
-                    if (!window.SecurityUtils.verifyCSRFToken(csrfToken)) {
-                        document.getElementById('errorText').textContent = 'セキュリティエラー: ページを再読み込みしてください';
-                        document.getElementById('errorMessage').classList.remove('hidden');
-                        return;
-                    }
-                }
+                console.log('Login attempt:', email); // デバッグ用
 
                 // エラーメッセージを非表示
-                document.getElementById('errorMessage').classList.add('hidden');
+                document.getElementById('errorMessage').style.display = 'none';
 
                 // ローディング表示
                 const submitButton = event.target.querySelector('button[type="submit"]');
@@ -136,22 +135,32 @@
                 submitButton.textContent = 'ログイン中...';
 
                 try {
+                    // authManagerの存在確認
+                    if (typeof authManager === 'undefined') {
+                        throw new Error('authManager is not loaded');
+                    }
+
+                    console.log('Calling authManager.login...'); // デバッグ用
+                    
                     // Firebase認証でログイン
                     const response = await authManager.login(email, password, remember);
+                    
+                    console.log('Login response:', response); // デバッグ用
 
-                    if (response.success) {
+                    if (response && response.success) {
                         // 管理画面にリダイレクト
                         window.location.href = 'admin.html';
                     } else {
                         // エラーメッセージを表示
-                        document.getElementById('errorText').textContent = response.message;
-                        document.getElementById('errorMessage').classList.remove('hidden');
+                        const errorMsg = response?.message || 'ログインに失敗しました';
+                        document.getElementById('errorText').textContent = errorMsg;
+                        document.getElementById('errorMessage').style.display = 'block';
                     }
                 } catch (error) {
                     console.error('Login error:', error);
-                    document.getElementById('errorText').textContent =
-                        'ログインに失敗しました。しばらくしてからお試しください。';
-                    document.getElementById('errorMessage').classList.remove('hidden');
+                    document.getElementById('errorText').textContent = 
+                        `ログインエラー: ${error.message || 'システムエラーが発生しました'}`;
+                    document.getElementById('errorMessage').style.display = 'block';
                 } finally {
                     // ボタンを元に戻す
                     submitButton.disabled = false;
