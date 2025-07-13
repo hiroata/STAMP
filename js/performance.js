@@ -251,7 +251,7 @@ class PerformanceOptimizer {
     preloadCriticalResources() {
         const criticalResources = [
             { href: '/css/tailwind-compiled.css', as: 'style' },
-            { href: '/js/firebase-config.js', as: 'script' },
+            { href: '/firebase-config.js', as: 'script' },
             { href: '/js/main.js', as: 'script' }
         ];
 

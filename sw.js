@@ -20,7 +20,7 @@ const CACHE_RESOURCES = [
   '/css/common.css',
   '/css/tailwind-compiled.css',
   '/js/components.js',
-  '/js/firebase-config.js',
+  '/firebase-config.js',
   '/js/main.js',
   '/icon.svg',
   '/favicon.ico'
