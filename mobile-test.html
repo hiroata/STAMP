@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>モバイル表示テスト</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/tailwind-compiled.css?v=20250713-2">
+    <style>
+        .test-info {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        .success { color: green; }
+        .fail { color: red; }
+    </style>
+</head>
+<body>
+    <div id="header-container"></div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold mb-6">モバイルUI改善テスト</h1>
+        
+        <div class="test-info">
+            <h2 class="text-xl font-bold mb-4">テスト結果</h2>
+            
+            <div class="test-item">
+                <h3 class="font-bold">1. キャッシュバージョン</h3>
+                <p>components.js バージョン: <span id="cache-version" class="font-mono">v=20250713-2</span></p>
+                <p class="text-sm text-gray-600">キャッシュをクリアしてページを再読み込みしてください</p>
+            </div>
+            
+            <div class="test-item">
+                <h3 class="font-bold">2. ハンバーガーメニュー表示</h3>
+                <p id="hamburger-test">チェック中...</p>
+            </div>
+            
+            <div class="test-item">
+                <h3 class="font-bold">3. タイトル表示</h3>
+                <p id="title-test">チェック中...</p>
+            </div>
+            
+            <div class="test-item">
+                <h3 class="font-bold">4. 画面幅</h3>
+                <p>現在の画面幅: <span id="screen-width"></span>px</p>
+                <p>モバイル判定: <span id="is-mobile"></span></p>
+            </div>
+            
+            <div class="test-item">
+                <h3 class="font-bold">5. キャッシュクリア手順</h3>
+                <ul class="list-disc list-inside text-sm">
+                    <li>Chrome: 設定 → プライバシーとセキュリティ → 閲覧履歴データの削除</li>
+                    <li>Safari: 設定 → Safari → 履歴とWebサイトデータを消去</li>
+                    <li>または: Ctrl+Shift+R (Windows) / Cmd+Shift+R (Mac) で強制再読み込み</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-8">
+            <h2 class="text-xl font-bold mb-4">改善内容</h2>
+            <ul class="list-disc list-inside space-y-2">
+                <li>✅ "ワールドスタンプ広島" が1行に収まるように修正</li>
+                <li>✅ "メニュー" テキストをハンバーガーアイコン（☰）に変更</li>
+                <li>✅ モバイルヘッダーのレイアウト最適化</li>
+                <li>✅ タッチしやすいボタンサイズ（最小44px）</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="footer-container"></div>
+    
+    <script src="js/components.js?v=20250713-2"></script>
+    <script>
+        // Initialize components
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerContainer = document.getElementById('header-container');
+            const footerContainer = document.getElementById('footer-container');
+            
+            if (headerContainer) {
+                headerContainer.innerHTML = createHeader();
+            }
+            
+            if (footerContainer) {
+                footerContainer.innerHTML = createFooter();
+            }
+            
+            initializeMobileMenu();
+            
+            // Run tests
+            setTimeout(runTests, 500);
+        });
+        
+        function runTests() {
+            // Test 1: Check hamburger menu
+            const hamburgerBtn = document.getElementById('mobile-hamburger-menu');
+            const hamburgerTest = document.getElementById('hamburger-test');
+            if (hamburgerBtn) {
+                const svg = hamburgerBtn.querySelector('svg');
+                if (svg && svg.querySelector('path[d="M4 6h16M4 12h16M4 18h16"]')) {
+                    hamburgerTest.innerHTML = '<span class="success">✅ ハンバーガーアイコンが正しく表示されています</span>';
+                } else {
+                    hamburgerTest.innerHTML = '<span class="fail">❌ ハンバーガーアイコンが見つかりません</span>';
+                }
+            } else {
+                hamburgerTest.innerHTML = '<span class="fail">❌ ハンバーガーメニューボタンが見つかりません</span>';
+            }
+            
+            // Test 2: Check title
+            const mobileTitle = document.querySelector('.mobile-header-title');
+            const titleTest = document.getElementById('title-test');
+            if (mobileTitle) {
+                const titleWidth = mobileTitle.offsetWidth;
+                const titleText = mobileTitle.textContent;
+                titleTest.innerHTML = `<span class="success">✅ タイトル "${titleText}" が表示されています (幅: ${titleWidth}px)</span>`;
+            } else {
+                titleTest.innerHTML = '<span class="fail">❌ モバイルタイトルが見つかりません</span>';
+            }
+            
+            // Test 3: Screen width
+            const width = window.innerWidth;
+            document.getElementById('screen-width').textContent = width;
+            document.getElementById('is-mobile').innerHTML = width <= 767 ? 
+                '<span class="success">モバイル表示</span>' : 
+                '<span class="fail">デスクトップ表示</span>';
+        }
+        
+        // Re-run tests on resize
+        window.addEventListener('resize', runTests);
+    </script>
+</body>
+</html>

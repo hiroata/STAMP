@@ -17,6 +17,27 @@ function getBasePath() {
 function createHeader() {
     const basePath = getBasePath();
     return `
+    <style>
+        /* モバイルヘッダー最適化 */
+        @media (max-width: 767px) {
+            .mobile-header-title {
+                font-size: 1rem !important;
+                line-height: 1.2 !important;
+            }
+            .mobile-phone-text {
+                font-size: 0.875rem !important;
+            }
+            .mobile-business-hours {
+                font-size: 0.75rem !important;
+                white-space: nowrap;
+            }
+            /* ハンバーガーメニューボタンの最小サイズ確保 */
+            #mobile-hamburger-menu {
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+    </style>
     <header class="w-full">
         <!-- 上部の薄い茶色バー -->
         <div class="bg-red-50 py-1 text-center text-xs text-gray-700">
@@ -28,27 +49,29 @@ function createHeader() {
             <div class="container mx-auto px-4">
                 <!-- モバイル版ヘッダー -->
                 <div class="md:hidden">
-                    <!-- 上段：店名と電話番号 -->
+                    <!-- 上段：店名とハンバーガーメニュー -->
                     <div class="flex items-center justify-between py-3">
-                        <h1 class="text-lg font-bold text-gray-800">
+                        <h1 class="text-base font-bold text-gray-800 whitespace-nowrap mobile-header-title">
                             <a href="${basePath}index.html" class="hover:text-red-700 transition-colors">ワールドスタンプ広島</a>
                         </h1>
-                        <a href="tel:082-XXX-XXXX" class="flex items-center gap-1">
-                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        <!-- ハンバーガーメニューボタン -->
+                        <button id="mobile-hamburger-menu" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" aria-label="メニューを開く">
+                            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                             </svg>
-                            <span class="text-base font-bold text-gray-900">082-XXX-XXXX</span>
-                        </a>
+                        </button>
                     </div>
-                    <!-- 下段：営業時間とお問い合わせボタン -->
-                    <div class="flex items-center justify-between pb-3">
-                        <p class="text-xs text-gray-600">平日9:30-18:00 休業日：月水木・臨時休業あり</p>
-                        <a href="${basePath}contact.html" class="bg-red-600 text-white px-3 py-1.5 rounded-md text-sm flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            お問い合わせ
-                        </a>
+                    <!-- 下段：電話番号と営業時間 -->
+                    <div class="pb-3 border-t border-gray-200 pt-2">
+                        <div class="flex items-center justify-between">
+                            <a href="tel:082-XXX-XXXX" class="flex items-center gap-1">
+                                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                                <span class="text-sm font-bold text-gray-900 mobile-phone-text">082-XXX-XXXX</span>
+                            </a>
+                            <p class="text-xs text-gray-600 mobile-business-hours">平日9:30-18:00</p>
+                        </div>
                     </div>
                 </div>
 
@@ -88,19 +111,7 @@ function createHeader() {
             </div>
         </div>
         
-        <!-- モバイルナビゲーション -->
-        <div class="bg-red-50 border-b border-red-200 md:hidden">
-            <div class="container mx-auto px-4">
-                <div class="py-3">
-                    <button id="mobile-nav-toggle" class="w-full flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                        <span class="font-medium text-gray-700">メニュー</span>
-                        <svg class="w-5 h-5 text-gray-500 transition-transform" id="mobile-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- モバイルナビゲーション（削除 - ハンバーガーメニューに統合） -->
         
         <!-- ナビゲーションバー（デスクトップのみ） -->
         <div class="bg-red-50 border-b border-red-200 hidden md:block">
@@ -267,7 +278,7 @@ function createFooter() {
         </div>
         <div class="bg-gray-800 text-white py-4">
             <div class="container mx-auto px-4 text-center">
-                <p class="text-sm">© 2024 ワールドスタンプ広島 All Rights Reserved.</p>
+                <p class="text-sm">© 2024 <a href="${basePath}index.html" class="text-white hover:text-red-300 transition-colors underline decoration-transparent hover:decoration-red-300">ワールドスタンプ広島</a> All Rights Reserved.</p>
                 <p class="text-xs mt-2">
                     <a href="${basePath}admin-login.html" class="text-gray-400 hover:text-gray-300">管理者ログイン</a>
                 </p>
@@ -278,41 +289,46 @@ function createFooter() {
 
 // モバイルメニューの初期化
 function initializeMobileMenu() {
-    const mobileMenuBtns = document.querySelectorAll('#mobile-menu-btn');
+    const mobileHamburgerBtn = document.getElementById('mobile-hamburger-menu');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileMenuClose = document.querySelector('.mobile-menu-close');
-    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-    const mobileNavIcon = document.getElementById('mobile-nav-icon');
 
     function openMobileMenu() {
         mobileMenu?.classList.add('show');
-        mobileMenuBtns.forEach(btn => btn?.classList.add('open'));
         document.body.style.overflow = 'hidden';
+        // ハンバーガーアイコンをXに変更
+        if (mobileHamburgerBtn) {
+            mobileHamburgerBtn.innerHTML = `
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            `;
+        }
     }
 
     function closeMobileMenu() {
         mobileMenu?.classList.remove('show');
-        mobileMenuBtns.forEach(btn => btn?.classList.remove('open'));
         document.body.style.overflow = '';
+        // Xをハンバーガーアイコンに戻す
+        if (mobileHamburgerBtn) {
+            mobileHamburgerBtn.innerHTML = `
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            `;
+        }
     }
 
-    mobileMenuBtns.forEach(btn => {
-        btn?.addEventListener('click', openMobileMenu);
+    // ハンバーガーメニューボタンのクリックイベント
+    mobileHamburgerBtn?.addEventListener('click', function() {
+        if (mobileMenu?.classList.contains('show')) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
     });
-    mobileMenuClose?.addEventListener('click', closeMobileMenu);
     
-    // Mobile navigation toggle
-    if (mobileNavToggle && mobileMenu) {
-        mobileNavToggle.addEventListener('click', function() {
-            if (mobileMenu.classList.contains('show')) {
-                closeMobileMenu();
-                mobileNavIcon.style.transform = 'rotate(0deg)';
-            } else {
-                openMobileMenu();
-                mobileNavIcon.style.transform = 'rotate(180deg)';
-            }
-        });
-    }
+    mobileMenuClose?.addEventListener('click', closeMobileMenu);
 
     // メニュー外をクリックしたら閉じる
     mobileMenu?.addEventListener('click', (e) => {
