@@ -12,6 +12,7 @@
         <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
         <script src="/firebase-config.js"></script>
         <script src="/js/auth-manager.js"></script>
+        <script src="/js/security-utils.js"></script>
         <style>
             body {
                 font-family:
@@ -93,6 +94,14 @@
             window.addEventListener('DOMContentLoaded', () => {
                 authManager = new AuthManager();
                 
+                // CSRFトークンを生成して設定
+                if (window.SecurityUtils) {
+                    const csrfToken = window.SecurityUtils.generateCSRFToken();
+                    document.getElementById('csrfToken').value = csrfToken;
+                    // セッションストレージに保存（将来の検証用）
+                    sessionStorage.setItem('csrfToken', csrfToken);
+                }
+                
                 // デバッグ情報
                 console.log('Admin login page initialized');
             });
@@ -104,6 +113,18 @@
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
                 const remember = document.getElementById('remember').checked;
+                
+                // CSRFトークンの検証（将来の実装のための準備）
+                const csrfToken = document.getElementById('csrfToken').value;
+                const storedToken = sessionStorage.getItem('csrfToken');
+                if (window.SecurityUtils && csrfToken && csrfToken === storedToken) {
+                    // トークンが一致している場合のみ処理を続行
+                    if (!window.SecurityUtils.verifyCSRFToken(csrfToken)) {
+                        document.getElementById('errorText').textContent = 'セキュリティエラー: ページを再読み込みしてください';
+                        document.getElementById('errorMessage').classList.remove('hidden');
+                        return;
+                    }
+                }
 
                 // エラーメッセージを非表示
                 document.getElementById('errorMessage').classList.add('hidden');

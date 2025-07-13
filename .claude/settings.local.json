@@ -74,7 +74,8 @@
       "Bash(npx update-browserslist-db:*)",
       "Bash(tail:*)",
       "Bash(do echo \"Checking $file:\")",
-      "Bash(do [ ! -f \"$file\" ])"
+      "Bash(do [ ! -f \"$file\" ])",
+      "Bash(touch:*)"
     ],
     "deny": []
   }

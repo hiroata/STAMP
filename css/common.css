@@ -85,24 +85,28 @@ select:focus {
 /* ハンバーガーメニュー */
 .hamburger {
     cursor: pointer;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     transition: all 0.25s;
     position: relative;
+    background: none;
+    border: none;
+    padding: 4px;
 }
 
 .hamburger-line {
     display: block;
     height: 3px;
-    width: 100%;
+    width: 24px;
     border-radius: 10px;
     background: #333;
     transition: all 0.3s ease-in-out;
     position: absolute;
+    left: 4px;
 }
 
 .hamburger-line:nth-child(1) {
-    top: 0;
+    top: 4px;
 }
 
 .hamburger-line:nth-child(2) {
@@ -111,7 +115,7 @@ select:focus {
 }
 
 .hamburger-line:nth-child(3) {
-    bottom: 0;
+    bottom: 4px;
 }
 
 .hamburger.open .hamburger-line:nth-child(1) {
@@ -196,7 +200,7 @@ select:focus {
 }
 
 /* モバイル対応 */
-@media (max-width: 639px) {
+@media (max-width: 767px) {
     body {
         font-size: 18px;
     }
@@ -314,4 +318,47 @@ select:focus {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+
+/* モバイルヘッダー専用スタイル */
+@media (max-width: 767px) {
+    /* ヘッダーのモバイル対応 */
+    header .container > div {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    
+    /* 店名とハンバーガーメニューの行 */
+    header .flex.items-center.justify-between {
+        padding: 12px 0 !important;
+    }
+    
+    /* 電話番号とお問い合わせボタンの行 */
+    header .flex.flex-col.md\\:flex-row {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 8px 0 !important;
+    }
+    
+    /* モバイルでのロゴサイズ調整 */
+    header h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    /* モバイルでの電話番号 */
+    header .text-right {
+        text-align: left !important;
+    }
+    
+    header .text-xl.md\\:text-3xl {
+        font-size: 1rem !important;
+    }
+    
+    /* モバイルでのお問い合わせボタン */
+    header a[href*="contact.html"] {
+        padding: 8px 12px !important;
+        font-size: 0.875rem !important;
+    }
 }
