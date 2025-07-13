@@ -72,7 +72,9 @@
       "Bash(npx stylelint:*)",
       "Bash(npx tailwindcss:*)",
       "Bash(npx update-browserslist-db:*)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(do echo \"Checking $file:\")",
+      "Bash(do [ ! -f \"$file\" ])"
     ],
     "deny": []
   }
