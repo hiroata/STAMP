@@ -45,7 +45,7 @@ function createHeader() {
         </div>
         
         <!-- メインヘッダー -->
-        <div class="bg-white border-b-4 border-red-600">
+        <div class="bg-white">
             <div class="container mx-auto px-4">
                 <!-- モバイル版ヘッダー -->
                 <div class="md:hidden">
