@@ -8,7 +8,6 @@ module.exports = {
     "./admin-enhanced.html",
     "./admin-categories.html",
     "./admin-login.html",
-    "./admin-mobile.html",
     "./pages/**/*.html",
     "./js/**/*.js"
   ],
