@@ -653,7 +653,7 @@
                                 <div class="flex items-start gap-2 flex-wrap mb-1">
                                     <h3 class="font-semibold text-lg ${product.soldOut ? 'text-gray-500' : ''}">${product.title}</h3>
                                     ${product.soldOut ? '<span class="text-xs bg-red-600 text-white px-2 py-1 rounded">SOLD OUT</span>' : ''}
-                                    ${product.isNew && !product.soldOut ? '<span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
+                                    ${product.isNew && !product.soldOut ? '<span class="text-xs bg-orange-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
                                 </div>
                                 <p class="text-xs text-gray-500 mb-1">SKU: ${product.sku || '未設定'} | 登録日: ${product.created_at ? new Date(product.created_at).toLocaleDateString() : '不明'}</p>
                                 <p class="text-lg font-bold ${product.negotiable ? 'text-blue-600' : 'text-red-600'} mb-1">
@@ -1157,7 +1157,7 @@
                             <div class="p-6">
                                 <!-- 在庫統計 -->
                                 <div class="grid grid-cols-4 gap-4 mb-6">
-                                    <div class="text-center p-4 bg-red-50 rounded-lg">
+                                    <div class="text-center p-4 bg-orange-50 rounded-lg">
                                         <div class="text-2xl font-bold text-red-600">${stockStatus.outOfStock.length}</div>
                                         <div class="text-sm text-gray-600">在庫切れ</div>
                                     </div>
@@ -1181,7 +1181,7 @@
                                     <h4 class="font-semibold text-red-600 mb-3">在庫切れ商品 (${stockStatus.outOfStock.length}件)</h4>
                                     <div class="space-y-2 max-h-40 overflow-y-auto">
                                         ${stockStatus.outOfStock.map(product => `
-                                            <div class="flex justify-between items-center p-3 bg-red-50 rounded">
+                                            <div class="flex justify-between items-center p-3 bg-orange-50 rounded">
                                                 <span class="font-medium">${product.title}</span>
                                                 <input type="number" min="1" max="999" placeholder="在庫数" 
                                                        class="w-20 px-2 py-1 border rounded text-sm"
@@ -1270,7 +1270,7 @@
                                         <div class="text-2xl font-bold text-purple-600">${priceRanges.range5000to10000.length}</div>
                                         <div class="text-sm text-gray-600">5,000-10,000円</div>
                                     </div>
-                                    <div class="text-center p-4 bg-red-50 rounded-lg">
+                                    <div class="text-center p-4 bg-orange-50 rounded-lg">
                                         <div class="text-2xl font-bold text-red-600">${priceRanges.over10000.length}</div>
                                         <div class="text-sm text-gray-600">10,000円以上</div>
                                     </div>

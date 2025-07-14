@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <header className="w-full">
             {/* 上部の薄い茶色バー */}
-            <div className="bg-red-50 py-1 text-center text-xs text-gray-700">
+            <div className="py-1 text-center text-xs text-gray-700">
                 広島で切手の買取・販売を手がける専門店
             </div>
 
@@ -15,8 +15,8 @@ const Header = () => {
                     <div className="flex items-center justify-between py-4">
                         {/* 左側：ロゴとショップ名 */}
                         <div className="flex items-center gap-4">
-                            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center border-2 border-red-600">
-                                <span className="text-xs font-bold text-red-900">WS</span>
+                            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center border-2 border-gray-400">
+                                <span className="text-xs font-bold text-gray-700">WS</span>
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-gray-800">
@@ -92,7 +92,7 @@ const Header = () => {
             </div>
 
             {/* ナビゲーションバー（デスクトップのみ） */}
-            <div className="bg-red-50 border-b border-red-200 hidden sm:block">
+            <div className="bg-gray-50 border-b border-gray-200 hidden sm:block">
                 <div className="container mx-auto px-4">
                     <nav className="flex items-center justify-center gap-8 py-3">
                         <Link

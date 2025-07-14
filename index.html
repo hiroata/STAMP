@@ -24,6 +24,12 @@
                 --error-red: #f44336;
             }
 
+            /* 赤線の削除 */
+            html, body {
+                border: none !important;
+                border-top: none !important;
+            }
+
             /* 基本フォント */
             body {
                 font-family:
@@ -34,6 +40,7 @@
                 background-color: var(--bg-white);
                 margin: 0;
                 padding: 0;
+                border-top: none !important;
             }
 
             /* スキップリンク */
@@ -1574,7 +1581,7 @@
 
                         article.innerHTML = `
                         <div class="relative">
-                            ${safeProduct.isNew && !safeProduct.soldOut ? '<span class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded">新着</span>' : ''}
+                            ${safeProduct.isNew && !safeProduct.soldOut ? '<span class="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 text-xs rounded">新着</span>' : ''}
                             ${safeProduct.soldOut ? '<span class="absolute top-2 right-2 bg-gray-700 text-white px-2 py-1 text-xs rounded font-bold">SOLD OUT</span>' : ''}
                             <div class="aspect-square overflow-hidden bg-gray-100">
                                 ${imageContent}
@@ -1610,10 +1617,10 @@
                 } catch (error) {
                     console.error('Error displaying products:', error);
                     container.innerHTML = `
-                        <div class="col-span-full text-center py-8 bg-red-50 border border-red-200 rounded-lg">
-                            <p class="text-red-800 font-medium">❌ 商品データの読み込みエラー</p>
-                            <p class="text-sm text-red-600 mt-2">エラー: ${error.message}</p>
-                            <button onclick="console.log('Retry button clicked'); window.location.reload()" class="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+                        <div class="col-span-full text-center py-8 bg-gray-50 border border-gray-300 rounded-lg">
+                            <p class="text-gray-800 font-medium">❌ 商品データの読み込みエラー</p>
+                            <p class="text-sm text-gray-600 mt-2">エラー: ${error.message}</p>
+                            <button onclick="console.log('Retry button clicked'); window.location.reload()" class="mt-4 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 transition-colors">
                                 再試行
                             </button>
                         </div>

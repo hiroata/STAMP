@@ -166,7 +166,7 @@ export class ErrorHandler {
         // エラー通知要素を作成
         const errorEl = document.createElement('div');
         errorEl.id = 'error-notification';
-        errorEl.className = 'error-message fixed top-4 right-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded shadow-lg z-50';
+        errorEl.className = 'error-message fixed top-4 right-4 p-4 bg-orange-100 border border-orange-400 text-red-700 rounded shadow-lg z-50';
         errorEl.innerHTML = `
             <div class="flex items-center">
                 <span class="flex-1">${message}</span>

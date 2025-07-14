@@ -689,7 +689,7 @@
                                 <div class="flex items-start gap-2 flex-wrap">
                                     <h3 class="font-semibold text-lg ${product.soldOut ? 'text-gray-500' : ''}">${product.title}</h3>
                                     ${product.soldOut ? '<span class="text-xs text-gray-500">在庫切れ</span>' : ''}
-                                    ${product.isNew && !product.soldOut ? '<span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
+                                    ${product.isNew && !product.soldOut ? '<span class="text-xs bg-orange-100 text-red-600 px-2 py-1 rounded">NEW</span>' : ''}
                                 </div>
                                 <p class="text-xs text-gray-500 mb-1">SKU: ${product.sku || '未設定'}</p>
                                 <p class="text-lg font-bold ${product.negotiable ? 'text-blue-600' : 'text-red-600'} mb-1">

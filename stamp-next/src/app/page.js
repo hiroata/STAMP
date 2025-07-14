@@ -115,7 +115,7 @@ export default async function Home() {
                 </div>
 
                 {/* 当店のサービス */}
-                <div className="bg-red-50 rounded-lg p-8 text-center">
+                <div className="bg-gray-50 rounded-lg p-8 text-center">
                     <h3 className="text-xl font-bold text-gray-800 mb-4">
                         売却も購入も、お客様のニーズに幅広く対応いたします。
                     </h3>
