@@ -47,15 +47,18 @@ STAMP/
 │   ├── about.html                # 店舗情報
 │   ├── contact.html              # お問い合わせ
 │   ├── buy.html / sell.html      # 購入・売却
+│   ├── features.html             # 当店の特徴
+│   ├── appraiser.html            # 鑑定人について
+│   ├── qna.html                  # Q&A
 │   ├── privacy.html / terms.html # 規約類
 │   └── manifest.json             # PWA設定
 │
-├── 📂 pages/                     # サブページ
+├── 📂 pages/                     # サブページ（整理済み）
 │   ├── categories/               # カテゴリーページ（77ファイル）
 │   └── admin/                    # 管理関連ページ
 │
 ├── 📂 js/                        # JavaScript（最新追加分）
-│   ├── components.js             # 共通コンポーネント
+│   ├── components.js             # 共通コンポーネント（UI最適化済み）
 │   ├── unified-storage.js        # Firebase統合管理
 │   ├── auth-manager.js           # 認証システム
 │   ├── image-uploader.js         # 画像アップロード
@@ -71,9 +74,10 @@ STAMP/
 │   ├── generate-sitemap.js       # サイトマップ生成（NEW）
 │   └── generate-category-pages.js
 │
-├── 📂 docs/                      # ドキュメント
-├── 📂 tools/                     # 開発ツール
-├── 📂 tests/                     # テスト
+├── 📂 docs/                      # ドキュメント（統廃合済み）
+├── 📂 tools/                     # 開発ツール（整理済み）
+├── 📂 tests/                     # テスト（整理済み）
+├── 📂 templates/                 # テンプレートファイル
 └── 🔧 設定ファイル
     ├── firebase.json             # Firebase設定（セキュリティヘッダー含む）
     ├── database.rules.json       # DB権限設定
@@ -83,6 +87,13 @@ STAMP/
     ├── sw.js                     # Service Worker（NEW）
     └── offline.html              # オフラインページ（NEW）
 ```
+
+### 📁 フォルダ構造の最適化（統合情報）
+- **ルートレベル**: 最重要ファイル20個のみ（見つけやすさ重視）
+- **pages/categories/**: 77個のカテゴリーページを整理
+- **docs/**: ドキュメントファイルを集約（CLAUDE.mdがメイン）
+- **tools/**: 開発ツール・スクリプトを整理
+- **tests/**: テスト・デバッグファイルを整理
 
 ## 🚀 最新の改良点（2025年7月実装）
 
@@ -109,6 +120,12 @@ STAMP/
 - **セキュリティヘッダー**: X-Frame-Options, HSTS, Referrer-Policy
 - **XSS保護**: 入力値サニタイゼーション、DOM監視
 - **HTTPS強制**: セキュア通信の徹底
+
+### 5. UI/UXデザイン最適化 ✅ **NEW**
+- **赤色背景の最適化**: 目障りな薄い赤色背景をグレー系に統一
+- **モバイル対応**: スマートフォンで見やすい配色に調整
+- **ブランドカラー**: 重要な要素（ボタン、リンク）は適切に赤色を維持
+- **アクセシビリティ**: コントラスト比とユーザビリティを向上
 
 ## 🔧 開発コマンド
 
@@ -251,16 +268,22 @@ Sitemap: https://stamp-e20f2.web.app/sitemap.xml
 - **モバイルファースト**: 小画面から大画面への拡張
 - **フレキシブルグリッド**: CSS Grid + Flexbox
 
-### カラーパレット
+### カラーパレット（✅最適化済み）
 ```css
 :root {
-  --primary-red: #c41e3a;     /* メインカラー */
-  --header-bg: #b71c1c;       /* ヘッダー背景 */
+  --primary-red: #c41e3a;     /* メインカラー（ボタン・リンク用） */
+  --header-bg: #b71c1c;       /* ヘッダー背景（未使用） */
   --nav-gray: #f5f5f5;        /* ナビゲーション */
   --text-primary: #333333;    /* メインテキスト */
   --text-secondary: #666666;  /* サブテキスト */
 }
 ```
+
+#### 配色ルール（2025年7月14日更新）
+- **機能的な赤色**: `bg-red-600`（ボタン）、`text-red-*`（警告・エラー）は維持
+- **装飾的な背景**: `bg-red-50` → `bg-gray-50` or `bg-red-50`（適度に使用）
+- **モバイル対応**: 目障りな濃い赤線は完全削除
+- **アクセシビリティ**: 高コントラスト維持、視認性最優先
 
 ## 🔐 セキュリティ実装
 
@@ -328,6 +351,8 @@ function sanitizeInput(input) {
 | CSS適用されない | ビルドエラー | `npm run build:css:prod`実行 |
 | PWA機能が動かない | Service Worker エラー | ブラウザのキャッシュクリア |
 | サイトマップが古い | 自動生成未実行 | `npm run build:sitemap`実行 |
+| 赤色背景が表示される | 未修正ファイルあり | `bg-red-50`, `bg-red-100`を`bg-gray-*`に変更 |
+| モバイルで赤線が見える | ヘッダー背景問題 | components.jsの赤色背景を削除・修正 |
 
 ### デバッグ方法
 ```javascript
@@ -409,8 +434,8 @@ git push origin feature/new-feature
 
 ## 🎉 最終更新
 
-**更新日**: 2025年7月13日  
-**バージョン**: v2.1.0  
-**実装済み**: SEO最適化、PWA化、パフォーマンス最適化、セキュリティ強化
+**更新日**: 2025年7月14日  
+**バージョン**: v2.1.1  
+**実装済み**: SEO最適化、PWA化、パフォーマンス最適化、セキュリティ強化、UI/UXデザイン最適化
 
 このガイドは最新の実装状況を反映しており、次の開発者がスムーズに作業を継続できるよう設計されています。
