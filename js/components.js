@@ -44,28 +44,44 @@ function createHeader() {
             <div class="container mx-auto px-4">
                 <!-- モバイル版ヘッダー -->
                 <div class="md:hidden">
-                    <!-- 上段：店名とハンバーガーメニュー -->
-                    <div class="flex items-center justify-between py-3">
-                        <h1 class="text-base font-bold text-gray-800 whitespace-nowrap mobile-header-title">
-                            <a href="${basePath}index.html" class="hover:text-red-700 transition-colors">ワールドスタンプ広島</a>
-                        </h1>
-                        <!-- ハンバーガーメニューボタン -->
-                        <button id="mobile-hamburger-menu" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" aria-label="メニューを開く">
-                            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <!-- 下段：電話番号と営業時間 -->
-                    <div class="pb-3 border-t border-gray-200 pt-2">
-                        <div class="flex items-center justify-between">
-                            <a href="tel:082-XXX-XXXX" class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    <!-- グラデーション背景コンテナ -->
+                    <div class="bg-gradient-to-r from-blue-50 to-red-50 shadow-sm -mx-4 px-4">
+                        <!-- 上段：ロゴ、店名とハンバーガーメニュー -->
+                        <div class="flex items-center justify-between py-4">
+                            <!-- ロゴと店名 -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-md">
+                                    <span class="text-sm font-bold text-white">WS</span>
+                                </div>
+                                <div>
+                                    <h1 class="text-lg font-bold text-gray-800 mobile-header-title">
+                                        <a href="${basePath}index.html" class="hover:text-red-700 transition-colors">ワールドスタンプ広島</a>
+                                    </h1>
+                                    <p class="text-xs text-gray-600 -mt-1">切手専門店</p>
+                                </div>
+                            </div>
+                            <!-- ハンバーガーメニューボタン -->
+                            <button id="mobile-hamburger-menu" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" aria-label="メニューを開く">
+                                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                                 </svg>
-                                <span class="text-sm font-bold text-gray-900 mobile-phone-text">082-XXX-XXXX</span>
-                            </a>
-                            <p class="text-xs text-gray-600 mobile-business-hours">平日9:30-18:00</p>
+                            </button>
+                        </div>
+                        
+                        <!-- 下段：電話番号と営業時間 -->
+                        <div class="bg-white/70 border-t border-gray-100 -mx-4 px-4 py-3">
+                            <div class="flex items-center justify-between">
+                                <a href="tel:082-XXX-XXXX" class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors shadow-sm text-sm font-medium">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                    </svg>
+                                    <span class="mobile-phone-text">今すぐ電話</span>
+                                </a>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-600 mobile-business-hours">営業時間</p>
+                                    <p class="text-sm font-semibold text-gray-800">平日9:30-18:00</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -209,8 +225,21 @@ function createFooter() {
                     <p class="text-sm text-gray-600">初心者から愛好家まで幅広くサポート</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 mb-4">ショッピングガイド</h3>
+                    <h3 class="font-bold text-gray-800 mb-4">商品カテゴリー</h3>
                     <ul class="space-y-2">
+                        <li>
+                            <a href="${basePath}products.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline flex items-center gap-1">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                                </svg>
+                                新着商品一覧
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${basePath}category.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                すべてのカテゴリー
+                            </a>
+                        </li>
                         <li>
                             <a href="${basePath}order-guide.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 ご注文方法
@@ -221,16 +250,16 @@ function createFooter() {
                                 お支払い方法
                             </a>
                         </li>
-                        <li>
-                            <a href="${basePath}about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
-                                店舗案内
-                            </a>
-                        </li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 mb-4">お客様サポート</h3>
+                    <h3 class="font-bold text-gray-800 mb-4">店舗・サポート</h3>
                     <ul class="space-y-2">
+                        <li>
+                            <a href="${basePath}about.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                店舗案内・アクセス
+                            </a>
+                        </li>
                         <li>
                             <a href="${basePath}faq.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 よくあるご質問
@@ -239,6 +268,11 @@ function createFooter() {
                         <li>
                             <a href="${basePath}contact.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
                                 お問い合わせ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${basePath}qna.html" class="text-sm text-gray-600 hover:text-[#C41E3A] underline">
+                                Q&A
                             </a>
                         </li>
                     </ul>
