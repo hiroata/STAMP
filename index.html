@@ -29,6 +29,57 @@
                 border: none !important;
                 border-top: none !important;
             }
+            
+            /* モバイルビューでの赤線対策 */
+            @media (max-width: 767px) {
+                html, body {
+                    border: none !important;
+                    border-top: none !important;
+                    border-width: 0 !important;
+                    border-top-width: 0 !important;
+                }
+                
+                /* 全ての要素の上部ボーダーを削除 */
+                * {
+                    border-top-width: 0 !important;
+                    border-top: none !important;
+                }
+                
+                /* 最初の要素の処理 */
+                body > *:first-child,
+                #header-container,
+                header,
+                .skip-link {
+                    margin-top: 0 !important;
+                    padding-top: 0 !important;
+                    border-top: none !important;
+                    border-top-width: 0 !important;
+                }
+                
+                /* 疑似要素も全て削除 */
+                body::before,
+                body::after,
+                html::before,
+                html::after,
+                header::before,
+                header::after,
+                *::before,
+                *::after {
+                    display: none !important;
+                    content: none !important;
+                    border: none !important;
+                    background: none !important;
+                    height: 0 !important;
+                    width: 0 !important;
+                }
+                
+                /* スキップリンクの赤背景も除外 */
+                .skip-link {
+                    background-color: transparent !important;
+                    height: 0 !important;
+                    overflow: hidden !important;
+                }
+            }
 
             /* 基本フォント */
             body {
@@ -233,8 +284,7 @@
         <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
         <script src="firebase-config.js"></script>
-        <script src="/js/unified-storage.js"></script>
-        <script src="js/security.js"></script>
+        <script src="js/unified-storage.js"></script>
         
         <!-- 構造化データ (JSON-LD) -->
         <script type="application/ld+json">
@@ -1694,8 +1744,6 @@
 
         <div id="footer-container"></div>
 
-        <script src="firebase-config.js"></script>
-        <script src="js/unified-storage.js"></script>
         <script src="js/components.js?v=20250713-2"></script>
         <script>
             // Initialize header and footer

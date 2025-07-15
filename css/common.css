@@ -24,6 +24,54 @@ body {
     background-color: var(--bg-white);
     margin: 0;
     padding: 0;
+    border: none !important;
+    border-top: none !important;
+}
+
+/* 赤線を完全に削除 */
+html, body {
+    border-top: none !important;
+    border: none !important;
+    border-width: 0 !important;
+    outline: none !important;
+}
+
+/* 全ての要素の上部ボーダーを削除 */
+* {
+    border-top-width: 0 !important;
+}
+
+/* 疑似要素での赤線も削除 */
+body::before,
+body::after,
+html::before,
+html::after,
+header::before,
+header::after,
+*::before,
+*::after {
+    border: none !important;
+    background: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    display: none !important;
+    content: none !important;
+}
+
+/* スマホビュー専用の対策 */
+@media (max-width: 767px) {
+    html, body {
+        border-top-width: 0 !important;
+        border-width: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* 最初の要素の上部マージンも削除 */
+    body > *:first-child {
+        margin-top: 0 !important;
+        border-top: none !important;
+    }
 }
 
 /* スキップリンク（アクセシビリティ） */
@@ -31,15 +79,18 @@ body {
     position: absolute;
     top: -40px;
     left: 0;
-    background: var(--primary-red);
+    background: #333333;
     color: white;
     padding: 8px;
     text-decoration: none;
     z-index: 100;
+    overflow: hidden;
+    height: 0;
 }
 
 .skip-link:focus {
     top: 0;
+    height: auto;
 }
 
 /* ボタン基本スタイル */

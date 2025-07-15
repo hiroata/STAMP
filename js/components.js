@@ -39,11 +39,6 @@ function createHeader() {
         }
     </style>
     <header class="w-full">
-        <!-- 上部のテキストバー -->
-        <div class="py-1 text-center text-xs text-gray-700">
-            広島で切手の買取・販売を手がける専門店
-        </div>
-        
         <!-- メインヘッダー -->
         <div class="bg-white">
             <div class="container mx-auto px-4">
@@ -114,7 +109,7 @@ function createHeader() {
         <!-- モバイルナビゲーション（削除 - ハンバーガーメニューに統合） -->
         
         <!-- ナビゲーションバー（デスクトップのみ） -->
-        <div class="bg-red-50 border-b border-red-100 hidden md:block">
+        <div class="bg-gray-50 border-b border-gray-200 hidden md:block">
             <div class="container mx-auto px-4">
                 <nav class="flex items-center justify-center gap-8 py-3">
                     <a href="${basePath}index.html" class="text-gray-700 hover:text-red-700 font-medium transition-colors">HOME</a>

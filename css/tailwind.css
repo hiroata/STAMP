@@ -22,15 +22,37 @@
   body {
     font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN", 
                  "メイリオ", Meiryo, "MS Pゴシック", sans-serif;
+    border: none !important;
+    border-top: none !important;
+  }
+  
+  /* 赤線を完全に削除 */
+  html, body {
+    border: none !important;
+    border-top: none !important;
+    border-width: 0 !important;
+    border-top-width: 0 !important;
+  }
+  
+  /* モバイルビューでの追加対策 */
+  @media (max-width: 767px) {
+    html, body {
+      border-top-width: 0 !important;
+      margin-top: 0 !important;
+    }
+    
+    * {
+      border-top-width: 0 !important;
+    }
   }
   
   /* スキップリンク（アクセシビリティ） */
   .skip-link {
-    @apply absolute -top-10 left-0 bg-brand-red text-white p-2 z-50;
+    @apply absolute -top-10 left-0 bg-gray-800 text-white p-2 z-50 overflow-hidden h-0;
   }
   
   .skip-link:focus {
-    @apply top-0;
+    @apply top-0 h-auto;
   }
 }
 
